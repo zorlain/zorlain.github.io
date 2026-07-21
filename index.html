@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>zorlain</title>
+<meta name="naver-site-verification" content="a461d3f7b09920e6aa44e1430bfc83a5b7dd27b3" />
+<style>
+  :root {
+    --bg: #000000;
+    --card: #2b2b2b;
+    --text: #eaeaea;
+    --text-muted: #a0a0a0;
+    --accent: #d2d2d2;
+    --accent-on: #181818;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  .page {
+    max-width: 480px;
+    width: 100%;
+    padding: 24px;
+    text-align: center;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 0 12px;
+  }
+  p {
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 32px;
+  }
+  .projects {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  a.project-link {
+    display: block;
+    background: var(--card);
+    color: var(--text);
+    text-decoration: none;
+    padding: 18px 20px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    transition: background 0.15s;
+  }
+  a.project-link:hover {
+    background: var(--accent);
+    color: var(--accent-on);
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>zorlain</h1>
+  <p>여기서 만든 프로젝트들을 모아둡니다.</p>
+  <div class="projects">
+    <a class="project-link" href="/lotto-generator/">🎱 로또 번호 생성기 — 전 회차 통계 분석 기반 번호 추천</a>
+  </div>
+</div>
+</body>
+</html>
