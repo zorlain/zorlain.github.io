@@ -10,17 +10,11 @@
     document.documentElement.setAttribute("data-theme", theme);
   })();
 </script>
-<title>zorlain 도구 모음 - 로또·퀀트투자·무료 온라인 도구</title>
-<meta name="description" content="설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다. 로또·연금복권 번호 생성기, 퀀트투자 백테스트, QR코드·이미지·비밀번호·텍스트 도구까지 한 곳에서 이용하세요." />
+<title>zorlain</title>
+<meta name="description" content="로또·연금복권 번호 생성기, 퀀트투자, 무료 온라인 도구 모음(toolbox)." />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://zorlain.github.io/" />
 <meta name="naver-site-verification" content="a461d3f7b09920e6aa44e1430bfc83a5b7dd27b3" />
-
-<meta property="og:type" content="website" />
-<meta property="og:title" content="zorlain 도구 모음" />
-<meta property="og:description" content="설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다." />
-<meta property="og:url" content="https://zorlain.github.io/" />
-<meta property="og:locale" content="ko_KR" />
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23000000'/%3E%3Ctext x='12' y='17' font-size='14' font-weight='700' text-anchor='middle' fill='%23ffb020' font-family='Arial'%3Ez%3C/text%3E%3C/svg%3E" />
 
@@ -30,359 +24,104 @@
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
 
 <style>
-/* 다크 퍼스트 디지털 시계 스타일(clock-timer)과 통일한 앰버 액센트 디자인 시스템 +
-   itool.co.kr 느낌의 카드 그리드 허브 구성. */
 :root {
   --bg: #ffffff;
   --card: #f7f7f8;
-  --card-elevated: #ececef;
   --text: #0a0a0a;
   --text-muted: rgba(10, 10, 10, 0.62);
   --border: rgba(10, 10, 10, 0.12);
   --accent: #d9770a;
-  --accent-hover: #c26a09;
   --accent-soft: rgba(217, 119, 10, 0.12);
-  --accent-on: #ffffff;
-  --hover-tint: rgba(10, 10, 10, 0.06);
 }
-
 :root[data-theme="dark"] {
   --bg: #000000;
   --card: #131313;
-  --card-elevated: #1d1d1d;
   --text: #ffffff;
   --text-muted: rgba(255, 255, 255, 0.66);
   --border: rgba(255, 255, 255, 0.1);
   --accent: #ffb020;
-  --accent-hover: #e6a01c;
   --accent-soft: rgba(255, 176, 32, 0.14);
-  --accent-on: #17110a;
-  --hover-tint: rgba(255, 255, 255, 0.07);
 }
-
-* {
-  box-sizing: border-box;
-}
-
+* { box-sizing: border-box; }
 body {
   margin: 0;
-  font-family: Inter, "Pretendard Variable", Pretendard, "Apple SD Gothic Neo",
-    "Malgun Gothic", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  font-size: 16px;
-  line-height: 1.5;
-  letter-spacing: 0.24px;
-  -webkit-font-smoothing: antialiased;
-}
-
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.topbar {
+  min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 24px;
-  border-bottom: 1px solid var(--border);
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 17px;
-  font-weight: 700;
-}
-
-.theme-toggle {
-  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  flex-shrink: 0;
-  border-radius: 9999px;
-  border: 1px solid var(--border);
-  background: transparent;
+  font-family: Inter, "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  background: var(--bg);
   color: var(--text);
-  font-size: 16px;
-  cursor: pointer;
-  transition: background 0.15s, transform 0.1s;
 }
-
-.theme-toggle svg {
-  width: 18px;
-  height: 18px;
-}
-
-.theme-toggle:hover {
-  background: var(--hover-tint);
-}
-
-.theme-toggle:active {
-  transform: scale(0.94);
-}
-
 .page {
-  max-width: 1160px;
-  margin: 0 auto;
-  padding: 40px 24px 80px;
+  max-width: 420px;
+  width: 100%;
+  padding: 24px;
 }
-
-.hero {
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 8px;
   text-align: center;
-  margin-bottom: 48px;
 }
-
-.hero h1 {
-  font-size: 26px;
-  font-weight: 700;
-  margin: 0 0 10px;
-  letter-spacing: -0.01em;
-}
-
-.hero p {
+p {
   color: var(--text-muted);
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.6;
-  margin: 0;
+  margin: 0 0 28px;
+  text-align: center;
 }
-
-.tool-section {
-  margin-bottom: 40px;
-}
-
-.tool-section-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin: 0 0 14px;
-}
-
-.tool-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.tool-grid.tool-grid-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.tool-card {
+.links {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  text-align: left;
+  gap: 10px;
+}
+a.site-link {
+  display: block;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 24px;
-  text-decoration: none;
   color: var(--text);
+  text-decoration: none;
+  padding: 18px 20px;
+  border-radius: 16px;
   transition: border-color 0.15s, background 0.15s;
 }
-
-.tool-card:hover {
+a.site-link:hover {
   border-color: var(--accent);
   background: var(--accent-soft);
 }
-
-.tool-card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-.tool-card-icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.tool-card-title {
-  font-size: 16px;
+a.site-link .site-link-title {
+  display: block;
   font-weight: 700;
+  font-size: 15px;
 }
-
-.tool-card-desc {
+a.site-link .site-link-desc {
+  display: block;
   color: var(--text-muted);
-  font-size: 13.5px;
-  line-height: 1.55;
-}
-
-footer {
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
-  padding: 24px;
-}
-
-@media (max-width: 800px) {
-  .tool-grid,
-  .tool-grid.tool-grid-2 {
-    grid-template-columns: 1fr;
-  }
+  font-weight: 500;
+  font-size: 12.5px;
+  margin-top: 4px;
 }
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="brand"><span>zorlain</span></div>
-  <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크/라이트 모드 전환"></button>
-</header>
-
 <div class="page">
-
-  <div class="hero">
-    <h1>zorlain 도구 모음</h1>
-    <p>설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다.</p>
+  <h1>zorlain</h1>
+  <p>원하는 사이트를 선택하세요.</p>
+  <div class="links">
+    <a class="site-link" href="/lotto-generator/">
+      <span class="site-link-title">로또·연금복권 번호 생성기</span>
+      <span class="site-link-desc">로또 6/45·연금복권720+ 번호 생성 및 통계 분석</span>
+    </a>
+    <a class="site-link" href="/asset-allocation-calculator/">
+      <span class="site-link-title">퀀트투자</span>
+      <span class="site-link-desc">자산배분 백테스트·투자전략·낙원계산기</span>
+    </a>
+    <a class="site-link" href="/toolbox/">
+      <span class="site-link-title">toolbox</span>
+      <span class="site-link-desc">QR·이미지·비밀번호·텍스트 등 무료 온라인 도구 모음</span>
+    </a>
   </div>
-
-  <section class="tool-section">
-    <div class="tool-section-label">복권</div>
-    <div class="tool-grid tool-grid-2">
-      <a class="tool-card" href="https://zorlain.github.io/lotto-generator/">
-        <span class="tool-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="9" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
-        </span>
-        <span class="tool-card-title">로또·연금복권 번호 생성기</span>
-        <span class="tool-card-desc">로또 6/45·연금복권720+ 번호를 통계 기반으로 생성하고, 전 회차 데이터를 분석합니다.</span>
-      </a>
-    </div>
-  </section>
-
-  <section class="tool-section">
-    <div class="tool-section-label">투자</div>
-    <div class="tool-grid tool-grid-2">
-      <a class="tool-card" href="https://zorlain.github.io/asset-allocation-calculator/">
-        <span class="tool-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 20 V10" />
-            <path d="M11 20 V4" />
-            <path d="M18 20 V14" />
-          </svg>
-        </span>
-        <span class="tool-card-title">퀀트투자</span>
-        <span class="tool-card-desc">자산배분 포트폴리오 백테스트, 투자전략, 낙원(은퇴)계산기를 한 곳에서 이용하세요.</span>
-      </a>
-    </div>
-  </section>
-
-  <section class="tool-section">
-    <div class="tool-section-label">도구 모음</div>
-    <div class="tool-grid">
-      <a class="tool-card" href="https://zorlain.github.io/qr-generator/">
-        <span class="tool-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="6" height="6" rx="1" />
-            <rect x="15" y="3" width="6" height="6" rx="1" />
-            <rect x="3" y="15" width="6" height="6" rx="1" />
-            <path d="M15 15 h3 v3 h3 v3" />
-          </svg>
-        </span>
-        <span class="tool-card-title">QR코드 생성기</span>
-        <span class="tool-card-desc">URL, 와이파이, 연락처를 QR코드로 즉시 만들고 다운로드합니다.</span>
-      </a>
-      <a class="tool-card" href="https://zorlain.github.io/image-tools/">
-        <span class="tool-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="16" rx="2" />
-            <circle cx="9" cy="10" r="2" />
-            <path d="M4 18 L9.5 12 L13 15.5 L16.5 11 L20 16" />
-          </svg>
-        </span>
-        <span class="tool-card-title">이미지 압축·리사이즈</span>
-        <span class="tool-card-desc">사진 용량을 줄이고 크기를 조절합니다. 브라우저에서만 처리되어 안전합니다.</span>
-      </a>
-      <a class="tool-card" href="https://zorlain.github.io/password-generator/">
-        <span class="tool-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="6" y="11" width="12" height="9" rx="2" />
-            <path d="M8 11 V8 a4 4 0 0 1 8 0 v3" />
-          </svg>
-        </span>
-        <span class="tool-card-title">비밀번호 생성기</span>
-        <span class="tool-card-desc">원하는 조건에 맞는 안전한 랜덤 비밀번호를 강도와 함께 바로 생성합니다.</span>
-      </a>
-      <a class="tool-card" href="https://zorlain.github.io/text-tools/">
-        <span class="tool-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 4 L7 20" />
-            <path d="M17 4 L15 20" />
-            <path d="M4 9 L20 9" />
-            <path d="M3 15 L19 15" />
-          </svg>
-        </span>
-        <span class="tool-card-title">텍스트 도구 모음</span>
-        <span class="tool-card-desc">글자수 세기, 대소문자·공백 정리, 특수문자 모음을 무료로 바로 사용합니다.</span>
-      </a>
-      <a class="tool-card" href="https://zorlain.github.io/random-picker/">
-        <span class="tool-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="8" cy="9" r="3" />
-            <circle cx="16" cy="9" r="3" />
-            <path d="M3.5 19c0.5-3 2.3-4.5 4.5-4.5s4 1.5 4.5 4.5" />
-            <path d="M11.5 19c0.5-3 2.3-4.5 4.5-4.5s4 1.5 4.5 4.5" />
-          </svg>
-        </span>
-        <span class="tool-card-title">랜덤 추첨기</span>
-        <span class="tool-card-desc">1명 뽑기, 팀 나누기, 사다리타기, 제비뽑기를 바로 실행합니다.</span>
-      </a>
-      <a class="tool-card" href="https://zorlain.github.io/clock-timer/">
-        <span class="tool-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="13" r="8" />
-            <path d="M12 13 L12 9" />
-            <path d="M9.5 2.5 L14.5 2.5" />
-            <path d="M12 2.5 L12 5" />
-          </svg>
-        </span>
-        <span class="tool-card-title">타이머·스톱워치·시계</span>
-        <span class="tool-card-desc">카운트다운 알람, 랩타임, 세계시계를 브라우저에서 바로 사용합니다.</span>
-      </a>
-    </div>
-  </section>
-
 </div>
-
-<footer>© zorlain</footer>
-
-<script>
-  const ICON_SUN =
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 12H2M22 12h-2.2M5.6 5.6l1.6 1.6M16.8 16.8l1.6 1.6M18.4 5.6l-1.6 1.6M7.2 16.8l-1.6 1.6"/></svg>';
-  const ICON_MOON =
-    '<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 1 0 10.5 10.5Z"/></svg>';
-
-  function initThemeToggle() {
-    const btn = document.getElementById("theme-toggle");
-    const getTheme = () => document.documentElement.getAttribute("data-theme") || "light";
-    const applyIcon = () => {
-      btn.innerHTML = getTheme() === "dark" ? ICON_SUN : ICON_MOON;
-    };
-    applyIcon();
-    btn.addEventListener("click", () => {
-      const next = getTheme() === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-      applyIcon();
-    });
-  }
-
-  initThemeToggle();
-</script>
 </body>
 </html>
