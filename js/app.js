@@ -93,6 +93,31 @@ function initTabs() {
   });
 }
 
+/* ---------- 도구 검색 필터 ---------- */
+function initSearch() {
+  const input = document.getElementById("tool-search");
+  const cards = Array.from(document.querySelectorAll(".tool-card"));
+  const emptyMsg = document.getElementById("tool-empty-msg");
+  const sectionLabels = Array.from(document.querySelectorAll(".tool-section-label"));
+
+  input.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    let visibleCount = 0;
+    cards.forEach((card) => {
+      const haystack = `${card.dataset.tags || ""} ${card.querySelector(".tool-card-title").textContent}`.toLowerCase();
+      const match = !q || haystack.includes(q);
+      card.hidden = !match;
+      if (match) visibleCount++;
+    });
+    sectionLabels.forEach((label) => {
+      const grid = label.nextElementSibling;
+      const anyVisible = grid && Array.from(grid.querySelectorAll(".tool-card")).some((c) => !c.hidden);
+      label.hidden = !anyVisible;
+    });
+    emptyMsg.hidden = visibleCount !== 0;
+  });
+}
+
 /* ---------- JSON 포맷터 ---------- */
 function initJsonFormatter() {
   const input = document.getElementById("json-input");
@@ -491,6 +516,7 @@ function init() {
   initThemeToggle();
   initMenu();
   initTabs();
+  initSearch();
   initJsonFormatter();
   initBase64();
   initLorem();
