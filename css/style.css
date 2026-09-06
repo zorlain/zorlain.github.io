@@ -1,0 +1,483 @@
+/* 다크 퍼스트 디지털 시계 스타일(clock-timer)과 통일한 앰버 액센트 디자인 시스템 +
+   itool.co.kr 느낌의 카드 그리드 허브 구성. */
+:root {
+  --bg: #ffffff;
+  --card: #f7f7f8;
+  --card-elevated: #ececef;
+  --text: #0a0a0a;
+  --text-muted: rgba(10, 10, 10, 0.62);
+  --border: rgba(10, 10, 10, 0.12);
+  --accent: #d9770a;
+  --accent-hover: #c26a09;
+  --accent-soft: rgba(217, 119, 10, 0.12);
+  --accent-on: #ffffff;
+  --btn-primary-bg: #0a0a0a;
+  --btn-primary-text: #ffffff;
+  --btn-primary-pressed: #2e2e2e;
+  --hover-tint: rgba(10, 10, 10, 0.06);
+
+  --positive: #2c9e44;
+  --negative: #d8314f;
+}
+
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --card: #131313;
+  --card-elevated: #1d1d1d;
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.66);
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #ffb020;
+  --accent-hover: #e6a01c;
+  --accent-soft: rgba(255, 176, 32, 0.14);
+  --accent-on: #17110a;
+  --btn-primary-bg: #ffb020;
+  --btn-primary-text: #17110a;
+  --btn-primary-pressed: #e09710;
+  --hover-tint: rgba(255, 255, 255, 0.07);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, "Pretendard Variable", Pretendard, "Apple SD Gothic Neo",
+    "Malgun Gothic", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- 상단 바 (다른 도구 사이트와 동일한 프레임) ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.theme-toggle,
+.menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-toggle:hover,
+.menu-toggle:hover {
+  background: var(--hover-tint);
+}
+
+.theme-toggle:active,
+.menu-toggle:active {
+  transform: scale(0.94);
+}
+
+.menu {
+  position: relative;
+}
+
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--card-elevated);
+  border-radius: 16px;
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+  z-index: 40;
+}
+
+.menu.open .menu-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tool-list-group-label {
+  padding: 6px 10px 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tool-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 10px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.tool-list-item:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.page {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.hero {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.hero h1 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+
+.hero p {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ---------- itool.co.kr 느낌: 카드 그리드로 도구를 고르는 허브 화면 ---------- */
+.tool-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--text);
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.tool-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.tool-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.tool-card-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.tool-card-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.tool-card-desc {
+  color: var(--text-muted);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.back-link {
+  display: inline-block;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 16px;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+.card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 28px;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.card h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 입력 폼 */
+.field-group {
+  margin-bottom: 20px;
+}
+
+.field-group:last-child {
+  margin-bottom: 0;
+}
+
+.field-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.field-input-wrap input,
+.field-input-wrap textarea {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 500;
+  font-family: "JetBrains Mono", "Roboto Mono", inherit;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.field-input-wrap input:focus,
+.field-input-wrap textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.range-input {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* 세그먼트 토글 */
+.segmented {
+  display: flex;
+  gap: 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  padding: 5px;
+}
+
+.segmented button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 11px 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.segmented button.active {
+  background: var(--accent);
+  color: var(--accent-on);
+}
+
+.tool-btn-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.secondary-btn {
+  padding: 14px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.secondary-btn:hover {
+  background: var(--hover-tint);
+}
+
+.secondary-btn:active {
+  transform: scale(0.98);
+}
+
+.calc-btn {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.24px;
+  color: var(--btn-primary-text);
+  background: var(--btn-primary-bg);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.calc-btn:active {
+  background: var(--btn-primary-pressed);
+  transform: scale(0.98);
+}
+
+.calc-btn.secondary-btn {
+  background: var(--card-elevated);
+  color: var(--text);
+}
+
+.calc-btn.copied,
+.secondary-btn.copied {
+  background: var(--positive) !important;
+  color: #ffffff !important;
+}
+
+.calc-error-msg {
+  color: var(--negative);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: center;
+  margin: 16px 0 0;
+}
+
+.site-footer {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 24px;
+}
+
+.site-footer a {
+  color: var(--text-muted);
+}
+
+/* 모바일 */
+@media (max-width: 640px) {
+  .topbar {
+    padding: 14px 16px;
+  }
+
+  .page {
+    padding: 24px 16px 64px;
+  }
+
+  .tool-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 17px;
+    margin: 0 0 12px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .calc-btn {
+    padding: 17px;
+    font-size: 16px;
+  }
+
+  .tool-btn-grid {
+    grid-template-columns: 1fr;
+  }
+}

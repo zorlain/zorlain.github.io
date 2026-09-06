@@ -10,118 +10,250 @@
     document.documentElement.setAttribute("data-theme", theme);
   })();
 </script>
-<title>zorlain</title>
-<meta name="description" content="로또·연금복권 번호 생성기, 퀀트투자, 무료 온라인 도구 모음(toolbox)." />
+<title>toolbox - 무료 온라인 도구 모음</title>
+<meta name="description" content="설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다. QR코드, 이미지 압축, 비밀번호 생성, JSON 포맷터, Base64 인코딩, 더미 텍스트 생성 등을 한 곳에서 이용하세요." />
+<meta name="keywords" content="온라인도구모음,무료도구,QR코드생성기,이미지압축,비밀번호생성기,JSON포맷터,Base64인코더,더미텍스트생성기,로렘입숨" />
 <meta name="robots" content="index, follow" />
 <link rel="canonical" href="https://zorlain.github.io/" />
 <meta name="naver-site-verification" content="a461d3f7b09920e6aa44e1430bfc83a5b7dd27b3" />
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23000000'/%3E%3Ctext x='12' y='17' font-size='14' font-weight='700' text-anchor='middle' fill='%23ffb020' font-family='Arial'%3Ez%3C/text%3E%3C/svg%3E" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="toolbox - 무료 온라인 도구 모음" />
+<meta property="og:description" content="설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다." />
+<meta property="og:url" content="https://zorlain.github.io/" />
+<meta property="og:locale" content="ko_KR" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="toolbox - 무료 온라인 도구 모음" />
+<meta name="twitter:description" content="설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "toolbox - 무료 온라인 도구 모음",
+  "url": "https://zorlain.github.io/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "description": "설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다."
+}
+</script>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23000000'/%3E%3Crect x='4' y='4' width='7' height='7' rx='1.5' fill='%23ffb020'/%3E%3Crect x='13' y='4' width='7' height='7' rx='1.5' fill='white' opacity='.85'/%3E%3Crect x='4' y='13' width='7' height='7' rx='1.5' fill='white' opacity='.85'/%3E%3Crect x='13' y='13' width='7' height='7' rx='1.5' fill='%23ffb020'/%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-
-<style>
-:root {
-  --bg: #ffffff;
-  --card: #f7f7f8;
-  --text: #0a0a0a;
-  --text-muted: rgba(10, 10, 10, 0.62);
-  --border: rgba(10, 10, 10, 0.12);
-  --accent: #d9770a;
-  --accent-soft: rgba(217, 119, 10, 0.12);
-}
-:root[data-theme="dark"] {
-  --bg: #000000;
-  --card: #131313;
-  --text: #ffffff;
-  --text-muted: rgba(255, 255, 255, 0.66);
-  --border: rgba(255, 255, 255, 0.1);
-  --accent: #ffb020;
-  --accent-soft: rgba(255, 176, 32, 0.14);
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: Inter, "Pretendard Variable", Pretendard, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
-.page {
-  max-width: 420px;
-  width: 100%;
-  padding: 24px;
-}
-h1 {
-  font-size: 24px;
-  font-weight: 700;
-  margin: 0 0 8px;
-  text-align: center;
-}
-p {
-  color: var(--text-muted);
-  font-size: 14px;
-  line-height: 1.6;
-  margin: 0 0 28px;
-  text-align: center;
-}
-.links {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-a.site-link {
-  display: block;
-  background: var(--card);
-  border: 1px solid var(--border);
-  color: var(--text);
-  text-decoration: none;
-  padding: 18px 20px;
-  border-radius: 16px;
-  transition: border-color 0.15s, background 0.15s;
-}
-a.site-link:hover {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-}
-a.site-link .site-link-title {
-  display: block;
-  font-weight: 700;
-  font-size: 15px;
-}
-a.site-link .site-link-desc {
-  display: block;
-  color: var(--text-muted);
-  font-weight: 500;
-  font-size: 12.5px;
-  margin-top: 4px;
-}
-</style>
+<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-<div class="page">
-  <h1>zorlain</h1>
-  <p>원하는 사이트를 선택하세요.</p>
-  <div class="links">
-    <a class="site-link" href="/lotto-generator/">
-      <span class="site-link-title">로또·연금복권 번호 생성기</span>
-      <span class="site-link-desc">로또 6/45·연금복권720+ 번호 생성 및 통계 분석</span>
-    </a>
-    <a class="site-link" href="/asset-allocation-calculator/">
-      <span class="site-link-title">퀀트투자</span>
-      <span class="site-link-desc">자산배분 백테스트·투자전략·낙원계산기</span>
-    </a>
-    <a class="site-link" href="/toolbox/">
-      <span class="site-link-title">toolbox</span>
-      <span class="site-link-desc">QR·이미지·비밀번호·텍스트 등 무료 온라인 도구 모음</span>
-    </a>
+<header class="topbar">
+  <div class="brand"><span>toolbox</span></div>
+  <div class="topbar-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크/라이트 모드 전환"></button>
+    <div class="menu" id="menu">
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기">☰</button>
+      <div class="menu-dropdown" id="menu-dropdown">
+        <div class="tool-list-group-label">다른 사이트</div>
+        <a class="tool-list-item" href="https://zorlain.github.io/lotto-generator/">로또 번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/asset-allocation-calculator/">퀀트투자</a>
+      </div>
+    </div>
   </div>
+</header>
+
+<div class="page">
+
+  <!-- itool.co.kr 느낌: 카드 그리드로 도구를 고르는 허브 화면 -->
+  <section class="tool-hub" id="tool-hub">
+    <div class="hero">
+      <h1>toolbox</h1>
+      <p>설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다.</p>
+    </div>
+    <div class="tool-grid">
+      <a class="tool-card" href="https://zorlain.github.io/qr-generator/">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="6" height="6" rx="1" /><rect x="15" y="3" width="6" height="6" rx="1" />
+            <rect x="3" y="15" width="6" height="6" rx="1" /><path d="M15 15 h3 v3 h3 v3" />
+          </svg>
+        </span>
+        <span class="tool-card-title">QR코드 생성기</span>
+        <span class="tool-card-desc">URL, 와이파이, 연락처를 QR코드로 즉시 만들고 다운로드합니다.</span>
+      </a>
+      <a class="tool-card" href="https://zorlain.github.io/image-tools/">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" />
+            <path d="M4 18 L9.5 12 L13 15.5 L16.5 11 L20 16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">이미지 압축·리사이즈</span>
+        <span class="tool-card-desc">사진 용량을 줄이고 크기를 조절합니다. 브라우저에서만 처리되어 안전합니다.</span>
+      </a>
+      <a class="tool-card" href="https://zorlain.github.io/password-generator/">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="11" width="12" height="9" rx="2" /><path d="M8 11 V8 a4 4 0 0 1 8 0 v3" />
+          </svg>
+        </span>
+        <span class="tool-card-title">비밀번호 생성기</span>
+        <span class="tool-card-desc">원하는 조건에 맞는 안전한 랜덤 비밀번호를 강도와 함께 바로 생성합니다.</span>
+      </a>
+      <a class="tool-card" href="https://zorlain.github.io/text-tools/">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 4 L7 20" /><path d="M17 4 L15 20" /><path d="M4 9 L20 9" /><path d="M3 15 L19 15" />
+          </svg>
+        </span>
+        <span class="tool-card-title">텍스트 도구 모음</span>
+        <span class="tool-card-desc">글자수 세기, 대소문자·공백 정리, 특수문자 모음을 무료로 바로 사용합니다.</span>
+      </a>
+      <a class="tool-card" href="https://zorlain.github.io/random-picker/">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="8" cy="9" r="3" /><circle cx="16" cy="9" r="3" />
+            <path d="M3.5 19c0.5-3 2.3-4.5 4.5-4.5s4 1.5 4.5 4.5" /><path d="M11.5 19c0.5-3 2.3-4.5 4.5-4.5s4 1.5 4.5 4.5" />
+          </svg>
+        </span>
+        <span class="tool-card-title">랜덤 추첨기</span>
+        <span class="tool-card-desc">1명 뽑기, 팀 나누기, 사다리타기, 제비뽑기를 바로 실행합니다.</span>
+      </a>
+      <a class="tool-card" href="https://zorlain.github.io/clock-timer/">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="13" r="8" /><path d="M12 13 L12 9" /><path d="M9.5 2.5 L14.5 2.5" /><path d="M12 2.5 L12 5" />
+          </svg>
+        </span>
+        <span class="tool-card-title">타이머·스톱워치·시계</span>
+        <span class="tool-card-desc">카운트다운 알람, 랩타임, 세계시계를 브라우저에서 바로 사용합니다.</span>
+      </a>
+      <button type="button" class="tool-card" data-tab="json">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 4 C6 4 6 6 6 8 C6 10 4 10 4 12 C4 14 6 14 6 16 C6 18 6 20 8 20" />
+            <path d="M16 4 C18 4 18 6 18 8 C18 10 20 10 20 12 C20 14 18 14 18 16 C18 18 18 20 16 20" />
+          </svg>
+        </span>
+        <span class="tool-card-title">JSON 포맷터</span>
+        <span class="tool-card-desc">JSON을 보기 좋게 정렬하거나 한 줄로 압축하고, 문법 오류를 바로 확인합니다.</span>
+      </button>
+      <button type="button" class="tool-card" data-tab="base64">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="7" width="8" height="10" rx="2" /><path d="M15 7 L21 7 M15 12 L21 12 M15 17 L21 17" />
+          </svg>
+        </span>
+        <span class="tool-card-title">Base64 인코더·디코더</span>
+        <span class="tool-card-desc">텍스트를 Base64로 인코딩하거나 Base64 문자열을 다시 텍스트로 디코딩합니다.</span>
+      </button>
+      <button type="button" class="tool-card" data-tab="lorem">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6 h16 M4 11 h16 M4 16 h10" />
+          </svg>
+        </span>
+        <span class="tool-card-title">더미 텍스트 생성기</span>
+        <span class="tool-card-desc">디자인 시안이나 레이아웃 테스트용 한글·영문 더미 텍스트를 원하는 만큼 생성합니다.</span>
+      </button>
+    </div>
+  </section>
+
+  <div id="tabs">
+
+  <!-- JSON 포맷터 -->
+  <section class="tab-panel" data-tab-panel="json" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>JSON 포맷터</h2>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="json-input">입력</label>
+          <div class="field-input-wrap">
+            <textarea id="json-input" rows="12" placeholder='{"name":"홍길동","age":30}'></textarea>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="json-output">결과</label>
+          <div class="field-input-wrap">
+            <textarea id="json-output" rows="12" readonly placeholder="여기에 결과가 표시됩니다"></textarea>
+          </div>
+        </div>
+      </div>
+      <p class="calc-error-msg" id="json-error" hidden></p>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="json-format-btn">보기 좋게 정렬</button>
+        <button type="button" class="secondary-btn" id="json-minify-btn">한 줄로 압축</button>
+      </div>
+      <button class="calc-btn" id="json-copy-btn">결과 복사</button>
+    </div>
+  </section>
+
+  <!-- Base64 인코더/디코더 -->
+  <section class="tab-panel" data-tab-panel="base64" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>Base64 인코더·디코더</h2>
+      <div class="field-group">
+        <div class="field-input-wrap">
+          <textarea id="base64-input" rows="6" placeholder="여기에 텍스트를 입력하세요"></textarea>
+        </div>
+      </div>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="base64-encode-btn">인코딩 →</button>
+        <button type="button" class="secondary-btn" id="base64-decode-btn">← 디코딩</button>
+      </div>
+      <p class="calc-error-msg" id="base64-error" hidden></p>
+      <div class="field-group">
+        <label for="base64-output">결과</label>
+        <div class="field-input-wrap">
+          <textarea id="base64-output" rows="6" readonly placeholder="여기에 결과가 표시됩니다"></textarea>
+        </div>
+      </div>
+      <button class="calc-btn" id="base64-copy-btn">결과 복사</button>
+    </div>
+  </section>
+
+  <!-- 더미 텍스트 생성기 -->
+  <section class="tab-panel" data-tab-panel="lorem" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>더미 텍스트 생성기</h2>
+      <div class="field-group">
+        <label>언어</label>
+        <div class="segmented" id="lorem-lang">
+          <button type="button" class="active" data-value="ko">한글</button>
+          <button type="button" data-value="en">Lorem Ipsum</button>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="lorem-count">단락 수: <span id="lorem-count-label">3개</span></label>
+          <input type="range" id="lorem-count" min="1" max="20" step="1" value="3" class="range-input" />
+        </div>
+        <div class="field-group">
+          <label for="lorem-length">단락당 문장 수: <span id="lorem-length-label">5개</span></label>
+          <input type="range" id="lorem-length" min="2" max="12" step="1" value="5" class="range-input" />
+        </div>
+      </div>
+      <button class="calc-btn" id="lorem-generate-btn">생성하기</button>
+      <div class="field-group" style="margin-top: 20px;">
+        <div class="field-input-wrap">
+          <textarea id="lorem-output" rows="10" readonly placeholder="생성하기를 누르면 여기에 더미 텍스트가 표시됩니다"></textarea>
+        </div>
+      </div>
+      <button class="calc-btn secondary-btn" id="lorem-copy-btn">결과 복사</button>
+    </div>
+  </section>
+
+  </div>
+
 </div>
+
+<footer class="site-footer">© toolbox — <a href="https://zorlain.github.io/">zorlain</a></footer>
+
+<script src="js/app.js"></script>
 </body>
 </html>
