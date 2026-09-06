@@ -10,7 +10,7 @@
     document.documentElement.setAttribute("data-theme", theme);
   })();
 </script>
-<title>toolbox - 무료 온라인 도구 모음</title>
+<title>무료 온라인 도구 모음 - toolbox</title>
 <meta name="description" content="설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다. QR코드, 이미지 압축, 비밀번호 생성, JSON 포맷터, Base64 인코딩, 더미 텍스트 생성 등을 한 곳에서 이용하세요." />
 <meta name="keywords" content="온라인도구모음,무료도구,QR코드생성기,이미지압축,비밀번호생성기,JSON포맷터,Base64인코더,더미텍스트생성기,로렘입숨" />
 <meta name="robots" content="index, follow" />
@@ -18,13 +18,13 @@
 <meta name="naver-site-verification" content="a461d3f7b09920e6aa44e1430bfc83a5b7dd27b3" />
 
 <meta property="og:type" content="website" />
-<meta property="og:title" content="toolbox - 무료 온라인 도구 모음" />
+<meta property="og:title" content="무료 온라인 도구 모음 - toolbox" />
 <meta property="og:description" content="설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다." />
 <meta property="og:url" content="https://zorlain.github.io/" />
 <meta property="og:locale" content="ko_KR" />
 
 <meta name="twitter:card" content="summary" />
-<meta name="twitter:title" content="toolbox - 무료 온라인 도구 모음" />
+<meta name="twitter:title" content="무료 온라인 도구 모음 - toolbox" />
 <meta name="twitter:description" content="설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다." />
 
 <script type="application/ld+json">
@@ -239,7 +239,564 @@
         <span class="tool-card-desc">프리랜서 원천징수 3.3%를 적용해 지급액과 실수령액을 서로 계산합니다.</span>
         <span class="tool-card-tags"><span class="tool-tag">3.3%</span><span class="tool-tag">프리랜서</span></span>
       </button>
+      <button type="button" class="tool-card" data-tab="severance-pay" data-tags="퇴직금 계산기 근속연수 평균임금">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="3" /><path d="M6.5 9 v0.01 M17.5 15 v0.01" />
+          </svg>
+        </span>
+        <span class="tool-card-title">퇴직금 계산기</span>
+        <span class="tool-card-desc">근속기간과 평균임금으로 예상 퇴직금을 계산합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">퇴직금</span><span class="tool-tag">근속연수</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="unemployment-benefit" data-tags="실업급여 계산기 구직급여">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="3" /><path d="M6.5 9 v0.01 M17.5 15 v0.01" />
+          </svg>
+        </span>
+        <span class="tool-card-title">실업급여 계산기</span>
+        <span class="tool-card-desc">이직 전 평균임금으로 예상 실업급여를 계산합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">실업급여</span><span class="tool-tag">구직급여</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="jeonse-conversion" data-tags="전월세 전환 계산기 전세 월세">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 8 h13" /><path d="M14 4 l4 4 l-4 4" /><path d="M20 16 H7" /><path d="M10 12 l-4 4 l4 4" />
+          </svg>
+        </span>
+        <span class="tool-card-title">전월세 전환 계산기</span>
+        <span class="tool-card-desc">전세보증금과 월세를 서로 전환해 계산합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">전월세전환</span><span class="tool-tag">전세월세</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="savings-calc" data-tags="적금 예금 계산기 이자">
+        <span class="tool-card-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="3" /><path d="M6.5 9 v0.01 M17.5 15 v0.01" />
+          </svg>
+        </span>
+        <span class="tool-card-title">적금·예금 계산기</span>
+        <span class="tool-card-desc">매달 납입액과 이자율로 만기 수령액을 계산합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">적금</span><span class="tool-tag">예금이자</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="adsense-reality" data-tags="애드센스 현실 계산기 광고수익">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="3" /><path d="M6.5 9 v0.01 M17.5 15 v0.01" />
+          </svg>
+        </span>
+        <span class="tool-card-title">애드센스 현실 계산기</span>
+        <span class="tool-card-desc">예상 애드센스 수익을 현실적인 수치로 계산해봅니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">애드센스</span><span class="tool-tag">광고수익</span></span>
+      </button>
     </div>
+
+    <div class="tool-section-label">텍스트</div>
+    <div class="tool-grid" id="tool-grid-text2">
+      <button type="button" class="tool-card" data-tab="tts" data-tags="텍스트 읽어주기 TTS 음성변환">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 10 v4 h4 l5 4 V6 l-5 4 Z" /><path d="M16.5 9 a4.5 4.5 0 0 1 0 6" /><path d="M19 7 a8 8 0 0 1 0 10" />
+          </svg>
+        </span>
+        <span class="tool-card-title">텍스트 읽어주기(TTS)</span>
+        <span class="tool-card-desc">입력한 텍스트를 자연스러운 음성으로 읽어줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">TTS</span><span class="tool-tag">음성변환</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="excel-merge" data-tags="엑셀 파일 합치기 스프레드시트">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">엑셀 파일 합치기</span>
+        <span class="tool-card-desc">여러 개의 엑셀 파일을 하나로 합쳐 정리합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">엑셀</span><span class="tool-tag">파일합치기</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="yaml-json-toml" data-tags="YAML JSON TOML 변환기">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 8 h13" /><path d="M14 4 l4 4 l-4 4" /><path d="M20 16 H7" /><path d="M10 12 l-4 4 l4 4" />
+          </svg>
+        </span>
+        <span class="tool-card-title">YAML↔JSON↔TOML 변환기</span>
+        <span class="tool-card-desc">YAML, JSON, TOML 형식을 서로 자유롭게 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">YAML</span><span class="tool-tag">TOML</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="xml-parser" data-tags="XML 파서 포맷터 정렬">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">XML 파서·포맷터</span>
+        <span class="tool-card-desc">XML 문서를 보기 좋게 정렬하고 구조를 확인합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">XML</span><span class="tool-tag">파서</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="json-xml" data-tags="JSON XML 변환기">
+        <span class="tool-card-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 8 h13" /><path d="M14 4 l4 4 l-4 4" /><path d="M20 16 H7" /><path d="M10 12 l-4 4 l4 4" />
+          </svg>
+        </span>
+        <span class="tool-card-title">JSON↔XML 변환기</span>
+        <span class="tool-card-desc">JSON과 XML 형식을 서로 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">JSON</span><span class="tool-tag">XML</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="epub-txt" data-tags="EPUB TXT 변환 전자책">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">EPUB→TXT 변환</span>
+        <span class="tool-card-desc">EPUB 전자책 파일을 TXT 텍스트 파일로 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">EPUB</span><span class="tool-tag">전자책</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="md-viewer" data-tags="마크다운 MD 파일 뷰어">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">MD 파일 뷰어</span>
+        <span class="tool-card-desc">마크다운(.md) 파일을 미리보기 화면으로 바로 확인합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">마크다운</span><span class="tool-tag">뷰어</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="text-compare" data-tags="텍스트 비교 diff 차이점">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="8" height="16" rx="1.5" /><rect x="13" y="4" width="8" height="16" rx="1.5" /><path d="M12 4 v16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">텍스트 비교</span>
+        <span class="tool-card-desc">두 텍스트의 차이점을 한눈에 비교해 보여줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">텍스트비교</span><span class="tool-tag">diff</span></span>
+      </button>
+    </div>
+
+    <div class="tool-section-label">이미지</div>
+    <div class="tool-grid" id="tool-grid-image">
+      <button type="button" class="tool-card" data-tab="img-to-jpg" data-tags="Image to JPG 이미지변환">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="M4 18 L9.5 12 L13 15.5 L16.5 11 L20 16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">Image to JPG</span>
+        <span class="tool-card-desc">PNG, WebP 등 다양한 이미지를 JPG로 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">JPG변환</span><span class="tool-tag">이미지변환</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="img-merge" data-tags="사진 합치기 콜라주">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="M4 18 L9.5 12 L13 15.5 L16.5 11 L20 16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">사진 합치기</span>
+        <span class="tool-card-desc">여러 장의 사진을 원하는 배치로 한 장에 합칩니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">사진합치기</span><span class="tool-tag">콜라주</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="heic-viewer" data-tags="HEIC 뷰어 아이폰사진">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="M4 18 L9.5 12 L13 15.5 L16.5 11 L20 16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">HEIC 뷰어</span>
+        <span class="tool-card-desc">아이폰 HEIC 사진을 바로 열어보고 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">HEIC</span><span class="tool-tag">아이폰사진</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="photo-date-stamp" data-tags="사진 날짜 표시 필름카메라 스탬프">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10 h18" /><path d="M8 3 v4 M16 3 v4" /><path d="M7 14 h2 M11 14 h2 M15 14 h2 M7 17.5 h2 M11 17.5 h2" />
+          </svg>
+        </span>
+        <span class="tool-card-title">사진 날짜 표시</span>
+        <span class="tool-card-desc">필름카메라 감성의 날짜 스탬프를 사진에 찍어줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">날짜스탬프</span><span class="tool-tag">필름카메라</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="img-to-png" data-tags="Image to PNG 투명배경">
+        <span class="tool-card-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="M4 18 L9.5 12 L13 15.5 L16.5 11 L20 16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">Image to PNG</span>
+        <span class="tool-card-desc">JPG 등 다양한 이미지를 PNG로 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">PNG변환</span><span class="tool-tag">투명배경</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="img-to-webp" data-tags="Image to WebP 용량최적화">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="M4 18 L9.5 12 L13 15.5 L16.5 11 L20 16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">Image to WebP</span>
+        <span class="tool-card-desc">이미지를 용량이 작은 WebP 형식으로 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">WebP변환</span><span class="tool-tag">용량최적화</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="svg-trim" data-tags="SVG 여백 제거">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 v16 a2 2 0 0 0 2 2 h14" /><path d="M2 6 h16 a2 2 0 0 1 2 2 v14" />
+          </svg>
+        </span>
+        <span class="tool-card-title">SVG 여백 제거</span>
+        <span class="tool-card-desc">SVG 이미지의 불필요한 여백을 자동으로 잘라냅니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">SVG</span><span class="tool-tag">여백제거</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="img-base64" data-tags="이미지 Base64 변환 인코딩">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 8 h13" /><path d="M14 4 l4 4 l-4 4" /><path d="M20 16 H7" /><path d="M10 12 l-4 4 l4 4" />
+          </svg>
+        </span>
+        <span class="tool-card-title">이미지 Base64 변환</span>
+        <span class="tool-card-desc">이미지를 Base64 문자열로 변환하거나 반대로 복원합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">Base64</span><span class="tool-tag">이미지인코딩</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="video-to-gif" data-tags="동영상 GIF 변환">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="M4 18 L9.5 12 L13 15.5 L16.5 11 L20 16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">동영상 GIF 변환</span>
+        <span class="tool-card-desc">짧은 동영상을 움직이는 GIF 이미지로 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">GIF변환</span><span class="tool-tag">동영상</span></span>
+      </button>
+    </div>
+
+    <div class="tool-section-label">PDF</div>
+    <div class="tool-grid" id="tool-grid-pdf">
+      <button type="button" class="tool-card" data-tab="pdf-merge" data-tags="PDF 합치기 문서병합">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF 합치기</span>
+        <span class="tool-card-desc">여러 개의 PDF 파일을 원하는 순서로 하나로 합칩니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">PDF합치기</span><span class="tool-tag">문서병합</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-compress" data-tags="PDF 용량 줄이기 압축">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF 용량 줄이기</span>
+        <span class="tool-card-desc">PDF 파일의 용량을 화질 저하 없이 압축합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">PDF압축</span><span class="tool-tag">용량줄이기</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-to-jpg" data-tags="PDF to JPG 이미지변환">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="M4 18 L9.5 12 L13 15.5 L16.5 11 L20 16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF to JPG</span>
+        <span class="tool-card-desc">PDF 페이지를 JPG 이미지 파일로 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">PDF변환</span><span class="tool-tag">JPG</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-delete-page" data-tags="PDF 페이지 삭제 편집">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF 페이지 삭제</span>
+        <span class="tool-card-desc">PDF에서 원하지 않는 페이지만 골라 삭제합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">페이지삭제</span><span class="tool-tag">PDF편집</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-split" data-tags="PDF 나누기 분할">
+        <span class="tool-card-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF 나누기</span>
+        <span class="tool-card-desc">하나의 PDF 파일을 여러 개의 파일로 분할합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">PDF분할</span><span class="tool-tag">파일나누기</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-sign" data-tags="PDF 편집 서명 도장">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF 간편 편집(서명)</span>
+        <span class="tool-card-desc">PDF 문서에 서명, 도장, 텍스트를 바로 추가합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">PDF서명</span><span class="tool-tag">문서편집</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-to-png" data-tags="PDF to PNG 이미지변환">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="M4 18 L9.5 12 L13 15.5 L16.5 11 L20 16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF to PNG</span>
+        <span class="tool-card-desc">PDF 페이지를 PNG 이미지 파일로 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">PDF변환</span><span class="tool-tag">PNG</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-half-split" data-tags="PDF 페이지 반으로 나누기">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 v16 a2 2 0 0 0 2 2 h14" /><path d="M2 6 h16 a2 2 0 0 1 2 2 v14" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF 페이지 반으로 나누기</span>
+        <span class="tool-card-desc">가로로 긴 PDF 페이지를 절반씩 나눠 저장합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">페이지분할</span><span class="tool-tag">PDF편집</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-2up" data-tags="PDF 페이지 합치기 인쇄용">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF 페이지 2장씩 합치기</span>
+        <span class="tool-card-desc">PDF 페이지 두 장을 한 장으로 모아서 인쇄용으로 만듭니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">페이지병합</span><span class="tool-tag">인쇄용</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-crop" data-tags="PDF 여백 자르기 편집">
+        <span class="tool-card-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 v16 a2 2 0 0 0 2 2 h14" /><path d="M2 6 h16 a2 2 0 0 1 2 2 v14" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF 여백 자르기</span>
+        <span class="tool-card-desc">PDF 페이지의 불필요한 여백을 잘라냅니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">여백자르기</span><span class="tool-tag">PDF편집</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-extract-text" data-tags="PDF 텍스트 추출">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF 텍스트 추출</span>
+        <span class="tool-card-desc">PDF 안의 텍스트만 그대로 뽑아내어 복사합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">텍스트추출</span><span class="tool-tag">PDF</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="pdf-compare" data-tags="PDF 비교 문서비교">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="8" height="16" rx="1.5" /><rect x="13" y="4" width="8" height="16" rx="1.5" /><path d="M12 4 v16" />
+          </svg>
+        </span>
+        <span class="tool-card-title">PDF 비교</span>
+        <span class="tool-card-desc">두 PDF 문서의 차이점을 비교해 보여줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">PDF비교</span><span class="tool-tag">문서비교</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="img-to-pdf" data-tags="이미지 PDF 변환 만들기">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 8 h13" /><path d="M14 4 l4 4 l-4 4" /><path d="M20 16 H7" /><path d="M10 12 l-4 4 l4 4" />
+          </svg>
+        </span>
+        <span class="tool-card-title">이미지→PDF 변환</span>
+        <span class="tool-card-desc">여러 장의 이미지를 하나의 PDF 문서로 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">이미지변환</span><span class="tool-tag">PDF만들기</span></span>
+      </button>
+    </div>
+
+    <div class="tool-section-label">유틸리티</div>
+    <div class="tool-grid" id="tool-grid-util">
+      <button type="button" class="tool-card" data-tab="emoji-symbols" data-tags="특수문자 이모티콘 모음 복사">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" /><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none" /><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none" /><path d="M8 15 c1.5 2 6.5 2 8 0" />
+          </svg>
+        </span>
+        <span class="tool-card-title">특수문자·이모티콘 모음</span>
+        <span class="tool-card-desc">자주 쓰는 특수문자와 이모티콘을 클릭 한 번으로 복사합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">특수문자</span><span class="tool-tag">이모티콘</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="addr-translate" data-tags="영문주소 변환">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 21 s7 -6.5 7 -12 a7 7 0 0 0 -14 0 c0 5.5 7 12 7 12 Z" /><circle cx="12" cy="9" r="2.4" />
+          </svg>
+        </span>
+        <span class="tool-card-title">영문주소 변환</span>
+        <span class="tool-card-desc">한글 주소를 영문 주소로 자동 변환합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">영문주소</span><span class="tool-tag">주소변환</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="qr-reader" data-tags="QR 코드 읽기 리더">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="6" height="6" rx="1" /><rect x="15" y="3" width="6" height="6" rx="1" /><rect x="3" y="15" width="6" height="6" rx="1" /><path d="M15 15 h3 v3 h3 v3" />
+          </svg>
+        </span>
+        <span class="tool-card-title">QR 코드 읽기</span>
+        <span class="tool-card-desc">QR 코드 이미지를 업로드하면 담긴 내용을 바로 읽어줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">QR코드</span><span class="tool-tag">QR리더</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="corp-stamp" data-tags="법인 도장 만들기 인감">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="9" r="5" /><path d="M12 14 v3" /><path d="M6 21 h12" /><path d="M8 21 c0 -2 1.5 -3 4 -3 s4 1 4 3" />
+          </svg>
+        </span>
+        <span class="tool-card-title">법인 도장 만들기</span>
+        <span class="tool-card-desc">법인 인감 스타일의 도장 이미지를 만들어줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">법인도장</span><span class="tool-tag">인감</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="device-size-compare" data-tags="폰 태블릿 크기 비교 화면">
+        <span class="tool-card-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="2" width="8" height="14" rx="1.5" /><rect x="15" y="6" width="6" height="12" rx="1.2" /><path d="M9 15.5 h2" />
+          </svg>
+        </span>
+        <span class="tool-card-title">폰·태블릿 크기 비교</span>
+        <span class="tool-card-desc">여러 스마트폰과 태블릿의 실제 크기를 나란히 비교합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">기기비교</span><span class="tool-tag">화면크기</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="hwp-viewer" data-tags="한글 뷰어 HWP">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 3 h7 l4 4 v14 h-11 Z" /><path d="M14 3 v4 h4" /><path d="M9 12 h6 M9 16 h6" />
+          </svg>
+        </span>
+        <span class="tool-card-title">한글 뷰어(HWP)</span>
+        <span class="tool-card-desc">한글(HWP) 문서를 설치 없이 바로 열어봅니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">한글뷰어</span><span class="tool-tag">HWP</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="id-photo" data-tags="증명사진 만들기 여권사진">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="8.5" cy="10.5" r="2" /><path d="M5 16 c0.5 -2 2 -3 3.5 -3 s3 1 3.5 3" /><path d="M14 9 h5 M14 13 h5" />
+          </svg>
+        </span>
+        <span class="tool-card-title">증명사진 만들기</span>
+        <span class="tool-card-desc">사진을 업로드하면 규격에 맞는 증명사진으로 만들어줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">증명사진</span><span class="tool-tag">여권사진</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="cinema-size-compare" data-tags="아이맥스 돌비시네마 크기 비교">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="2" width="8" height="14" rx="1.5" /><rect x="15" y="6" width="6" height="12" rx="1.2" /><path d="M9 15.5 h2" />
+          </svg>
+        </span>
+        <span class="tool-card-title">아이맥스·돌비시네마 크기 비교</span>
+        <span class="tool-card-desc">상영관별 스크린 크기를 한눈에 비교합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">아이맥스</span><span class="tool-tag">스크린비교</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="square-stamp" data-tags="사각직인 만들기 도장제작">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="9" r="5" /><path d="M12 14 v3" /><path d="M6 21 h12" /><path d="M8 21 c0 -2 1.5 -3 4 -3 s4 1 4 3" />
+          </svg>
+        </span>
+        <span class="tool-card-title">사각직인 만들기</span>
+        <span class="tool-card-desc">회사, 부서명이 들어간 사각 직인을 만들어줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">사각직인</span><span class="tool-tag">도장제작</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="stamp-cutout" data-tags="도장 누끼 따기 배경제거">
+        <span class="tool-card-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 v16 a2 2 0 0 0 2 2 h14" /><path d="M2 6 h16 a2 2 0 0 1 2 2 v14" />
+          </svg>
+        </span>
+        <span class="tool-card-title">도장 누끼 따기</span>
+        <span class="tool-card-desc">도장 이미지의 배경을 투명하게 제거합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">누끼따기</span><span class="tool-tag">배경제거</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="stamp-image" data-tags="도장 이미지 만들기 인장">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="9" r="5" /><path d="M12 14 v3" /><path d="M6 21 h12" /><path d="M8 21 c0 -2 1.5 -3 4 -3 s4 1 4 3" />
+          </svg>
+        </span>
+        <span class="tool-card-title">도장 이미지 만들기</span>
+        <span class="tool-card-desc">이름을 입력하면 다양한 스타일의 도장 이미지를 만들어줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">도장만들기</span><span class="tool-tag">인장</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="biz-nameplate" data-tags="사업자 명판 만들기">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="14" rx="2" /><circle cx="8.5" cy="10.5" r="2" /><path d="M5 16 c0.5 -2 2 -3 3.5 -3 s3 1 3.5 3" /><path d="M14 9 h5 M14 13 h5" />
+          </svg>
+        </span>
+        <span class="tool-card-title">사업자 명판 만들기</span>
+        <span class="tool-card-desc">사업자등록증 정보를 담은 명판 이미지를 만들어줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">명판</span><span class="tool-tag">사업자등록</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="code-finder" data-tags="코드 찾기 우편번호 검색">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10" cy="10" r="6" /><path d="M20 20 L14.5 14.5" /><path d="M7.5 10 h5" />
+          </svg>
+        </span>
+        <span class="tool-card-title">코드 찾기</span>
+        <span class="tool-card-desc">우편번호, 국가번호 등 각종 코드를 검색합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">코드검색</span><span class="tool-tag">우편번호</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="chord-sheet" data-tags="코드 악보 만들기 기타">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3 L7 20 h10 Z" /><path d="M9 14 h6" /><circle cx="12" cy="8" r="1.4" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <span class="tool-card-title">코드 악보 만들기</span>
+        <span class="tool-card-desc">가사에 맞춰 기타 코드 악보를 손쉽게 만듭니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">코드악보</span><span class="tool-tag">기타</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="habit-tracker" data-tags="습관 만들기 체크리스트">
+        <span class="tool-card-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6 h16 M4 12 h16 M4 18 h10" /><path d="M18 15 l1.5 1.5 L23 13" />
+          </svg>
+        </span>
+        <span class="tool-card-title">습관 만들기</span>
+        <span class="tool-card-desc">매일의 습관을 기록하고 체크하는 습관 트래커입니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">습관트래커</span><span class="tool-tag">체크리스트</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="calendar-print" data-tags="달력 출력 인쇄">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10 h18" /><path d="M8 3 v4 M16 3 v4" /><path d="M7 14 h2 M11 14 h2 M15 14 h2 M7 17.5 h2 M11 17.5 h2" />
+          </svg>
+        </span>
+        <span class="tool-card-title">달력 출력</span>
+        <span class="tool-card-desc">원하는 연도와 월의 달력을 만들어 인쇄합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">달력</span><span class="tool-tag">인쇄</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="metronome" data-tags="온라인 메트로놈 박자">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3 L7 20 h10 Z" /><path d="M9 14 h6" /><circle cx="12" cy="8" r="1.4" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <span class="tool-card-title">온라인 메트로놈</span>
+        <span class="tool-card-desc">박자 연습을 위한 온라인 메트로놈입니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">메트로놈</span><span class="tool-tag">박자연습</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="guitar-tuner" data-tags="기타 튜너 음정">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3 L7 20 h10 Z" /><path d="M9 14 h6" /><circle cx="12" cy="8" r="1.4" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
+        <span class="tool-card-title">기타 튜너</span>
+        <span class="tool-card-desc">마이크로 소리를 감지해 기타 음정을 맞춰줍니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">기타튜너</span><span class="tool-tag">음정</span></span>
+      </button>
+      <button type="button" class="tool-card" data-tab="archive-extract" data-tags="압축 풀기 ZIP RAR 7Z EGG">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="2" /><path d="M12 4 v16" /><rect x="10" y="9" width="4" height="4" rx="0.5" />
+          </svg>
+        </span>
+        <span class="tool-card-title">압축 풀기(ZIP·RAR·7Z·EGG)</span>
+        <span class="tool-card-desc">ZIP, RAR, 7Z, EGG 압축 파일을 브라우저에서 바로 풉니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">압축풀기</span><span class="tool-tag">ZIP</span></span>
+      </button>
+    </div>
+
     <p class="tool-empty-msg" id="tool-empty-msg" hidden>검색 결과가 없습니다.</p>
   </section>
 
@@ -548,6 +1105,967 @@
           <div class="result-stat-value" id="ft-other-value">-</div>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- 새 계산기 5종 (틀만 우선 제공, 기능은 차차 추가 예정) -->
+  <section class="tab-panel" data-tab-panel="severance-pay" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>퇴직금 계산기</h2>
+      <p class="card-desc-short">근속기간과 평균임금으로 예상 퇴직금을 계산합니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="입사일, 퇴사일, 평균임금을 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>계산하기</button>
+      <div class="result-stat highlight" style="opacity:.6;">
+        <div class="result-stat-label">예상 퇴직금</div>
+        <div class="result-stat-value">준비 중</div>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="unemployment-benefit" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>실업급여 계산기</h2>
+      <p class="card-desc-short">이직 전 평균임금으로 예상 실업급여를 계산합니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="이직 전 평균임금과 고용기간을 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>계산하기</button>
+      <div class="result-stat highlight" style="opacity:.6;">
+        <div class="result-stat-label">예상 실업급여</div>
+        <div class="result-stat-value">준비 중</div>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="jeonse-conversion" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>전월세 전환 계산기</h2>
+      <p class="card-desc-short">전세보증금과 월세를 서로 전환해 계산합니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="전세보증금 또는 월세 정보를 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>계산하기</button>
+      <div class="result-stat highlight" style="opacity:.6;">
+        <div class="result-stat-label">전환 결과</div>
+        <div class="result-stat-value">준비 중</div>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="savings-calc" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>적금·예금 계산기</h2>
+      <p class="card-desc-short">매달 납입액과 이자율로 만기 수령액을 계산합니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="월 납입액, 이자율, 기간을 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>계산하기</button>
+      <div class="result-stat highlight" style="opacity:.6;">
+        <div class="result-stat-label">만기 수령액</div>
+        <div class="result-stat-value">준비 중</div>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="adsense-reality" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>애드센스 현실 계산기</h2>
+      <p class="card-desc-short">예상 애드센스 수익을 현실적인 수치로 계산해봅니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="일 방문자 수와 예상 CPC를 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>계산하기</button>
+      <div class="result-stat highlight" style="opacity:.6;">
+        <div class="result-stat-label">예상 수익</div>
+        <div class="result-stat-value">준비 중</div>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <!-- 텍스트 신규 8종 -->
+  <section class="tab-panel" data-tab-panel="tts" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>텍스트 읽어주기(TTS)</h2>
+      <p class="card-desc-short">입력한 텍스트를 자연스러운 음성으로 읽어줍니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><textarea rows="6" disabled placeholder="읽어줄 텍스트를 입력하세요"></textarea></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>읽어주기</button>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="excel-merge" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>엑셀 파일 합치기</h2>
+      <p class="card-desc-short">여러 개의 엑셀 파일을 하나로 합쳐 정리합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>엑셀 파일들을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="yaml-json-toml" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>YAML↔JSON↔TOML 변환기</h2>
+      <p class="card-desc-short">YAML, JSON, TOML 형식을 서로 자유롭게 변환합니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label>입력</label>
+          <div class="field-input-wrap"><textarea rows="8" disabled placeholder="여기에 내용을 입력하세요"></textarea></div>
+        </div>
+        <div class="field-group">
+          <label>결과</label>
+          <div class="field-input-wrap"><textarea rows="8" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+        </div>
+      </div>
+      <button type="button" class="calc-btn" disabled>변환하기</button>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="xml-parser" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>XML 파서·포맷터</h2>
+      <p class="card-desc-short">XML 문서를 보기 좋게 정렬하고 구조를 확인합니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label>입력</label>
+          <div class="field-input-wrap"><textarea rows="8" disabled placeholder="XML을 입력하세요"></textarea></div>
+        </div>
+        <div class="field-group">
+          <label>결과</label>
+          <div class="field-input-wrap"><textarea rows="8" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+        </div>
+      </div>
+      <button type="button" class="calc-btn" disabled>정렬하기</button>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="json-xml" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>JSON↔XML 변환기</h2>
+      <p class="card-desc-short">JSON과 XML 형식을 서로 변환합니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label>입력</label>
+          <div class="field-input-wrap"><textarea rows="8" disabled placeholder="여기에 내용을 입력하세요"></textarea></div>
+        </div>
+        <div class="field-group">
+          <label>결과</label>
+          <div class="field-input-wrap"><textarea rows="8" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+        </div>
+      </div>
+      <button type="button" class="calc-btn" disabled>변환하기</button>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="epub-txt" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>EPUB→TXT 변환</h2>
+      <p class="card-desc-short">EPUB 전자책 파일을 TXT 텍스트 파일로 변환합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>EPUB 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="md-viewer" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>MD 파일 뷰어</h2>
+      <p class="card-desc-short">마크다운(.md) 파일을 미리보기 화면으로 바로 확인합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>MD 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="text-compare" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>텍스트 비교</h2>
+      <p class="card-desc-short">두 텍스트의 차이점을 한눈에 비교해 보여줍니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label>텍스트 A</label>
+          <div class="field-input-wrap"><textarea rows="8" disabled placeholder="첫 번째 텍스트를 입력하세요"></textarea></div>
+        </div>
+        <div class="field-group">
+          <label>텍스트 B</label>
+          <div class="field-input-wrap"><textarea rows="8" disabled placeholder="두 번째 텍스트를 입력하세요"></textarea></div>
+        </div>
+      </div>
+      <button type="button" class="calc-btn" disabled>비교하기</button>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <!-- 이미지 신규 9종 -->
+  <section class="tab-panel" data-tab-panel="img-to-jpg" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>Image to JPG</h2>
+      <p class="card-desc-short">PNG, WebP 등 다양한 이미지를 JPG로 변환합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>이미지를 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="img-merge" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>사진 합치기</h2>
+      <p class="card-desc-short">여러 장의 사진을 원하는 배치로 한 장에 합칩니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>합칠 사진들을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="heic-viewer" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>HEIC 뷰어</h2>
+      <p class="card-desc-short">아이폰 HEIC 사진을 바로 열어보고 변환합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>HEIC 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="photo-date-stamp" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>사진 날짜 표시</h2>
+      <p class="card-desc-short">필름카메라 감성의 날짜 스탬프를 사진에 찍어줍니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>사진을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="img-to-png" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>Image to PNG</h2>
+      <p class="card-desc-short">JPG 등 다양한 이미지를 PNG로 변환합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>이미지를 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="img-to-webp" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>Image to WebP</h2>
+      <p class="card-desc-short">이미지를 용량이 작은 WebP 형식으로 변환합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>이미지를 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="svg-trim" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>SVG 여백 제거</h2>
+      <p class="card-desc-short">SVG 이미지의 불필요한 여백을 자동으로 잘라냅니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>SVG 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="img-base64" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>이미지 Base64 변환</h2>
+      <p class="card-desc-short">이미지를 Base64 문자열로 변환하거나 반대로 복원합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>이미지를 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="video-to-gif" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>동영상 GIF 변환</h2>
+      <p class="card-desc-short">짧은 동영상을 움직이는 GIF 이미지로 변환합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>동영상을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <!-- PDF 신규 13종 -->
+  <section class="tab-panel" data-tab-panel="pdf-merge" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF 합치기</h2>
+      <p class="card-desc-short">여러 개의 PDF 파일을 원하는 순서로 하나로 합칩니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일들을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-compress" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF 용량 줄이기</h2>
+      <p class="card-desc-short">PDF 파일의 용량을 화질 저하 없이 압축합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-to-jpg" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF to JPG</h2>
+      <p class="card-desc-short">PDF 페이지를 JPG 이미지 파일로 변환합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-delete-page" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF 페이지 삭제</h2>
+      <p class="card-desc-short">PDF에서 원하지 않는 페이지만 골라 삭제합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-split" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF 나누기</h2>
+      <p class="card-desc-short">하나의 PDF 파일을 여러 개의 파일로 분할합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-sign" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF 간편 편집(서명)</h2>
+      <p class="card-desc-short">PDF 문서에 서명, 도장, 텍스트를 바로 추가합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-to-png" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF to PNG</h2>
+      <p class="card-desc-short">PDF 페이지를 PNG 이미지 파일로 변환합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-half-split" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF 페이지 반으로 나누기</h2>
+      <p class="card-desc-short">가로로 긴 PDF 페이지를 절반씩 나눠 저장합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-2up" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF 페이지 2장씩 합치기</h2>
+      <p class="card-desc-short">PDF 페이지 두 장을 한 장으로 모아서 인쇄용으로 만듭니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-crop" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF 여백 자르기</h2>
+      <p class="card-desc-short">PDF 페이지의 불필요한 여백을 잘라냅니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-extract-text" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF 텍스트 추출</h2>
+      <p class="card-desc-short">PDF 안의 텍스트만 그대로 뽑아내어 복사합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="pdf-compare" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>PDF 비교</h2>
+      <p class="card-desc-short">두 PDF 문서의 차이점을 비교해 보여줍니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>비교할 두 개의 PDF 파일을 선택하세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="img-to-pdf" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>이미지→PDF 변환</h2>
+      <p class="card-desc-short">여러 장의 이미지를 하나의 PDF 문서로 변환합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>이미지를 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <!-- 유틸리티 신규 19종 -->
+  <section class="tab-panel" data-tab-panel="emoji-symbols" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>특수문자·이모티콘 모음</h2>
+      <p class="card-desc-short">자주 쓰는 특수문자와 이모티콘을 클릭 한 번으로 복사합니다.</p>
+      <div class="tool-btn-grid" style="grid-template-columns: repeat(6, 1fr); opacity: .6;">
+        <button type="button" class="secondary-btn" disabled>★</button>
+        <button type="button" class="secondary-btn" disabled>♥</button>
+        <button type="button" class="secondary-btn" disabled>☆</button>
+        <button type="button" class="secondary-btn" disabled>♪</button>
+        <button type="button" class="secondary-btn" disabled>☺</button>
+        <button type="button" class="secondary-btn" disabled>✓</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="addr-translate" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>영문주소 변환</h2>
+      <p class="card-desc-short">한글 주소를 영문 주소로 자동 변환합니다.</p>
+      <div class="field-group">
+        <label>한글 주소</label>
+        <div class="field-input-wrap"><input type="text" disabled placeholder="예: 서울특별시 강남구 테헤란로 123" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>변환하기</button>
+      <div class="field-group" style="margin-top: 20px;">
+        <label>영문 주소</label>
+        <div class="field-input-wrap"><input type="text" disabled readonly placeholder="변환 결과가 여기에 표시됩니다" /></div>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="qr-reader" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>QR 코드 읽기</h2>
+      <p class="card-desc-short">QR 코드 이미지를 업로드하면 담긴 내용을 바로 읽어줍니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>QR 코드 이미지를 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <div class="field-group" style="margin-top: 20px;">
+        <label>인식된 내용</label>
+        <div class="field-input-wrap"><input type="text" disabled readonly placeholder="인식된 내용이 여기에 표시됩니다" /></div>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="corp-stamp" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>법인 도장 만들기</h2>
+      <p class="card-desc-short">법인 인감 스타일의 도장 이미지를 만들어줍니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="회사명을 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>도장 만들기</button>
+      <div class="wip-dropzone" style="margin-top: 20px;">
+        <p>미리보기가 여기에 표시됩니다</p>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="device-size-compare" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>폰·태블릿 크기 비교</h2>
+      <p class="card-desc-short">여러 스마트폰과 태블릿의 실제 크기를 나란히 비교합니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="비교할 기기명을 입력하세요 (예: 아이폰15, 갤럭시탭)" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>비교하기</button>
+      <div class="wip-dropzone" style="margin-top: 20px;">
+        <p>비교 결과가 여기에 표시됩니다</p>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="hwp-viewer" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>한글 뷰어(HWP)</h2>
+      <p class="card-desc-short">한글(HWP) 문서를 설치 없이 바로 열어봅니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>HWP 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="id-photo" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>증명사진 만들기</h2>
+      <p class="card-desc-short">사진을 업로드하면 규격에 맞는 증명사진으로 만들어줍니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>사진을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="cinema-size-compare" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>아이맥스·돌비시네마 크기 비교</h2>
+      <p class="card-desc-short">상영관별 스크린 크기를 한눈에 비교합니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="비교할 상영관명을 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>비교하기</button>
+      <div class="wip-dropzone" style="margin-top: 20px;">
+        <p>비교 결과가 여기에 표시됩니다</p>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="square-stamp" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>사각직인 만들기</h2>
+      <p class="card-desc-short">회사, 부서명이 들어간 사각 직인을 만들어줍니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="직인에 들어갈 문구를 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>직인 만들기</button>
+      <div class="wip-dropzone" style="margin-top: 20px;">
+        <p>미리보기가 여기에 표시됩니다</p>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="stamp-cutout" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>도장 누끼 따기</h2>
+      <p class="card-desc-short">도장 이미지의 배경을 투명하게 제거합니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>도장 이미지를 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="stamp-image" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>도장 이미지 만들기</h2>
+      <p class="card-desc-short">이름을 입력하면 다양한 스타일의 도장 이미지를 만들어줍니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="이름을 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>도장 만들기</button>
+      <div class="wip-dropzone" style="margin-top: 20px;">
+        <p>미리보기가 여기에 표시됩니다</p>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="biz-nameplate" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>사업자 명판 만들기</h2>
+      <p class="card-desc-short">사업자등록증 정보를 담은 명판 이미지를 만들어줍니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="상호명을 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>명판 만들기</button>
+      <div class="wip-dropzone" style="margin-top: 20px;">
+        <p>미리보기가 여기에 표시됩니다</p>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="code-finder" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>코드 찾기</h2>
+      <p class="card-desc-short">우편번호, 국가번호 등 각종 코드를 검색합니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="코드명 또는 키워드를 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>검색하기</button>
+      <div class="field-group" style="margin-top: 20px;">
+        <div class="field-input-wrap"><input type="text" disabled readonly placeholder="검색 결과가 여기에 표시됩니다" /></div>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="chord-sheet" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>코드 악보 만들기</h2>
+      <p class="card-desc-short">가사에 맞춰 기타 코드 악보를 손쉽게 만듭니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label>가사 입력</label>
+          <div class="field-input-wrap"><textarea rows="8" disabled placeholder="가사를 입력하세요"></textarea></div>
+        </div>
+        <div class="field-group">
+          <label>코드 악보</label>
+          <div class="field-input-wrap"><textarea rows="8" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+        </div>
+      </div>
+      <button type="button" class="calc-btn" disabled>악보 만들기</button>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="habit-tracker" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>습관 만들기</h2>
+      <p class="card-desc-short">매일의 습관을 기록하고 체크하는 습관 트래커입니다.</p>
+      <div class="field-group">
+        <div class="field-input-wrap"><input type="text" disabled placeholder="습관 이름을 입력하세요" /></div>
+      </div>
+      <button type="button" class="calc-btn" disabled>습관 추가하기</button>
+      <div class="result-stat" style="opacity:.6; margin-top:20px;">
+        <div class="result-stat-label">오늘의 습관</div>
+        <div class="result-stat-value">추가된 습관이 없습니다</div>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="calendar-print" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>달력 출력</h2>
+      <p class="card-desc-short">원하는 연도와 월의 달력을 만들어 인쇄합니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label>연도</label>
+          <div class="field-input-wrap"><input type="text" disabled placeholder="2026" /></div>
+        </div>
+        <div class="field-group">
+          <label>월</label>
+          <div class="field-input-wrap"><input type="text" disabled placeholder="9" /></div>
+        </div>
+      </div>
+      <button type="button" class="calc-btn" disabled>달력 만들기</button>
+      <div class="result-stat highlight" style="opacity:.6; margin-top:20px;">
+        <div class="result-stat-label">미리보기</div>
+        <div class="result-stat-value">준비 중</div>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="metronome" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>온라인 메트로놈</h2>
+      <p class="card-desc-short">박자 연습을 위한 온라인 메트로놈입니다.</p>
+      <div class="field-group">
+        <label>템포 (BPM)</label>
+        <div class="field-input-wrap"><input type="text" disabled placeholder="120" /></div>
+      </div>
+      <div class="result-stat highlight" style="opacity:.6;">
+        <div class="result-stat-label">박자</div>
+        <div class="result-stat-value">●</div>
+      </div>
+      <button type="button" class="calc-btn" disabled>시작하기</button>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="guitar-tuner" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>기타 튜너</h2>
+      <p class="card-desc-short">마이크로 소리를 감지해 기타 음정을 맞춰줍니다.</p>
+      <div class="result-stat highlight" style="opacity:.6;">
+        <div class="result-stat-label">감지된 음</div>
+        <div class="result-stat-value">-</div>
+      </div>
+      <button type="button" class="calc-btn" disabled>마이크로 튜닝 시작</button>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+    </div>
+  </section>
+
+  <section class="tab-panel" data-tab-panel="archive-extract" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <span class="wip-badge">준비 중</span>
+      <h2>압축 풀기(ZIP·RAR·7Z·EGG)</h2>
+      <p class="card-desc-short">ZIP, RAR, 7Z, EGG 압축 파일을 브라우저에서 바로 풉니다.</p>
+      <div class="wip-dropzone">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+        </svg>
+        <p>압축 파일을 선택하거나 끌어다 놓으세요</p>
+        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      </div>
+      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
