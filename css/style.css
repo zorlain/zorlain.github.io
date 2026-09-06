@@ -302,27 +302,6 @@ body {
   opacity: 1;
 }
 
-.tool-card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  color: #ffffff;
-}
-
-.tool-card-icon svg {
-  width: 22px;
-  height: 22px;
-}
-
-.icon-amber { background: linear-gradient(135deg, #ffb020, #d9770a); }
-.icon-blue { background: linear-gradient(135deg, #4f8ff0, #2a5fc4); }
-.icon-rose { background: linear-gradient(135deg, #f76b96, #d43d6e); }
-.icon-teal { background: linear-gradient(135deg, #2dd4bf, #0f9488); }
-.icon-purple { background: linear-gradient(135deg, #b98af9, #8b5cf6); }
-
 .tool-card-title {
   font-size: 16px;
   font-weight: 700;
