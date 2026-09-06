@@ -18,6 +18,10 @@
 
   --positive: #2c9e44;
   --negative: #d8314f;
+
+  --stage-bg: #0a0908;
+  --led: #d9770a;
+  --led-dim: rgba(217, 119, 10, 0.18);
 }
 
 :root[data-theme="dark"] {
@@ -35,6 +39,10 @@
   --btn-primary-text: #17110a;
   --btn-primary-pressed: #e09710;
   --hover-tint: rgba(255, 255, 255, 0.07);
+
+  --stage-bg: #050505;
+  --led: #ffb020;
+  --led-dim: rgba(255, 176, 32, 0.18);
 }
 
 * {
@@ -196,10 +204,20 @@ body {
 }
 
 /* ---------- itool.co.kr 느낌: 카드 그리드로 도구를 고르는 허브 화면 ---------- */
+.tool-section-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 14px;
+}
+
 .tool-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+  margin-bottom: 40px;
 }
 
 .tool-card {
@@ -430,6 +448,47 @@ body {
   font-weight: 600;
   text-align: center;
   margin: 16px 0 0;
+}
+
+/* 계산 결과 표시 (강조 결과는 타이머 .stage와 같은 검정 무대 + 앰버 톤) */
+.result-stat {
+  background: var(--card-elevated);
+  border-radius: 14px;
+  padding: 16px 14px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.result-stat-label {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.result-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.result-stat.highlight {
+  background: var(--stage-bg);
+}
+
+.result-stat.highlight .result-stat-label {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.result-stat.highlight .result-stat-value {
+  color: var(--led);
+  text-shadow: 0 0 20px var(--led-dim);
+}
+
+.tool-btn-grid .result-stat {
+  margin-top: 0;
+}
+
+.percent-panel {
+  margin-bottom: 20px;
 }
 
 .site-footer {

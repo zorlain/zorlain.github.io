@@ -72,6 +72,7 @@
       <h1>toolbox</h1>
       <p>설치 없이 브라우저에서 바로 쓰는 무료 온라인 도구 모음입니다.</p>
     </div>
+    <div class="tool-section-label">도구 모음</div>
     <div class="tool-grid">
       <a class="tool-card" href="https://zorlain.github.io/qr-generator/">
         <span class="tool-card-icon">
@@ -157,6 +158,64 @@
         </span>
         <span class="tool-card-title">더미 텍스트 생성기</span>
         <span class="tool-card-desc">디자인 시안이나 레이아웃 테스트용 한글·영문 더미 텍스트를 원하는 만큼 생성합니다.</span>
+      </button>
+    </div>
+
+    <div class="tool-section-label">계산기</div>
+    <div class="tool-grid">
+      <button type="button" class="tool-card" data-tab="percent">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="7" cy="7" r="2.5" /><circle cx="17" cy="17" r="2.5" /><path d="M18 6 L6 18" />
+          </svg>
+        </span>
+        <span class="tool-card-title">퍼센트 계산기</span>
+        <span class="tool-card-desc">A는 B의 몇 %인지, B의 몇 %는 얼마인지, 증감률까지 바로 계산합니다.</span>
+      </button>
+      <button type="button" class="tool-card" data-tab="loan">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 10 L12 4 L20 10" /><path d="M5 10 V19 M9.5 10 V19 M14.5 10 V19 M19 10 V19" /><path d="M3.5 19 h17" />
+          </svg>
+        </span>
+        <span class="tool-card-title">대출이자 계산기</span>
+        <span class="tool-card-desc">원리금균등·원금균등·만기일시 상환방식별 월 상환액과 총이자를 계산합니다.</span>
+      </button>
+      <button type="button" class="tool-card" data-tab="age">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10 h18" /><path d="M8 3 v4 M16 3 v4" />
+          </svg>
+        </span>
+        <span class="tool-card-title">만나이 계산기</span>
+        <span class="tool-card-desc">생년월일을 입력하면 만 나이·연 나이를 바로 계산합니다.</span>
+      </button>
+      <button type="button" class="tool-card" data-tab="vat">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4 h11 l5 5 v11 h-16 Z" /><circle cx="10.5" cy="12" r="1.4" fill="currentColor" stroke="none" /><path d="M9 16 L15 10" />
+          </svg>
+        </span>
+        <span class="tool-card-title">부가세 계산기</span>
+        <span class="tool-card-desc">공급가액·부가세·합계금액을 서로 바로 계산하고 변환합니다.</span>
+      </button>
+      <button type="button" class="tool-card" data-tab="weekly-pay">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" /><path d="M12 7 v5 l3 2" />
+          </svg>
+        </span>
+        <span class="tool-card-title">주휴수당 계산기</span>
+        <span class="tool-card-desc">시급과 주간 근무시간을 입력하면 주휴수당을 바로 계산합니다.</span>
+      </button>
+      <button type="button" class="tool-card" data-tab="freelance-tax">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 3 h14 v18 l-3.5 -2 l-3.5 2 l-3.5 -2 l-3.5 2 Z" /><path d="M8 8 h8 M8 12 h8 M8 16 h5" />
+          </svg>
+        </span>
+        <span class="tool-card-title">3.3% 계산기</span>
+        <span class="tool-card-desc">프리랜서 원천징수 3.3%를 적용해 지급액과 실수령액을 서로 계산합니다.</span>
       </button>
     </div>
   </section>
@@ -245,6 +304,227 @@
         </div>
       </div>
       <button class="calc-btn secondary-btn" id="lorem-copy-btn">결과 복사</button>
+    </div>
+  </section>
+
+  <!-- 퍼센트 계산기 -->
+  <section class="tab-panel" data-tab-panel="percent" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>퍼센트 계산기</h2>
+      <div class="field-group">
+        <label>계산 방식</label>
+        <div class="segmented" id="percent-mode">
+          <button type="button" class="active" data-value="ratio">A는 B의 몇 %</button>
+          <button type="button" data-value="portion">B의 X%는 얼마</button>
+          <button type="button" data-value="change">증감률</button>
+        </div>
+      </div>
+
+      <div class="percent-panel" data-percent-panel="ratio">
+        <div class="field-row">
+          <div class="field-group">
+            <label for="ratio-a">A</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="ratio-a" placeholder="예: 30" /></div>
+          </div>
+          <div class="field-group">
+            <label for="ratio-b">B</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="ratio-b" placeholder="예: 200" /></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="percent-panel" data-percent-panel="portion" hidden>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="portion-x">X (%)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="portion-x" placeholder="예: 15" /></div>
+          </div>
+          <div class="field-group">
+            <label for="portion-b">B</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="portion-b" placeholder="예: 200" /></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="percent-panel" data-percent-panel="change" hidden>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="change-before">이전 값</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="change-before" placeholder="예: 100" /></div>
+          </div>
+          <div class="field-group">
+            <label for="change-after">이후 값</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="change-after" placeholder="예: 120" /></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="calc-btn" id="percent-calc-btn">계산하기</button>
+      <p class="calc-error-msg" id="percent-error" hidden></p>
+      <div class="result-stat highlight" id="percent-result" hidden>
+        <div class="result-stat-label" id="percent-result-label">결과</div>
+        <div class="result-stat-value" id="percent-result-value">-</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 대출이자 계산기 -->
+  <section class="tab-panel" data-tab-panel="loan" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>대출이자 계산기</h2>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="loan-principal">대출 원금 (만원)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="decimal" id="loan-principal" placeholder="예: 10000" /></div>
+        </div>
+        <div class="field-group">
+          <label for="loan-rate">연 이자율 (%)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="decimal" id="loan-rate" placeholder="예: 4.5" /></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="loan-months">대출 기간 (개월)</label>
+        <div class="field-input-wrap"><input type="text" inputmode="numeric" id="loan-months" placeholder="예: 36" /></div>
+      </div>
+      <div class="field-group">
+        <label>상환 방식</label>
+        <div class="segmented" id="loan-method">
+          <button type="button" class="active" data-value="equal-payment">원리금균등</button>
+          <button type="button" data-value="equal-principal">원금균등</button>
+          <button type="button" data-value="maturity">만기일시</button>
+        </div>
+      </div>
+      <button class="calc-btn" id="loan-calc-btn">계산하기</button>
+      <p class="calc-error-msg" id="loan-error" hidden></p>
+      <div class="tool-btn-grid" id="loan-result" hidden>
+        <div class="result-stat">
+          <div class="result-stat-label" id="loan-payment-label">월 상환액</div>
+          <div class="result-stat-value" id="loan-payment-value">-</div>
+        </div>
+        <div class="result-stat highlight">
+          <div class="result-stat-label">총 이자</div>
+          <div class="result-stat-value" id="loan-interest-value">-</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 만나이 계산기 -->
+  <section class="tab-panel" data-tab-panel="age" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>만나이 계산기</h2>
+      <div class="field-group">
+        <label for="age-birth">생년월일</label>
+        <div class="field-input-wrap"><input type="date" id="age-birth" /></div>
+      </div>
+      <div class="field-group">
+        <label for="age-base">기준일 (비워두면 오늘)</label>
+        <div class="field-input-wrap"><input type="date" id="age-base" /></div>
+      </div>
+      <button class="calc-btn" id="age-calc-btn">계산하기</button>
+      <p class="calc-error-msg" id="age-error" hidden></p>
+      <div class="tool-btn-grid" id="age-result" hidden>
+        <div class="result-stat highlight">
+          <div class="result-stat-label">만 나이</div>
+          <div class="result-stat-value" id="age-man-value">-</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-label">연 나이</div>
+          <div class="result-stat-value" id="age-year-value">-</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 부가세 계산기 -->
+  <section class="tab-panel" data-tab-panel="vat" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>부가세 계산기</h2>
+      <div class="field-group">
+        <label>입력 기준</label>
+        <div class="segmented" id="vat-mode">
+          <button type="button" class="active" data-value="supply">공급가액</button>
+          <button type="button" data-value="total">합계금액</button>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="vat-amount">금액 (원)</label>
+        <div class="field-input-wrap"><input type="text" inputmode="numeric" id="vat-amount" placeholder="예: 100000" /></div>
+      </div>
+      <button class="calc-btn" id="vat-calc-btn">계산하기</button>
+      <div class="tool-btn-grid" id="vat-result" hidden>
+        <div class="result-stat">
+          <div class="result-stat-label">공급가액</div>
+          <div class="result-stat-value" id="vat-supply-value">-</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-label">부가세 (10%)</div>
+          <div class="result-stat-value" id="vat-tax-value">-</div>
+        </div>
+        <div class="result-stat highlight" style="grid-column: 1 / -1;">
+          <div class="result-stat-label">합계금액</div>
+          <div class="result-stat-value" id="vat-total-value">-</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 주휴수당 계산기 -->
+  <section class="tab-panel" data-tab-panel="weekly-pay" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>주휴수당 계산기</h2>
+      <p class="card-desc-short">1주 15시간 이상 근무하고 소정 근로일에 결근하지 않은 경우 지급됩니다. (근로기준법 기준, 주 40시간 초과분은 40시간으로 계산)</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="wp-wage">시급 (원)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="wp-wage" placeholder="예: 10320" /></div>
+        </div>
+        <div class="field-group">
+          <label for="wp-hours">1주 근무시간</label>
+          <div class="field-input-wrap"><input type="text" inputmode="decimal" id="wp-hours" placeholder="예: 40" /></div>
+        </div>
+      </div>
+      <button class="calc-btn" id="wp-calc-btn">계산하기</button>
+      <p class="calc-error-msg" id="wp-error" hidden></p>
+      <div class="result-stat highlight" id="wp-result" hidden>
+        <div class="result-stat-label">주휴수당 (1주 기준)</div>
+        <div class="result-stat-value" id="wp-value">-</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3.3% 계산기 -->
+  <section class="tab-panel" data-tab-panel="freelance-tax" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>3.3% 계산기</h2>
+      <div class="field-group">
+        <label>입력 기준</label>
+        <div class="segmented" id="ft-mode">
+          <button type="button" class="active" data-value="contract">계약금액 (세전)</button>
+          <button type="button" data-value="net">실수령액 (세후)</button>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="ft-amount">금액 (원)</label>
+        <div class="field-input-wrap"><input type="text" inputmode="numeric" id="ft-amount" placeholder="예: 1000000" /></div>
+      </div>
+      <button class="calc-btn" id="ft-calc-btn">계산하기</button>
+      <div class="tool-btn-grid" id="ft-result" hidden>
+        <div class="result-stat">
+          <div class="result-stat-label">원천징수세액 (3.3%)</div>
+          <div class="result-stat-value" id="ft-tax-value">-</div>
+        </div>
+        <div class="result-stat highlight">
+          <div class="result-stat-label" id="ft-other-label">실수령액</div>
+          <div class="result-stat-value" id="ft-other-value">-</div>
+        </div>
+      </div>
     </div>
   </section>
 

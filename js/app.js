@@ -250,6 +250,243 @@ function initLorem() {
   });
 }
 
+/* ---------- 퍼센트 계산기 ---------- */
+function initPercent() {
+  initSegmented("percent-mode");
+
+  const modeWrap = document.getElementById("percent-mode");
+  modeWrap.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    const mode = btn.dataset.value;
+    document.querySelectorAll("[data-percent-panel]").forEach((panel) => {
+      panel.hidden = panel.dataset.percentPanel !== mode;
+    });
+    document.getElementById("percent-result").hidden = true;
+    document.getElementById("percent-error").hidden = true;
+  });
+
+  document.getElementById("percent-calc-btn").addEventListener("click", () => {
+    const mode = getSegmentedValue("percent-mode");
+    const errorEl = document.getElementById("percent-error");
+    const resultEl = document.getElementById("percent-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    function showResult(label, value) {
+      document.getElementById("percent-result-label").textContent = label;
+      document.getElementById("percent-result-value").textContent = value;
+      resultEl.hidden = false;
+    }
+    function showError(msg) {
+      errorEl.hidden = false;
+      errorEl.textContent = msg;
+    }
+
+    if (mode === "ratio") {
+      const a = Number(document.getElementById("ratio-a").value);
+      const b = Number(document.getElementById("ratio-b").value);
+      if (!b) return showError("B에 0이 아닌 숫자를 입력해주세요.");
+      showResult(`${a}는 ${b}의`, `${((a / b) * 100).toFixed(2)}%`);
+    } else if (mode === "portion") {
+      const x = Number(document.getElementById("portion-x").value);
+      const b = Number(document.getElementById("portion-b").value);
+      showResult(`${b}의 ${x}%는`, (b * (x / 100)).toLocaleString(undefined, { maximumFractionDigits: 2 }));
+    } else {
+      const before = Number(document.getElementById("change-before").value);
+      const after = Number(document.getElementById("change-after").value);
+      if (!before) return showError("이전 값에 0이 아닌 숫자를 입력해주세요.");
+      const rate = ((after - before) / before) * 100;
+      const sign = rate > 0 ? "+" : "";
+      showResult("증감률", `${sign}${rate.toFixed(2)}%`);
+    }
+  });
+}
+
+/* ---------- 대출이자 계산기 ---------- */
+function formatWon(n) {
+  return `${Math.round(n).toLocaleString()}원`;
+}
+
+function initLoan() {
+  initSegmented("loan-method");
+
+  document.getElementById("loan-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("loan-error");
+    const resultEl = document.getElementById("loan-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const principal = Number(document.getElementById("loan-principal").value) * 10000;
+    const annualRate = Number(document.getElementById("loan-rate").value);
+    const months = Number(document.getElementById("loan-months").value);
+    const method = getSegmentedValue("loan-method");
+
+    if (!principal || !months || annualRate < 0 || isNaN(annualRate)) {
+      errorEl.hidden = false;
+      errorEl.textContent = "원금, 이자율, 기간을 정확히 입력해주세요.";
+      return;
+    }
+
+    const r = annualRate / 100 / 12;
+    let totalInterest = 0;
+    let paymentLabel = "월 상환액";
+    let paymentValue = "";
+
+    if (method === "equal-payment") {
+      const monthly = r === 0 ? principal / months : (principal * r * Math.pow(1 + r, months)) / (Math.pow(1 + r, months) - 1);
+      totalInterest = monthly * months - principal;
+      paymentValue = formatWon(monthly);
+    } else if (method === "equal-principal") {
+      const principalPerMonth = principal / months;
+      let remaining = principal;
+      let firstPayment = 0;
+      for (let i = 0; i < months; i++) {
+        const interest = remaining * r;
+        totalInterest += interest;
+        if (i === 0) firstPayment = principalPerMonth + interest;
+        remaining -= principalPerMonth;
+      }
+      paymentLabel = "1회차 상환액 (매월 감소)";
+      paymentValue = formatWon(firstPayment);
+    } else {
+      totalInterest = principal * r * months;
+      paymentLabel = "매월 이자만 납부";
+      paymentValue = formatWon(principal * r);
+    }
+
+    document.getElementById("loan-payment-label").textContent = paymentLabel;
+    document.getElementById("loan-payment-value").textContent = paymentValue;
+    document.getElementById("loan-interest-value").textContent = formatWon(totalInterest);
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- 만나이 계산기 ---------- */
+function initAge() {
+  document.getElementById("age-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("age-error");
+    const resultEl = document.getElementById("age-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const birthStr = document.getElementById("age-birth").value;
+    if (!birthStr) {
+      errorEl.hidden = false;
+      errorEl.textContent = "생년월일을 입력해주세요.";
+      return;
+    }
+    const baseStr = document.getElementById("age-base").value;
+    const birth = new Date(birthStr);
+    const base = baseStr ? new Date(baseStr) : new Date();
+
+    let manAge = base.getFullYear() - birth.getFullYear();
+    const hasHadBirthdayThisYear =
+      base.getMonth() > birth.getMonth() ||
+      (base.getMonth() === birth.getMonth() && base.getDate() >= birth.getDate());
+    if (!hasHadBirthdayThisYear) manAge -= 1;
+
+    const yearAge = base.getFullYear() - birth.getFullYear() + 1;
+
+    document.getElementById("age-man-value").textContent = `${manAge}세`;
+    document.getElementById("age-year-value").textContent = `${yearAge}세`;
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- 부가세 계산기 ---------- */
+function initVat() {
+  initSegmented("vat-mode");
+
+  document.getElementById("vat-calc-btn").addEventListener("click", () => {
+    const mode = getSegmentedValue("vat-mode");
+    const amount = Number(document.getElementById("vat-amount").value);
+    const resultEl = document.getElementById("vat-result");
+    if (!amount) {
+      resultEl.hidden = true;
+      return;
+    }
+
+    let supply, tax, total;
+    if (mode === "supply") {
+      supply = amount;
+      tax = amount * 0.1;
+      total = supply + tax;
+    } else {
+      total = amount;
+      supply = amount / 1.1;
+      tax = total - supply;
+    }
+
+    document.getElementById("vat-supply-value").textContent = formatWon(supply);
+    document.getElementById("vat-tax-value").textContent = formatWon(tax);
+    document.getElementById("vat-total-value").textContent = formatWon(total);
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- 주휴수당 계산기 ---------- */
+function initWeeklyPay() {
+  document.getElementById("wp-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("wp-error");
+    const resultEl = document.getElementById("wp-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const wage = Number(document.getElementById("wp-wage").value);
+    const hours = Number(document.getElementById("wp-hours").value);
+    if (!wage || !hours) {
+      errorEl.hidden = false;
+      errorEl.textContent = "시급과 근무시간을 입력해주세요.";
+      return;
+    }
+    if (hours < 15) {
+      errorEl.hidden = false;
+      errorEl.textContent = "주 15시간 미만은 주휴수당 지급 대상이 아닙니다.";
+      return;
+    }
+
+    const cappedHours = Math.min(hours, 40);
+    const pay = (cappedHours / 40) * 8 * wage;
+
+    document.getElementById("wp-value").textContent = formatWon(pay);
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- 3.3% 계산기 ---------- */
+function initFreelanceTax() {
+  initSegmented("ft-mode");
+
+  document.getElementById("ft-calc-btn").addEventListener("click", () => {
+    const mode = getSegmentedValue("ft-mode");
+    const amount = Number(document.getElementById("ft-amount").value);
+    const resultEl = document.getElementById("ft-result");
+    if (!amount) {
+      resultEl.hidden = true;
+      return;
+    }
+
+    let contract, tax, net;
+    if (mode === "contract") {
+      contract = amount;
+      tax = amount * 0.033;
+      net = contract - tax;
+      document.getElementById("ft-other-label").textContent = "실수령액";
+      document.getElementById("ft-other-value").textContent = formatWon(net);
+    } else {
+      net = amount;
+      contract = amount / 0.967;
+      tax = contract - net;
+      document.getElementById("ft-other-label").textContent = "지급액 (세전)";
+      document.getElementById("ft-other-value").textContent = formatWon(contract);
+    }
+
+    document.getElementById("ft-tax-value").textContent = formatWon(tax);
+    resultEl.hidden = false;
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
@@ -257,6 +494,12 @@ function init() {
   initJsonFormatter();
   initBase64();
   initLorem();
+  initPercent();
+  initLoan();
+  initAge();
+  initVat();
+  initWeeklyPay();
+  initFreelanceTax();
 }
 
 document.addEventListener("DOMContentLoaded", init);
