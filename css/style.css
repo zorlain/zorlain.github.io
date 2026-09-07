@@ -25,9 +25,9 @@
 }
 
 :root[data-theme="dark"] {
-  --bg: #000000;
-  --card: #131313;
-  --card-elevated: #1d1d1d;
+  --bg: #14110e;
+  --card: #1c1713;
+  --card-elevated: #26201a;
   --text: #ffffff;
   --text-muted: rgba(255, 255, 255, 0.66);
   --border: rgba(255, 255, 255, 0.1);
@@ -40,7 +40,7 @@
   --btn-primary-pressed: #e09710;
   --hover-tint: rgba(255, 255, 255, 0.07);
 
-  --stage-bg: #050505;
+  --stage-bg: #0a0705;
   --led: #ffb020;
   --led-dim: rgba(255, 176, 32, 0.18);
 }
