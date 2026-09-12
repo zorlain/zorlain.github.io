@@ -2585,21 +2585,24 @@
   <section class="tab-panel" data-tab-panel="json-to-csv" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>JSON→CSV 변환기</h2>
-      <p class="card-desc-short">JSON 배열을 CSV로, CSV를 다시 JSON으로 변환합니다.</p>
+      <p class="card-desc-short">객체 배열 형태의 JSON을 CSV로, CSV를 다시 JSON으로 변환합니다.</p>
       <div class="field-row">
         <div class="field-group">
-          <label>입력</label>
-          <div class="field-input-wrap"><textarea rows="8" disabled placeholder="JSON 배열 또는 CSV를 입력하세요"></textarea></div>
+          <label for="j2c-input">입력</label>
+          <div class="field-input-wrap"><textarea id="j2c-input" rows="8" placeholder='[{"name":"홍길동","age":30}]'></textarea></div>
         </div>
         <div class="field-group">
-          <label>결과</label>
-          <div class="field-input-wrap"><textarea rows="8" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+          <label for="j2c-output">결과</label>
+          <div class="field-input-wrap"><textarea id="j2c-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
       </div>
-      <button type="button" class="calc-btn" disabled>변환하기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="j2c-error" hidden></p>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="j2c-to-csv-btn">JSON → CSV</button>
+        <button type="button" class="secondary-btn" id="j2c-to-json-btn">CSV → JSON</button>
+      </div>
+      <button class="calc-btn" id="j2c-copy-btn">결과 복사</button>
     </div>
   </section>
 
@@ -2620,78 +2623,110 @@
   <section class="tab-panel" data-tab-panel="unix-timestamp" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>Unix 타임스탬프 변환기</h2>
-      <p class="card-desc-short">Unix 타임스탬프와 날짜·시간을 서로 변환합니다.</p>
+      <p class="card-desc-short">Unix 타임스탬프(초/밀리초)와 날짜·시간을 서로 변환합니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="타임스탬프 또는 날짜를 입력하세요" /></div>
+        <label for="uts-input">타임스탬프 또는 날짜</label>
+        <div class="field-input-wrap"><input type="text" id="uts-input" placeholder="예: 1700000000 또는 2023-11-15 06:13:20" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>변환하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
-        <div class="result-stat-label">변환 결과</div>
-        <div class="result-stat-value">준비 중</div>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="uts-now-btn">현재 시각 넣기</button>
+        <button type="button" class="secondary-btn" id="uts-calc-btn">변환하기</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="uts-error" hidden></p>
+      <div class="tool-btn-grid" id="uts-result" hidden>
+        <div class="result-stat"><div class="result-stat-label">Unix 타임스탬프(초)</div><div class="result-stat-value" id="uts-ts-value">-</div></div>
+        <div class="result-stat"><div class="result-stat-label">ISO 8601 (UTC)</div><div class="result-stat-value" id="uts-iso-value">-</div></div>
+        <div class="result-stat highlight" style="grid-column: 1 / -1;">
+          <div class="result-stat-label">로컬 시간</div>
+          <div class="result-stat-value" id="uts-local-value">-</div>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="base-converter" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>진법 변환기</h2>
       <p class="card-desc-short">숫자를 2진수, 8진수, 10진수, 16진수 사이에서 변환합니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="변환할 숫자를 입력하세요" /></div>
+        <label>입력 진법</label>
+        <div class="segmented" id="bc-base-mode">
+          <button type="button" data-value="2">2진수</button>
+          <button type="button" data-value="8">8진수</button>
+          <button type="button" class="active" data-value="10">10진수</button>
+          <button type="button" data-value="16">16진수</button>
+        </div>
       </div>
-      <button type="button" class="calc-btn" disabled>변환하기</button>
-      <div class="tool-btn-grid" style="opacity:.6;">
-        <div class="result-stat"><div class="result-stat-label">2진수</div><div class="result-stat-value">-</div></div>
-        <div class="result-stat"><div class="result-stat-label">8진수</div><div class="result-stat-value">-</div></div>
-        <div class="result-stat"><div class="result-stat-label">10진수</div><div class="result-stat-value">-</div></div>
-        <div class="result-stat"><div class="result-stat-label">16진수</div><div class="result-stat-value">-</div></div>
+      <div class="field-group">
+        <label for="bc-input">숫자</label>
+        <div class="field-input-wrap"><input type="text" id="bc-input" placeholder="예: 255" /></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn" id="bc-calc-btn">변환하기</button>
+      <p class="calc-error-msg" id="bc-error" hidden></p>
+      <div class="tool-btn-grid" id="bc-result" hidden>
+        <div class="result-stat"><div class="result-stat-label">2진수</div><div class="result-stat-value" id="bc-bin-value">-</div></div>
+        <div class="result-stat"><div class="result-stat-label">8진수</div><div class="result-stat-value" id="bc-oct-value">-</div></div>
+        <div class="result-stat"><div class="result-stat-label">10진수</div><div class="result-stat-value" id="bc-dec-value">-</div></div>
+        <div class="result-stat"><div class="result-stat-label">16진수</div><div class="result-stat-value" id="bc-hex-value">-</div></div>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="regex-tester" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>정규식 테스터</h2>
       <p class="card-desc-short">정규표현식을 입력하고 매치 결과를 실시간으로 확인합니다.</p>
-      <div class="field-group">
-        <label>정규표현식</label>
-        <div class="field-input-wrap"><input type="text" disabled placeholder="예: ^[a-zA-Z0-9]+$" /></div>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="rgx-pattern">정규표현식</label>
+          <div class="field-input-wrap"><input type="text" id="rgx-pattern" placeholder="예: [a-zA-Z0-9]+" /></div>
+        </div>
+        <div class="field-group">
+          <label for="rgx-flags">플래그</label>
+          <div class="field-input-wrap"><input type="text" id="rgx-flags" placeholder="예: g, gi" value="g" /></div>
+        </div>
       </div>
       <div class="field-group">
-        <label>테스트할 텍스트</label>
-        <div class="field-input-wrap"><textarea rows="6" disabled placeholder="테스트할 텍스트를 입력하세요"></textarea></div>
+        <label for="rgx-text">테스트할 텍스트</label>
+        <div class="field-input-wrap"><textarea id="rgx-text" rows="6" placeholder="테스트할 텍스트를 입력하세요"></textarea></div>
       </div>
-      <button type="button" class="calc-btn" disabled>테스트하기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn" id="rgx-test-btn">테스트하기</button>
+      <p class="calc-error-msg" id="rgx-error" hidden></p>
+      <div class="result-stat highlight" id="rgx-count-stat" hidden>
+        <div class="result-stat-label">매치 개수</div>
+        <div class="result-stat-value" id="rgx-count-value">-</div>
+      </div>
+      <div class="field-group" id="rgx-output-group" hidden style="margin-top: 20px;">
+        <label>매치된 문자열</label>
+        <div class="field-input-wrap"><textarea id="rgx-output" rows="6" readonly></textarea></div>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="ascii-converter" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>ASCII 변환기</h2>
-      <p class="card-desc-short">텍스트를 ASCII 코드로, ASCII 코드를 다시 텍스트로 변환합니다.</p>
+      <p class="card-desc-short">텍스트를 ASCII 코드로, 공백으로 구분된 ASCII 코드를 다시 텍스트로 변환합니다.</p>
       <div class="field-row">
         <div class="field-group">
-          <label>입력</label>
-          <div class="field-input-wrap"><textarea rows="6" disabled placeholder="텍스트 또는 ASCII 코드를 입력하세요"></textarea></div>
+          <label for="asc-input">입력</label>
+          <div class="field-input-wrap"><textarea id="asc-input" rows="6" placeholder="텍스트 또는 65 66 67 형식의 코드를 입력하세요"></textarea></div>
         </div>
         <div class="field-group">
-          <label>결과</label>
-          <div class="field-input-wrap"><textarea rows="6" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+          <label for="asc-output">결과</label>
+          <div class="field-input-wrap"><textarea id="asc-output" rows="6" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
       </div>
-      <button type="button" class="calc-btn" disabled>변환하기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="asc-error" hidden></p>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="asc-encode-btn">텍스트 → ASCII</button>
+        <button type="button" class="secondary-btn" id="asc-decode-btn">ASCII → 텍스트</button>
+      </div>
+      <button class="calc-btn" id="asc-copy-btn">결과 복사</button>
     </div>
   </section>
 
@@ -2719,17 +2754,16 @@
   <section class="tab-panel" data-tab-panel="keycode-checker" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>키보드 키코드 확인기</h2>
-      <p class="card-desc-short">키보드를 누르면 keyCode와 key 값을 바로 보여줍니다.</p>
-      <div class="wip-dropzone">
-        <p>여기를 클릭하고 아무 키나 눌러보세요</p>
+      <p class="card-desc-short">키보드를 누르면 key, code, keyCode 값을 바로 보여줍니다.</p>
+      <div class="wip-dropzone" id="kc-zone" tabindex="0">
+        <p id="kc-hint">여기를 클릭하고 아무 키나 눌러보세요</p>
       </div>
-      <div class="tool-btn-grid" style="opacity:.6;">
-        <div class="result-stat"><div class="result-stat-label">key</div><div class="result-stat-value">-</div></div>
-        <div class="result-stat"><div class="result-stat-label">keyCode</div><div class="result-stat-value">-</div></div>
+      <div class="tool-btn-grid">
+        <div class="result-stat"><div class="result-stat-label">key</div><div class="result-stat-value" id="kc-key-value">-</div></div>
+        <div class="result-stat"><div class="result-stat-label">code</div><div class="result-stat-value" id="kc-code-value">-</div></div>
+        <div class="result-stat highlight" style="grid-column: 1 / -1;"><div class="result-stat-label">keyCode</div><div class="result-stat-value" id="kc-keycode-value">-</div></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
@@ -2754,18 +2788,17 @@
   <section class="tab-panel" data-tab-panel="http-status" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>HTTP 상태코드 조회</h2>
       <p class="card-desc-short">HTTP 상태 코드의 의미를 검색하고 쉽게 확인합니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="예: 404" /></div>
+        <div class="field-input-wrap"><input type="text" inputmode="numeric" id="hs-input" placeholder="예: 404" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>조회하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
-        <div class="result-stat-label">설명</div>
-        <div class="result-stat-value">준비 중</div>
+      <button class="calc-btn" id="hs-lookup-btn">조회하기</button>
+      <p class="calc-error-msg" id="hs-error" hidden></p>
+      <div class="result-stat highlight" id="hs-result" hidden>
+        <div class="result-stat-label" id="hs-result-label">설명</div>
+        <div class="result-stat-value" id="hs-result-value">-</div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
@@ -2793,52 +2826,50 @@
   <section class="tab-panel" data-tab-panel="jwt-decoder" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>JWT 디코더</h2>
-      <p class="card-desc-short">JSON Web Token을 헤더·페이로드로 분석하고 검증합니다.</p>
+      <p class="card-desc-short">JSON Web Token을 헤더·페이로드로 분석합니다. (서명 검증은 하지 않습니다)</p>
       <div class="field-group">
-        <div class="field-input-wrap"><textarea rows="6" disabled placeholder="JWT 토큰을 입력하세요"></textarea></div>
+        <div class="field-input-wrap"><textarea id="jwt-input" rows="5" placeholder="JWT 토큰을 입력하세요 (예: eyJhbGciOi...)"></textarea></div>
       </div>
-      <button type="button" class="calc-btn" disabled>디코딩하기</button>
-      <div class="field-group" style="margin-top: 20px;">
+      <button class="calc-btn" id="jwt-decode-btn">디코딩하기</button>
+      <p class="calc-error-msg" id="jwt-error" hidden></p>
+      <div class="field-group" id="jwt-result-group" hidden style="margin-top: 20px;">
         <label>디코딩 결과</label>
-        <div class="field-input-wrap"><textarea rows="8" disabled readonly placeholder="헤더·페이로드가 여기에 표시됩니다"></textarea></div>
+        <div class="field-input-wrap"><textarea id="jwt-output" rows="10" readonly></textarea></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="hash-generator" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>해시 생성기</h2>
       <p class="card-desc-short">텍스트의 MD5, SHA-1, SHA-256 해시 값을 즉시 생성합니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><textarea rows="4" disabled placeholder="해시로 변환할 텍스트를 입력하세요"></textarea></div>
+        <div class="field-input-wrap"><textarea id="hg-input" rows="4" placeholder="해시로 변환할 텍스트를 입력하세요"></textarea></div>
       </div>
-      <button type="button" class="calc-btn" disabled>해시 생성하기</button>
-      <div class="tool-btn-grid" style="grid-template-columns: 1fr; opacity:.6;">
-        <div class="result-stat"><div class="result-stat-label">MD5</div><div class="result-stat-value">-</div></div>
-        <div class="result-stat"><div class="result-stat-label">SHA-1</div><div class="result-stat-value">-</div></div>
-        <div class="result-stat"><div class="result-stat-label">SHA-256</div><div class="result-stat-value">-</div></div>
+      <button class="calc-btn" id="hg-generate-btn">해시 생성하기</button>
+      <div class="tool-btn-grid" id="hg-result" style="grid-template-columns: 1fr;" hidden>
+        <div class="result-stat"><div class="result-stat-label">MD5</div><div class="result-stat-value" id="hg-md5-value" style="font-size:14px; word-break:break-all;">-</div></div>
+        <div class="result-stat"><div class="result-stat-label">SHA-1</div><div class="result-stat-value" id="hg-sha1-value" style="font-size:14px; word-break:break-all;">-</div></div>
+        <div class="result-stat"><div class="result-stat-label">SHA-256</div><div class="result-stat-value" id="hg-sha256-value" style="font-size:14px; word-break:break-all;">-</div></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="uuid-generator" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>UUID 생성기</h2>
       <p class="card-desc-short">클릭 한 번으로 v4 UUID를 생성하고 복사합니다.</p>
-      <button type="button" class="calc-btn" disabled>생성하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
+      <div class="result-stat highlight">
         <div class="result-stat-label">UUID</div>
-        <div class="result-stat-value">준비 중</div>
+        <div class="result-stat-value" id="uuid-value" style="font-size:17px;">-</div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="uuid-generate-btn">생성하기</button>
+        <button type="button" class="secondary-btn" id="uuid-copy-btn">복사하기</button>
+      </div>
     </div>
   </section>
 
@@ -2879,104 +2910,166 @@
   <section class="tab-panel" data-tab-panel="color-converter" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>컬러 코드 변환기</h2>
       <p class="card-desc-short">HEX, RGB, HSL 색상 코드를 서로 변환합니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="예: #ffb020" /></div>
+        <div class="field-input-wrap"><input type="text" id="cc-input" placeholder="예: #ffb020, rgb(255,176,32), hsl(38,100%,56%)" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>변환하기</button>
-      <div class="wip-dropzone" style="margin-top: 20px;">
-        <p>색상 미리보기가 여기에 표시됩니다</p>
+      <button class="calc-btn" id="cc-convert-btn">변환하기</button>
+      <p class="calc-error-msg" id="cc-error" hidden></p>
+      <div id="cc-preview" class="wip-dropzone" style="margin-top: 20px; display: none;">
+        <p>미리보기</p>
       </div>
-      <div class="tool-btn-grid" style="opacity:.6;">
-        <div class="result-stat"><div class="result-stat-label">RGB</div><div class="result-stat-value">-</div></div>
-        <div class="result-stat"><div class="result-stat-label">HSL</div><div class="result-stat-value">-</div></div>
+      <div class="tool-btn-grid" id="cc-result" hidden>
+        <div class="result-stat"><div class="result-stat-label">HEX</div><div class="result-stat-value" id="cc-hex-value">-</div></div>
+        <div class="result-stat"><div class="result-stat-label">RGB</div><div class="result-stat-value" id="cc-rgb-value">-</div></div>
+        <div class="result-stat highlight" style="grid-column: 1 / -1;"><div class="result-stat-label">HSL</div><div class="result-stat-value" id="cc-hsl-value">-</div></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="css-gradient" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>CSS 그라디언트 생성기</h2>
-      <p class="card-desc-short">색상을 선택하면 CSS 그라디언트 코드를 바로 만들어줍니다.</p>
+      <p class="card-desc-short">색상을 선택하면 CSS 그라디언트 코드를 실시간으로 만들어줍니다.</p>
       <div class="field-row">
         <div class="field-group">
-          <label>색상 1</label>
-          <div class="field-input-wrap"><input type="text" disabled placeholder="#ffb020" /></div>
+          <label for="cg-color1">색상 1</label>
+          <div class="field-input-wrap"><input type="text" id="cg-color1" value="#ffb020" /></div>
         </div>
         <div class="field-group">
-          <label>색상 2</label>
-          <div class="field-input-wrap"><input type="text" disabled placeholder="#d9770a" /></div>
+          <label for="cg-color2">색상 2</label>
+          <div class="field-input-wrap"><input type="text" id="cg-color2" value="#d9770a" /></div>
         </div>
       </div>
-      <div class="wip-dropzone">
-        <p>그라디언트 미리보기가 여기에 표시됩니다</p>
-      </div>
       <div class="field-group">
-        <div class="field-input-wrap"><textarea rows="3" disabled readonly placeholder="CSS 코드가 여기에 표시됩니다"></textarea></div>
+        <label for="cg-angle">각도: <span id="cg-angle-label">135deg</span></label>
+        <input type="range" id="cg-angle" min="0" max="360" step="1" value="135" class="range-input" />
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div id="cg-preview" style="border-radius: 16px; height: 100px; margin-bottom: 16px;"></div>
+      <div class="field-group">
+        <div class="field-input-wrap"><textarea id="cg-output" rows="2" readonly></textarea></div>
+      </div>
+      <button class="calc-btn secondary-btn" id="cg-copy-btn">CSS 복사</button>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="css-box-shadow" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>CSS Box Shadow 생성기</h2>
-      <p class="card-desc-short">그림자 위치와 흐림 정도를 조절해 CSS 코드를 만듭니다.</p>
-      <div class="wip-dropzone">
-        <p>그림자 미리보기가 여기에 표시됩니다</p>
+      <p class="card-desc-short">그림자 위치와 흐림 정도를 조절해 CSS 코드를 실시간으로 만듭니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="bs-x">가로 오프셋: <span id="bs-x-label">4px</span></label>
+          <input type="range" id="bs-x" min="-40" max="40" step="1" value="4" class="range-input" />
+        </div>
+        <div class="field-group">
+          <label for="bs-y">세로 오프셋: <span id="bs-y-label">4px</span></label>
+          <input type="range" id="bs-y" min="-40" max="40" step="1" value="4" class="range-input" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="bs-blur">흐림 정도: <span id="bs-blur-label">12px</span></label>
+          <input type="range" id="bs-blur" min="0" max="80" step="1" value="12" class="range-input" />
+        </div>
+        <div class="field-group">
+          <label for="bs-spread">퍼짐 정도: <span id="bs-spread-label">0px</span></label>
+          <input type="range" id="bs-spread" min="-20" max="40" step="1" value="0" class="range-input" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="bs-color">그림자 색상</label>
+          <div class="field-input-wrap"><input type="text" id="bs-color" value="rgba(0,0,0,0.35)" /></div>
+        </div>
+        <div class="field-group">
+          <label>옵션</label>
+          <div class="segmented" id="bs-inset">
+            <button type="button" class="active" data-value="outset">바깥 그림자</button>
+            <button type="button" data-value="inset">안쪽 그림자(inset)</button>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex; justify-content:center; padding: 30px 0;">
+        <div id="bs-preview" style="width: 120px; height: 120px; border-radius: 16px; background: var(--card-elevated);"></div>
       </div>
       <div class="field-group">
-        <div class="field-input-wrap"><textarea rows="3" disabled readonly placeholder="CSS 코드가 여기에 표시됩니다"></textarea></div>
+        <div class="field-input-wrap"><textarea id="bs-output" rows="2" readonly></textarea></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn secondary-btn" id="bs-copy-btn">CSS 복사</button>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="wcag-contrast" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>WCAG 색상 대비 검사기</h2>
       <p class="card-desc-short">두 색상의 명도 대비를 계산해 웹 접근성 기준 충족 여부를 확인합니다.</p>
       <div class="field-row">
         <div class="field-group">
-          <label>배경색</label>
-          <div class="field-input-wrap"><input type="text" disabled placeholder="#ffffff" /></div>
+          <label for="wc-bg">배경색</label>
+          <div class="field-input-wrap"><input type="text" id="wc-bg" value="#ffffff" /></div>
         </div>
         <div class="field-group">
-          <label>텍스트색</label>
-          <div class="field-input-wrap"><input type="text" disabled placeholder="#000000" /></div>
+          <label for="wc-text">텍스트색</label>
+          <div class="field-input-wrap"><input type="text" id="wc-text" value="#000000" /></div>
         </div>
       </div>
-      <button type="button" class="calc-btn" disabled>검사하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
-        <div class="result-stat-label">대비율</div>
-        <div class="result-stat-value">준비 중</div>
+      <button class="calc-btn" id="wc-check-btn">검사하기</button>
+      <p class="calc-error-msg" id="wc-error" hidden></p>
+      <div id="wc-preview" style="border-radius: 14px; padding: 20px; text-align: center; font-weight: 700; margin-top: 16px;"></div>
+      <div class="tool-btn-grid" id="wc-result" hidden>
+        <div class="result-stat highlight" style="grid-column: 1 / -1;">
+          <div class="result-stat-label">대비율</div>
+          <div class="result-stat-value" id="wc-ratio-value">-</div>
+        </div>
+        <div class="result-stat"><div class="result-stat-label">일반 텍스트 AA (4.5:1)</div><div class="result-stat-value" id="wc-aa-value">-</div></div>
+        <div class="result-stat"><div class="result-stat-label">큰 텍스트 AA (3:1)</div><div class="result-stat-value" id="wc-aa-large-value">-</div></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="cubic-bezier" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>cubic-bezier 이징 생성기</h2>
       <p class="card-desc-short">애니메이션 이징 곡선을 조절해 CSS cubic-bezier 값을 만듭니다.</p>
-      <div class="wip-dropzone">
-        <p>이징 곡선 미리보기가 여기에 표시됩니다</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="cb-x1">X1: <span id="cb-x1-label">0.25</span></label>
+          <input type="range" id="cb-x1" min="0" max="1" step="0.01" value="0.25" class="range-input" />
+        </div>
+        <div class="field-group">
+          <label for="cb-y1">Y1: <span id="cb-y1-label">0.1</span></label>
+          <input type="range" id="cb-y1" min="-1" max="2" step="0.01" value="0.1" class="range-input" />
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="cb-x2">X2: <span id="cb-x2-label">0.25</span></label>
+          <input type="range" id="cb-x2" min="0" max="1" step="0.01" value="0.25" class="range-input" />
+        </div>
+        <div class="field-group">
+          <label for="cb-y2">Y2: <span id="cb-y2-label">1</span></label>
+          <input type="range" id="cb-y2" min="-1" max="2" step="0.01" value="1" class="range-input" />
+        </div>
+      </div>
+      <div style="display:flex; justify-content:center; padding: 10px 0 20px;">
+        <svg id="cb-svg" width="180" height="180" viewBox="0 0 100 100">
+          <line x1="0" y1="100" x2="100" y2="100" stroke="var(--border)" stroke-width="1" />
+          <line x1="0" y1="0" x2="0" y2="100" stroke="var(--border)" stroke-width="1" />
+          <path id="cb-curve" d="" fill="none" stroke="var(--accent)" stroke-width="2.5" />
+          <circle id="cb-handle1" cx="0" cy="100" r="3.5" fill="var(--accent)" />
+          <circle id="cb-handle2" cx="100" cy="0" r="3.5" fill="var(--accent)" />
+        </svg>
       </div>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled readonly placeholder="cubic-bezier(0.25, 0.1, 0.25, 1)" /></div>
+        <div class="field-input-wrap"><input type="text" id="cb-output" readonly /></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn secondary-btn" id="cb-copy-btn">값 복사</button>
     </div>
   </section>
 

@@ -734,6 +734,664 @@ function initAdsense() {
   });
 }
 
+/* ---------- JSON <-> CSV 변환기 ---------- */
+function jsonArrayToCsv(arr) {
+  if (!Array.isArray(arr) || arr.length === 0) throw new Error("빈 배열이거나 배열이 아닙니다.");
+  const headers = Object.keys(arr[0]);
+  const escape = (v) => {
+    const s = v === null || v === undefined ? "" : String(v);
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const lines = [headers.map(escape).join(",")];
+  arr.forEach((row) => lines.push(headers.map((h) => escape(row[h])).join(",")));
+  return lines.join("\n");
+}
+
+function csvToJsonArray(csv) {
+  const lines = csv.trim().split(/\r?\n/);
+  if (lines.length === 0 || !lines[0]) throw new Error("빈 CSV입니다.");
+  function parseLine(line) {
+    const result = [];
+    let cur = "";
+    let inQuotes = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (inQuotes) {
+        if (ch === '"') {
+          if (line[i + 1] === '"') { cur += '"'; i++; } else inQuotes = false;
+        } else cur += ch;
+      } else if (ch === '"') inQuotes = true;
+      else if (ch === ",") { result.push(cur); cur = ""; }
+      else cur += ch;
+    }
+    result.push(cur);
+    return result;
+  }
+  const headers = parseLine(lines[0]);
+  return lines.slice(1).filter((l) => l.trim() !== "").map((line) => {
+    const values = parseLine(line);
+    const obj = {};
+    headers.forEach((h, i) => (obj[h] = values[i] ?? ""));
+    return obj;
+  });
+}
+
+function initJsonToCsv() {
+  const input = document.getElementById("j2c-input");
+  const output = document.getElementById("j2c-output");
+  const errorEl = document.getElementById("j2c-error");
+
+  document.getElementById("j2c-to-csv-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    try {
+      output.value = jsonArrayToCsv(JSON.parse(input.value));
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = `오류: ${e.message}`;
+    }
+  });
+
+  document.getElementById("j2c-to-json-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    try {
+      output.value = JSON.stringify(csvToJsonArray(input.value), null, 2);
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = `오류: ${e.message}`;
+    }
+  });
+
+  document.getElementById("j2c-copy-btn").addEventListener("click", async (e) => {
+    if (!output.value) return;
+    if (await copyText(output.value)) flashCopied(e.target, "결과 복사");
+  });
+}
+
+/* ---------- Unix 타임스탬프 변환기 ---------- */
+function initUnixTimestamp() {
+  const input = document.getElementById("uts-input");
+  const errorEl = document.getElementById("uts-error");
+  const resultEl = document.getElementById("uts-result");
+
+  document.getElementById("uts-now-btn").addEventListener("click", () => {
+    input.value = Math.floor(Date.now() / 1000);
+  });
+
+  document.getElementById("uts-calc-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+    const raw = input.value.trim();
+    if (!raw) {
+      errorEl.hidden = false;
+      errorEl.textContent = "타임스탬프 또는 날짜를 입력해주세요.";
+      return;
+    }
+
+    let date;
+    if (/^\d+$/.test(raw)) {
+      const num = Number(raw);
+      date = new Date(raw.length >= 13 ? num : num * 1000);
+    } else {
+      date = new Date(raw.replace(" ", "T"));
+    }
+
+    if (isNaN(date.getTime())) {
+      errorEl.hidden = false;
+      errorEl.textContent = "인식할 수 없는 형식입니다.";
+      return;
+    }
+
+    document.getElementById("uts-ts-value").textContent = Math.floor(date.getTime() / 1000).toLocaleString();
+    document.getElementById("uts-iso-value").textContent = date.toISOString();
+    document.getElementById("uts-local-value").textContent = date.toLocaleString("ko-KR", { timeZoneName: "short" });
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- 진법 변환기 ---------- */
+function initBaseConverter() {
+  initSegmented("bc-base-mode");
+  document.getElementById("bc-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("bc-error");
+    const resultEl = document.getElementById("bc-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const base = Number(getSegmentedValue("bc-base-mode"));
+    const raw = document.getElementById("bc-input").value.trim();
+    if (!raw) {
+      errorEl.hidden = false;
+      errorEl.textContent = "숫자를 입력해주세요.";
+      return;
+    }
+
+    const validPattern = { 2: /^[01]+$/, 8: /^[0-7]+$/, 10: /^[0-9]+$/, 16: /^[0-9a-fA-F]+$/ }[base];
+    if (!validPattern.test(raw)) {
+      errorEl.hidden = false;
+      errorEl.textContent = `${base}진수 형식에 맞지 않는 숫자입니다.`;
+      return;
+    }
+
+    const decimal = parseInt(raw, base);
+    if (!Number.isSafeInteger(decimal)) {
+      errorEl.hidden = false;
+      errorEl.textContent = "숫자가 너무 큽니다.";
+      return;
+    }
+
+    document.getElementById("bc-bin-value").textContent = decimal.toString(2);
+    document.getElementById("bc-oct-value").textContent = decimal.toString(8);
+    document.getElementById("bc-dec-value").textContent = decimal.toString(10);
+    document.getElementById("bc-hex-value").textContent = decimal.toString(16).toUpperCase();
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- 정규식 테스터 ---------- */
+function initRegexTester() {
+  document.getElementById("rgx-test-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("rgx-error");
+    const countStat = document.getElementById("rgx-count-stat");
+    const outputGroup = document.getElementById("rgx-output-group");
+    errorEl.hidden = true;
+    countStat.hidden = true;
+    outputGroup.hidden = true;
+
+    const pattern = document.getElementById("rgx-pattern").value;
+    const flags = document.getElementById("rgx-flags").value.trim();
+    const text = document.getElementById("rgx-text").value;
+
+    if (!pattern) {
+      errorEl.hidden = false;
+      errorEl.textContent = "정규표현식을 입력해주세요.";
+      return;
+    }
+
+    let re;
+    try {
+      re = new RegExp(pattern, flags.includes("g") ? flags : flags + "g");
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = `정규식 오류: ${e.message}`;
+      return;
+    }
+
+    const matches = [...text.matchAll(re)].map((m) => m[0]);
+    document.getElementById("rgx-count-value").textContent = `${matches.length}개`;
+    countStat.hidden = false;
+    document.getElementById("rgx-output").value = matches.length ? matches.join("\n") : "(매치 없음)";
+    outputGroup.hidden = false;
+  });
+}
+
+/* ---------- ASCII 변환기 ---------- */
+function initAsciiConverter() {
+  const input = document.getElementById("asc-input");
+  const output = document.getElementById("asc-output");
+  const errorEl = document.getElementById("asc-error");
+
+  document.getElementById("asc-encode-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    output.value = Array.from(input.value).map((ch) => ch.charCodeAt(0)).join(" ");
+  });
+
+  document.getElementById("asc-decode-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    const parts = input.value.trim().split(/\s+/).filter(Boolean);
+    if (!parts.length || !parts.every((p) => /^\d+$/.test(p))) {
+      errorEl.hidden = false;
+      errorEl.textContent = "공백으로 구분된 숫자 코드를 입력해주세요.";
+      return;
+    }
+    output.value = parts.map((p) => String.fromCharCode(Number(p))).join("");
+  });
+
+  document.getElementById("asc-copy-btn").addEventListener("click", async (e) => {
+    if (!output.value) return;
+    if (await copyText(output.value)) flashCopied(e.target, "결과 복사");
+  });
+}
+
+/* ---------- 키보드 키코드 확인기 ---------- */
+function initKeycodeChecker() {
+  const zone = document.getElementById("kc-zone");
+  const hint = document.getElementById("kc-hint");
+  zone.addEventListener("keydown", (e) => {
+    e.preventDefault();
+    document.getElementById("kc-key-value").textContent = e.key === " " ? "Space" : e.key;
+    document.getElementById("kc-code-value").textContent = e.code;
+    document.getElementById("kc-keycode-value").textContent = e.keyCode;
+    hint.textContent = "다른 키도 눌러보세요";
+  });
+  zone.addEventListener("click", () => zone.focus());
+}
+
+/* ---------- HTTP 상태코드 조회 ---------- */
+const HTTP_STATUS_MAP = {
+  100: "Continue - 요청을 계속 진행해도 됨",
+  101: "Switching Protocols - 프로토콜 전환",
+  200: "OK - 요청 성공",
+  201: "Created - 리소스 생성 성공",
+  202: "Accepted - 요청 접수(처리 미완료)",
+  204: "No Content - 성공했지만 응답 본문 없음",
+  206: "Partial Content - 일부 콘텐츠 응답",
+  301: "Moved Permanently - 영구 이동",
+  302: "Found - 임시 이동",
+  303: "See Other - 다른 URI로 조회",
+  304: "Not Modified - 캐시된 리소스 사용 가능",
+  307: "Temporary Redirect - 임시 리다이렉트(메서드 유지)",
+  308: "Permanent Redirect - 영구 리다이렉트(메서드 유지)",
+  400: "Bad Request - 잘못된 요청",
+  401: "Unauthorized - 인증 필요",
+  402: "Payment Required - 결제 필요",
+  403: "Forbidden - 접근 권한 없음",
+  404: "Not Found - 리소스를 찾을 수 없음",
+  405: "Method Not Allowed - 허용되지 않은 메서드",
+  406: "Not Acceptable - 허용되지 않는 콘텐츠 형식",
+  408: "Request Timeout - 요청 시간 초과",
+  409: "Conflict - 리소스 상태 충돌",
+  410: "Gone - 더 이상 사용할 수 없는 리소스",
+  411: "Length Required - Content-Length 필요",
+  412: "Precondition Failed - 사전조건 실패",
+  413: "Payload Too Large - 요청 본문이 너무 큼",
+  414: "URI Too Long - URI가 너무 김",
+  415: "Unsupported Media Type - 지원하지 않는 미디어 타입",
+  416: "Range Not Satisfiable - 요청 범위가 유효하지 않음",
+  417: "Expectation Failed - Expect 헤더 조건 실패",
+  418: "I'm a teapot - 농담성 상태 코드",
+  422: "Unprocessable Entity - 처리할 수 없는 요청",
+  425: "Too Early - 요청이 너무 이름",
+  426: "Upgrade Required - 프로토콜 업그레이드 필요",
+  428: "Precondition Required - 사전조건 필요",
+  429: "Too Many Requests - 너무 많은 요청(속도 제한)",
+  431: "Request Header Fields Too Large - 헤더가 너무 큼",
+  451: "Unavailable For Legal Reasons - 법적 사유로 이용 불가",
+  500: "Internal Server Error - 서버 내부 오류",
+  501: "Not Implemented - 구현되지 않은 기능",
+  502: "Bad Gateway - 게이트웨이 오류",
+  503: "Service Unavailable - 서비스 이용 불가",
+  504: "Gateway Timeout - 게이트웨이 시간 초과",
+  505: "HTTP Version Not Supported - 지원하지 않는 HTTP 버전",
+  507: "Insufficient Storage - 저장 공간 부족",
+  511: "Network Authentication Required - 네트워크 인증 필요",
+};
+
+function initHttpStatus() {
+  document.getElementById("hs-lookup-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("hs-error");
+    const resultEl = document.getElementById("hs-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const code = document.getElementById("hs-input").value.trim();
+    const desc = HTTP_STATUS_MAP[code];
+    if (!desc) {
+      errorEl.hidden = false;
+      errorEl.textContent = "등록되지 않은 상태 코드이거나 잘못된 입력입니다.";
+      return;
+    }
+    document.getElementById("hs-result-label").textContent = `${code} 상태코드`;
+    document.getElementById("hs-result-value").textContent = desc;
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- JWT 디코더 ---------- */
+function base64UrlDecode(str) {
+  let s = str.replace(/-/g, "+").replace(/_/g, "/");
+  while (s.length % 4) s += "=";
+  const decoded = atob(s);
+  try {
+    return decodeURIComponent(
+      decoded.split("").map((c) => "%" + c.charCodeAt(0).toString(16).padStart(2, "0")).join("")
+    );
+  } catch (e) {
+    return decoded;
+  }
+}
+
+function initJwtDecoder() {
+  document.getElementById("jwt-decode-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("jwt-error");
+    const resultGroup = document.getElementById("jwt-result-group");
+    errorEl.hidden = true;
+    resultGroup.hidden = true;
+
+    const token = document.getElementById("jwt-input").value.trim();
+    const parts = token.split(".");
+    if (parts.length < 2) {
+      errorEl.hidden = false;
+      errorEl.textContent = "올바른 JWT 형식이 아닙니다. (header.payload.signature)";
+      return;
+    }
+
+    try {
+      const header = JSON.parse(base64UrlDecode(parts[0]));
+      const payload = JSON.parse(base64UrlDecode(parts[1]));
+      document.getElementById("jwt-output").value =
+        `헤더:\n${JSON.stringify(header, null, 2)}\n\n페이로드:\n${JSON.stringify(payload, null, 2)}`;
+      resultGroup.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "토큰을 디코딩할 수 없습니다. 형식을 확인해주세요.";
+    }
+  });
+}
+
+/* ---------- 해시 생성기 (MD5 순수 JS 구현 + SHA-1/256 Web Crypto) ---------- */
+function md5(input) {
+  function rotl(x, c) { return (x << c) | (x >>> (32 - c)); }
+  const s = [7,12,17,22,7,12,17,22,7,12,17,22,7,12,17,22,
+             5,9,14,20,5,9,14,20,5,9,14,20,5,9,14,20,
+             4,11,16,23,4,11,16,23,4,11,16,23,4,11,16,23,
+             6,10,15,21,6,10,15,21,6,10,15,21,6,10,15,21];
+  const K = new Array(64);
+  for (let i = 0; i < 64; i++) K[i] = Math.floor(Math.abs(Math.sin(i + 1)) * 4294967296) >>> 0;
+
+  let a0 = 0x67452301, b0 = 0xefcdab89, c0 = 0x98badcfe, d0 = 0x10325476;
+
+  const bytes = Array.from(new TextEncoder().encode(input));
+  const origLenBits = bytes.length * 8;
+  bytes.push(0x80);
+  while (bytes.length % 64 !== 56) bytes.push(0);
+  for (let i = 0; i < 8; i++) bytes.push(Math.floor(origLenBits / Math.pow(2, 8 * i)) & 0xff);
+
+  for (let chunkStart = 0; chunkStart < bytes.length; chunkStart += 64) {
+    const M = new Array(16);
+    for (let j = 0; j < 16; j++) {
+      M[j] = bytes[chunkStart + j * 4] |
+             (bytes[chunkStart + j * 4 + 1] << 8) |
+             (bytes[chunkStart + j * 4 + 2] << 16) |
+             (bytes[chunkStart + j * 4 + 3] << 24);
+    }
+    let [A, B, C, D] = [a0, b0, c0, d0];
+    for (let i = 0; i < 64; i++) {
+      let F, g;
+      if (i < 16) { F = (B & C) | (~B & D); g = i; }
+      else if (i < 32) { F = (D & B) | (~D & C); g = (5 * i + 1) % 16; }
+      else if (i < 48) { F = B ^ C ^ D; g = (3 * i + 5) % 16; }
+      else { F = C ^ (B | ~D); g = (7 * i) % 16; }
+      F = (F + A + K[i] + M[g]) >>> 0;
+      A = D; D = C; C = B;
+      B = (B + rotl(F, s[i])) >>> 0;
+    }
+    a0 = (a0 + A) >>> 0; b0 = (b0 + B) >>> 0; c0 = (c0 + C) >>> 0; d0 = (d0 + D) >>> 0;
+  }
+
+  function toHexLE(n) {
+    let hex = "";
+    for (let i = 0; i < 4; i++) hex += ((n >>> (8 * i)) & 0xff).toString(16).padStart(2, "0");
+    return hex;
+  }
+  return toHexLE(a0) + toHexLE(b0) + toHexLE(c0) + toHexLE(d0);
+}
+
+async function sha(algo, text) {
+  const buf = await crypto.subtle.digest(algo, new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+function initHashGenerator() {
+  document.getElementById("hg-generate-btn").addEventListener("click", async () => {
+    const text = document.getElementById("hg-input").value;
+    document.getElementById("hg-md5-value").textContent = md5(text);
+    document.getElementById("hg-sha1-value").textContent = await sha("SHA-1", text);
+    document.getElementById("hg-sha256-value").textContent = await sha("SHA-256", text);
+    document.getElementById("hg-result").hidden = false;
+  });
+}
+
+/* ---------- UUID 생성기 ---------- */
+function generateUuidV4() {
+  if (crypto.randomUUID) return crypto.randomUUID();
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+function initUuidGenerator() {
+  const valueEl = document.getElementById("uuid-value");
+  document.getElementById("uuid-generate-btn").addEventListener("click", () => {
+    valueEl.textContent = generateUuidV4();
+  });
+  document.getElementById("uuid-copy-btn").addEventListener("click", async (e) => {
+    if (valueEl.textContent === "-") return;
+    if (await copyText(valueEl.textContent)) flashCopied(e.target, "복사하기");
+  });
+  valueEl.textContent = generateUuidV4();
+}
+
+/* ---------- 색상 변환 공용 유틸 (컬러 코드 변환기 + WCAG 대비 검사기 공용) ---------- */
+function hslToRgb(h, s, l) {
+  h /= 360; s /= 100; l /= 100;
+  let r, g, b;
+  if (s === 0) { r = g = b = l; }
+  else {
+    const hue2rgb = (p, q, t) => {
+      if (t < 0) t += 1;
+      if (t > 1) t -= 1;
+      if (t < 1 / 6) return p + (q - p) * 6 * t;
+      if (t < 1 / 2) return q;
+      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+      return p;
+    };
+    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+    const p = 2 * l - q;
+    r = hue2rgb(p, q, h + 1 / 3);
+    g = hue2rgb(p, q, h);
+    b = hue2rgb(p, q, h - 1 / 3);
+  }
+  return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+}
+
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+  if (max === min) h = s = 0;
+  else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      default: h = (r - g) / d + 4;
+    }
+    h /= 6;
+  }
+  return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + [r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("");
+}
+
+function parseColorInput(raw) {
+  const s = (raw || "").trim();
+  let m;
+  if ((m = s.match(/^#?([0-9a-fA-F]{3})$/))) {
+    const [r, g, b] = m[1].split("").map((c) => parseInt(c + c, 16));
+    return { r, g, b };
+  }
+  if ((m = s.match(/^#?([0-9a-fA-F]{6})$/))) {
+    return { r: parseInt(m[1].slice(0, 2), 16), g: parseInt(m[1].slice(2, 4), 16), b: parseInt(m[1].slice(4, 6), 16) };
+  }
+  if ((m = s.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i))) {
+    return { r: Number(m[1]), g: Number(m[2]), b: Number(m[3]) };
+  }
+  if ((m = s.match(/^hsla?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)%\s*,\s*(\d+(?:\.\d+)?)%/i))) {
+    return hslToRgb(Number(m[1]), Number(m[2]), Number(m[3]));
+  }
+  return null;
+}
+
+function relativeLuminance({ r, g, b }) {
+  const [rs, gs, bs] = [r, g, b].map((v) => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+}
+
+/* ---------- 컬러 코드 변환기 ---------- */
+function initColorConverter() {
+  document.getElementById("cc-convert-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("cc-error");
+    const resultEl = document.getElementById("cc-result");
+    const preview = document.getElementById("cc-preview");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+    preview.style.display = "none";
+
+    const rgb = parseColorInput(document.getElementById("cc-input").value);
+    if (!rgb) {
+      errorEl.hidden = false;
+      errorEl.textContent = "인식할 수 없는 색상 형식입니다. HEX, RGB, HSL 형식으로 입력해주세요.";
+      return;
+    }
+
+    const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+    const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+
+    document.getElementById("cc-hex-value").textContent = hex;
+    document.getElementById("cc-rgb-value").textContent = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+    document.getElementById("cc-hsl-value").textContent = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+
+    preview.style.display = "block";
+    preview.style.background = hex;
+    const p = preview.querySelector("p");
+    p.textContent = hex;
+    p.style.color = relativeLuminance(rgb) > 0.5 ? "#000" : "#fff";
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- CSS 그라디언트 생성기 ---------- */
+function initCssGradient() {
+  const c1 = document.getElementById("cg-color1");
+  const c2 = document.getElementById("cg-color2");
+  const angle = document.getElementById("cg-angle");
+  const angleLabel = document.getElementById("cg-angle-label");
+  const preview = document.getElementById("cg-preview");
+  const output = document.getElementById("cg-output");
+
+  function update() {
+    angleLabel.textContent = `${angle.value}deg`;
+    const css = `linear-gradient(${angle.value}deg, ${c1.value}, ${c2.value})`;
+    preview.style.background = css;
+    output.value = `background: ${css};`;
+  }
+  [c1, c2, angle].forEach((el) => el.addEventListener("input", update));
+  update();
+
+  document.getElementById("cg-copy-btn").addEventListener("click", async (e) => {
+    if (await copyText(output.value)) flashCopied(e.target, "CSS 복사");
+  });
+}
+
+/* ---------- CSS Box Shadow 생성기 ---------- */
+function initCssBoxShadow() {
+  const x = document.getElementById("bs-x");
+  const y = document.getElementById("bs-y");
+  const blur = document.getElementById("bs-blur");
+  const spread = document.getElementById("bs-spread");
+  const color = document.getElementById("bs-color");
+  const preview = document.getElementById("bs-preview");
+  const output = document.getElementById("bs-output");
+  initSegmented("bs-inset");
+  const insetWrap = document.getElementById("bs-inset");
+
+  function update() {
+    document.getElementById("bs-x-label").textContent = `${x.value}px`;
+    document.getElementById("bs-y-label").textContent = `${y.value}px`;
+    document.getElementById("bs-blur-label").textContent = `${blur.value}px`;
+    document.getElementById("bs-spread-label").textContent = `${spread.value}px`;
+    const insetVal = getSegmentedValue("bs-inset") === "inset" ? "inset " : "";
+    const shadow = `${insetVal}${x.value}px ${y.value}px ${blur.value}px ${spread.value}px ${color.value}`;
+    preview.style.boxShadow = shadow;
+    output.value = `box-shadow: ${shadow};`;
+  }
+
+  [x, y, blur, spread, color].forEach((el) => el.addEventListener("input", update));
+  insetWrap.addEventListener("click", update);
+  update();
+
+  document.getElementById("bs-copy-btn").addEventListener("click", async (e) => {
+    if (await copyText(output.value)) flashCopied(e.target, "CSS 복사");
+  });
+}
+
+/* ---------- WCAG 색상 대비 검사기 ---------- */
+function initWcagContrast() {
+  document.getElementById("wc-check-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("wc-error");
+    const resultEl = document.getElementById("wc-result");
+    const preview = document.getElementById("wc-preview");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const bgRgb = parseColorInput(document.getElementById("wc-bg").value);
+    const textRgb = parseColorInput(document.getElementById("wc-text").value);
+    if (!bgRgb || !textRgb) {
+      errorEl.hidden = false;
+      errorEl.textContent = "색상 형식을 확인해주세요. (예: #ffffff)";
+      return;
+    }
+
+    const l1 = relativeLuminance(bgRgb);
+    const l2 = relativeLuminance(textRgb);
+    const ratio = (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+
+    preview.style.background = rgbToHex(bgRgb.r, bgRgb.g, bgRgb.b);
+    preview.style.color = rgbToHex(textRgb.r, textRgb.g, textRgb.b);
+    preview.textContent = "미리보기 텍스트 Aa 123";
+
+    document.getElementById("wc-ratio-value").textContent = `${ratio.toFixed(2)} : 1`;
+    document.getElementById("wc-aa-value").textContent = ratio >= 4.5 ? "통과" : "미달";
+    document.getElementById("wc-aa-large-value").textContent = ratio >= 3 ? "통과" : "미달";
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- cubic-bezier 이징 생성기 ---------- */
+function initCubicBezier() {
+  const x1 = document.getElementById("cb-x1");
+  const y1 = document.getElementById("cb-y1");
+  const x2 = document.getElementById("cb-x2");
+  const y2 = document.getElementById("cb-y2");
+  const output = document.getElementById("cb-output");
+  const curve = document.getElementById("cb-curve");
+  const h1 = document.getElementById("cb-handle1");
+  const h2 = document.getElementById("cb-handle2");
+
+  function update() {
+    document.getElementById("cb-x1-label").textContent = Number(x1.value).toFixed(2);
+    document.getElementById("cb-y1-label").textContent = Number(y1.value).toFixed(2);
+    document.getElementById("cb-x2-label").textContent = Number(x2.value).toFixed(2);
+    document.getElementById("cb-y2-label").textContent = Number(y2.value).toFixed(2);
+
+    const px1 = Number(x1.value) * 100;
+    const py1 = 100 - Number(y1.value) * 100;
+    const px2 = Number(x2.value) * 100;
+    const py2 = 100 - Number(y2.value) * 100;
+
+    curve.setAttribute("d", `M0,100 C${px1},${py1} ${px2},${py2} 100,0`);
+    h1.setAttribute("cx", px1); h1.setAttribute("cy", py1);
+    h2.setAttribute("cx", px2); h2.setAttribute("cy", py2);
+
+    output.value = `cubic-bezier(${Number(x1.value).toFixed(2)}, ${Number(y1.value).toFixed(2)}, ${Number(x2.value).toFixed(2)}, ${Number(y2.value).toFixed(2)})`;
+  }
+
+  [x1, y1, x2, y2].forEach((el) => el.addEventListener("input", update));
+  update();
+
+  document.getElementById("cb-copy-btn").addEventListener("click", async (e) => {
+    if (await copyText(output.value)) flashCopied(e.target, "값 복사");
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
@@ -753,6 +1411,21 @@ function init() {
   initJeonse();
   initSavings();
   initAdsense();
+  initJsonToCsv();
+  initUnixTimestamp();
+  initBaseConverter();
+  initRegexTester();
+  initAsciiConverter();
+  initKeycodeChecker();
+  initHttpStatus();
+  initJwtDecoder();
+  initHashGenerator();
+  initUuidGenerator();
+  initColorConverter();
+  initCssGradient();
+  initCssBoxShadow();
+  initWcagContrast();
+  initCubicBezier();
 }
 
 document.addEventListener("DOMContentLoaded", init);
