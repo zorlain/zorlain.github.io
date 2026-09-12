@@ -2002,221 +2002,304 @@
   <section class="tab-panel" data-tab-panel="pdf-merge" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF 합치기</h2>
-      <p class="card-desc-short">여러 개의 PDF 파일을 원하는 순서로 하나로 합칩니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">여러 개의 PDF 파일을 선택한 순서대로 하나로 합칩니다.</p>
+      <div class="wip-dropzone" id="pm-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일들을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="pm-hint">PDF 파일을 2개 이상 선택해주세요 (선택한 순서대로 합쳐집니다)</p>
+        <input type="file" id="pm-input" accept=".pdf,application/pdf" multiple style="display: none;" />
+        <button type="button" class="secondary-btn" id="pm-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="pm-error" hidden></p>
+      <p class="wip-note" id="pm-loading" hidden>합치는 중입니다...</p>
+      <a class="calc-btn" id="pm-download" style="text-align:center; text-decoration:none; display:block;" download="merged.pdf" hidden>합쳐진 PDF 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-compress" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF 용량 줄이기</h2>
-      <p class="card-desc-short">PDF 파일의 용량을 화질 저하 없이 압축합니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">각 페이지를 이미지로 다시 그려 용량을 줄입니다. 스캔·사진 위주 PDF에 효과적입니다.</p>
+      <div class="wip-dropzone" id="pcps-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="pcps-hint">PDF 파일을 선택해주세요</p>
+        <input type="file" id="pcps-input" accept=".pdf,application/pdf" style="display: none;" />
+        <button type="button" class="secondary-btn" id="pcps-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-group" style="margin-top: 16px;">
+        <label for="pcps-quality">압축 품질: <span id="pcps-quality-label">보통</span></label>
+        <input type="range" id="pcps-quality" min="1" max="3" step="1" value="2" class="range-input" />
+      </div>
+      <button class="calc-btn" id="pcps-run-btn">압축하기</button>
+      <p class="calc-error-msg" id="pcps-error" hidden></p>
+      <p class="wip-note" id="pcps-loading" hidden>압축하는 중입니다. 페이지 수에 따라 시간이 걸릴 수 있습니다...</p>
+      <div class="tool-btn-grid" id="pcps-result" hidden>
+        <div class="result-stat"><div class="result-stat-label">원본 용량</div><div class="result-stat-value" id="pcps-before-value">-</div></div>
+        <div class="result-stat highlight"><div class="result-stat-label">압축 후 용량</div><div class="result-stat-value" id="pcps-after-value">-</div></div>
+      </div>
+      <a class="calc-btn" id="pcps-download" style="text-align:center; text-decoration:none; display:block;" download="compressed.pdf" hidden>압축된 PDF 다운로드</a>
+      <p class="wip-note" id="pcps-warn" hidden>텍스트 위주 PDF는 이미지로 다시 그리면 오히려 용량이 늘어날 수 있습니다. 스캔·사진 위주 PDF에서 더 효과적입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-to-jpg" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF to JPG</h2>
       <p class="card-desc-short">PDF 페이지를 JPG 이미지 파일로 변환합니다.</p>
-      <div class="wip-dropzone">
+      <div class="wip-dropzone" id="p2j-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="p2j-hint">PDF 파일을 선택해주세요</p>
+        <input type="file" id="p2j-input" accept=".pdf,application/pdf" style="display: none;" />
+        <button type="button" class="secondary-btn" id="p2j-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="p2j-error" hidden></p>
+      <p class="wip-note" id="p2j-loading" hidden>변환하는 중입니다...</p>
+      <div id="p2j-preview" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;"></div>
+      <a class="calc-btn" id="p2j-download" style="text-align:center; text-decoration:none; display:block;" download="pages.zip" hidden>JPG 전체 다운로드 (ZIP)</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-delete-page" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF 페이지 삭제</h2>
       <p class="card-desc-short">PDF에서 원하지 않는 페이지만 골라 삭제합니다.</p>
-      <div class="wip-dropzone">
+      <div class="wip-dropzone" id="pdp-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="pdp-hint">PDF 파일을 선택해주세요</p>
+        <input type="file" id="pdp-input" accept=".pdf,application/pdf" style="display: none;" />
+        <button type="button" class="secondary-btn" id="pdp-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-group" style="margin-top: 16px;">
+        <label for="pdp-pages">삭제할 페이지 번호 (예: 1,3,5-7)</label>
+        <div class="field-input-wrap"><input type="text" id="pdp-pages" placeholder="예: 1,3,5-7" /></div>
+      </div>
+      <button class="calc-btn" id="pdp-run-btn">삭제하기</button>
+      <p class="calc-error-msg" id="pdp-error" hidden></p>
+      <a class="calc-btn" id="pdp-download" style="text-align:center; text-decoration:none; display:block;" download="deleted.pdf" hidden>결과 PDF 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-split" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF 나누기</h2>
-      <p class="card-desc-short">하나의 PDF 파일을 여러 개의 파일로 분할합니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">하나의 PDF 파일을 지정한 페이지 단위로 여러 파일로 분할합니다.</p>
+      <div class="wip-dropzone" id="psp-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="psp-hint">PDF 파일을 선택해주세요</p>
+        <input type="file" id="psp-input" accept=".pdf,application/pdf" style="display: none;" />
+        <button type="button" class="secondary-btn" id="psp-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-group" style="margin-top: 16px;">
+        <label for="psp-chunk">파일당 페이지 수</label>
+        <div class="field-input-wrap"><input type="text" inputmode="numeric" id="psp-chunk" value="1" /></div>
+      </div>
+      <button class="calc-btn" id="psp-run-btn">나누기</button>
+      <p class="calc-error-msg" id="psp-error" hidden></p>
+      <p class="wip-note" id="psp-loading" hidden>나누는 중입니다...</p>
+      <a class="calc-btn" id="psp-download" style="text-align:center; text-decoration:none; display:block;" download="split.zip" hidden>나눠진 파일 다운로드 (ZIP)</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-sign" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF 간편 편집(서명)</h2>
-      <p class="card-desc-short">PDF 문서에 서명, 도장, 텍스트를 바로 추가합니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">PDF 문서 원하는 위치에 서명·도장 텍스트를 바로 추가합니다.</p>
+      <div class="wip-dropzone" id="psg-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="psg-hint">PDF 파일을 선택해주세요</p>
+        <input type="file" id="psg-input" accept=".pdf,application/pdf" style="display: none;" />
+        <button type="button" class="secondary-btn" id="psg-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-row" style="margin-top: 16px;">
+        <div class="field-group">
+          <label for="psg-text">서명 텍스트</label>
+          <div class="field-input-wrap"><input type="text" id="psg-text" placeholder="예: 홍길동" /></div>
+        </div>
+        <div class="field-group">
+          <label for="psg-page">적용할 페이지</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="psg-page" value="1" /></div>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>서명 위치</label>
+        <div class="segmented" id="psg-position">
+          <button type="button" data-value="top-left">좌상단</button>
+          <button type="button" data-value="top-right">우상단</button>
+          <button type="button" class="active" data-value="bottom-left">좌하단</button>
+          <button type="button" data-value="bottom-right">우하단</button>
+        </div>
+      </div>
+      <button class="calc-btn" id="psg-run-btn">서명 추가하기</button>
+      <p class="calc-error-msg" id="psg-error" hidden></p>
+      <a class="calc-btn" id="psg-download" style="text-align:center; text-decoration:none; display:block;" download="signed.pdf" hidden>서명된 PDF 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-to-png" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF to PNG</h2>
       <p class="card-desc-short">PDF 페이지를 PNG 이미지 파일로 변환합니다.</p>
-      <div class="wip-dropzone">
+      <div class="wip-dropzone" id="p2p-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="p2p-hint">PDF 파일을 선택해주세요</p>
+        <input type="file" id="p2p-input" accept=".pdf,application/pdf" style="display: none;" />
+        <button type="button" class="secondary-btn" id="p2p-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="p2p-error" hidden></p>
+      <p class="wip-note" id="p2p-loading" hidden>변환하는 중입니다...</p>
+      <div id="p2p-preview" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;"></div>
+      <a class="calc-btn" id="p2p-download" style="text-align:center; text-decoration:none; display:block;" download="pages.zip" hidden>PNG 전체 다운로드 (ZIP)</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-half-split" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF 페이지 반으로 나누기</h2>
-      <p class="card-desc-short">가로로 긴 PDF 페이지를 절반씩 나눠 저장합니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">가로로 긴 PDF 페이지를 좌우 절반으로 나눠 저장합니다.</p>
+      <div class="wip-dropzone" id="phs-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="phs-hint">PDF 파일을 선택해주세요</p>
+        <input type="file" id="phs-input" accept=".pdf,application/pdf" style="display: none;" />
+        <button type="button" class="secondary-btn" id="phs-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn" id="phs-run-btn">반으로 나누기</button>
+      <p class="calc-error-msg" id="phs-error" hidden></p>
+      <a class="calc-btn" id="phs-download" style="text-align:center; text-decoration:none; display:block;" download="half-split.pdf" hidden>결과 PDF 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-2up" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF 페이지 2장씩 합치기</h2>
       <p class="card-desc-short">PDF 페이지 두 장을 한 장으로 모아서 인쇄용으로 만듭니다.</p>
-      <div class="wip-dropzone">
+      <div class="wip-dropzone" id="p2u-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="p2u-hint">PDF 파일을 선택해주세요</p>
+        <input type="file" id="p2u-input" accept=".pdf,application/pdf" style="display: none;" />
+        <button type="button" class="secondary-btn" id="p2u-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn" id="p2u-run-btn">2장씩 합치기</button>
+      <p class="calc-error-msg" id="p2u-error" hidden></p>
+      <a class="calc-btn" id="p2u-download" style="text-align:center; text-decoration:none; display:block;" download="2up.pdf" hidden>결과 PDF 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-crop" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF 여백 자르기</h2>
-      <p class="card-desc-short">PDF 페이지의 불필요한 여백을 잘라냅니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">PDF 페이지 가장자리 여백을 비율만큼 잘라냅니다.</p>
+      <div class="wip-dropzone" id="pcr-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="pcr-hint">PDF 파일을 선택해주세요</p>
+        <input type="file" id="pcr-input" accept=".pdf,application/pdf" style="display: none;" />
+        <button type="button" class="secondary-btn" id="pcr-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-group" style="margin-top: 16px;">
+        <label for="pcr-margin">자를 여백 비율: <span id="pcr-margin-label">10%</span></label>
+        <input type="range" id="pcr-margin" min="1" max="30" step="1" value="10" class="range-input" />
+      </div>
+      <button class="calc-btn" id="pcr-run-btn">여백 자르기</button>
+      <p class="calc-error-msg" id="pcr-error" hidden></p>
+      <a class="calc-btn" id="pcr-download" style="text-align:center; text-decoration:none; display:block;" download="cropped.pdf" hidden>결과 PDF 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-extract-text" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF 텍스트 추출</h2>
       <p class="card-desc-short">PDF 안의 텍스트만 그대로 뽑아내어 복사합니다.</p>
-      <div class="wip-dropzone">
+      <div class="wip-dropzone" id="pet-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>PDF 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="pet-hint">PDF 파일을 선택해주세요</p>
+        <input type="file" id="pet-input" accept=".pdf,application/pdf" style="display: none;" />
+        <button type="button" class="secondary-btn" id="pet-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="pet-error" hidden></p>
+      <p class="wip-note" id="pet-loading" hidden>텍스트를 추출하는 중입니다...</p>
+      <div class="field-group" id="pet-result-group" hidden style="margin-top: 20px;">
+        <label>추출된 텍스트</label>
+        <div class="field-input-wrap"><textarea id="pet-output" rows="10" readonly></textarea></div>
+      </div>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="pet-copy-btn">결과 복사</button>
+        <a class="secondary-btn calc-btn" id="pet-download" style="text-align:center; text-decoration:none;" download="extracted.txt" hidden>TXT 다운로드</a>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-compare" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>PDF 비교</h2>
-      <p class="card-desc-short">두 PDF 문서의 차이점을 비교해 보여줍니다.</p>
-      <div class="wip-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p>비교할 두 개의 PDF 파일을 선택하세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+      <p class="card-desc-short">두 PDF 문서의 텍스트를 줄 단위로 비교해 차이점을 보여줍니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="pcm-input-a">PDF A</label>
+          <div class="field-input-wrap"><input type="file" id="pcm-input-a" accept=".pdf,application/pdf" /></div>
+        </div>
+        <div class="field-group">
+          <label for="pcm-input-b">PDF B</label>
+          <div class="field-input-wrap"><input type="file" id="pcm-input-b" accept=".pdf,application/pdf" /></div>
+        </div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn" id="pcm-run-btn">비교하기</button>
+      <p class="calc-error-msg" id="pcm-error" hidden></p>
+      <p class="wip-note" id="pcm-loading" hidden>비교하는 중입니다...</p>
+      <div class="field-group" id="pcm-result-wrap" hidden style="margin-top: 20px;">
+        <label id="pcm-stat">-</label>
+        <div id="pcm-result" style="background: var(--card-elevated); border-radius: 12px; padding: 12px; max-height: 400px; overflow-y: auto;"></div>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-to-pdf" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>이미지→PDF 변환</h2>
-      <p class="card-desc-short">여러 장의 이미지를 하나의 PDF 문서로 변환합니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">여러 장의 이미지를 선택한 순서대로 한 페이지씩 담은 PDF 문서로 만듭니다.</p>
+      <div class="wip-dropzone" id="i2p-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>이미지를 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="i2p-hint">이미지를 1장 이상 선택해주세요</p>
+        <input type="file" id="i2p-input" accept="image/*" multiple style="display: none;" />
+        <button type="button" class="secondary-btn" id="i2p-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="i2p-error" hidden></p>
+      <p class="wip-note" id="i2p-loading" hidden>PDF를 만드는 중입니다...</p>
+      <a class="calc-btn" id="i2p-download" style="text-align:center; text-decoration:none; display:block;" download="images.pdf" hidden>PDF 다운로드</a>
     </div>
   </section>
 

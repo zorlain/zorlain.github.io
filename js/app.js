@@ -2953,6 +2953,719 @@ function initTextCompare() {
   });
 }
 
+/* ---------- PDF 도구 공용 헬퍼 (pdf-lib + pdf.js 지연 로딩) ---------- */
+function loadPdfLibExt() { return loadExternalScript("https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js", () => window.PDFLib); }
+function loadFontkitExt() { return loadExternalScript("https://cdn.jsdelivr.net/npm/@pdf-lib/fontkit@1.1.1/dist/fontkit.umd.min.js", () => window.fontkit); }
+let _koreanFontBytesPromise = null;
+function loadKoreanFontBytes() {
+  if (!_koreanFontBytesPromise) {
+    _koreanFontBytesPromise = fetch("https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-kr@5.0.18/files/noto-sans-kr-korean-400-normal.woff").then((r) => r.arrayBuffer());
+  }
+  return _koreanFontBytesPromise;
+}
+// 한글 등 비-WinAnsi 문자를 PDF에 그릴 때 쓰는 임베드 폰트(fontkit 등록 + Noto Sans KR 서브셋 임베드)
+async function embedTextFont(pdfDoc) {
+  const fontkit = await loadFontkitExt();
+  pdfDoc.registerFontkit(fontkit);
+  const fontBytes = await loadKoreanFontBytes();
+  return pdfDoc.embedFont(fontBytes, { subset: true });
+}
+let _pdfjsWorkerConfigured = false;
+async function loadPdfJsExt() {
+  const lib = await loadExternalScript("https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js", () => window.pdfjsLib);
+  if (!_pdfjsWorkerConfigured) {
+    lib.GlobalWorkerOptions.workerSrc = "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+    _pdfjsWorkerConfigured = true;
+  }
+  return lib;
+}
+
+function formatBytes(n) {
+  if (n < 1024) return `${n} B`;
+  if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+  return `${(n / 1024 / 1024).toFixed(2)} MB`;
+}
+
+function parsePageRanges(str, maxPage) {
+  const set = new Set();
+  str.split(",").forEach((part) => {
+    part = part.trim();
+    if (!part) return;
+    if (part.includes("-")) {
+      const [a, b] = part.split("-").map((s) => parseInt(s.trim(), 10));
+      for (let i = a; i <= b; i++) if (i >= 1 && i <= maxPage) set.add(i);
+    } else {
+      const n = parseInt(part, 10);
+      if (n >= 1 && n <= maxPage) set.add(n);
+    }
+  });
+  return set;
+}
+
+async function renderPdfPageToCanvas(page, scale) {
+  const viewport = page.getViewport({ scale });
+  const canvas = document.createElement("canvas");
+  canvas.width = viewport.width;
+  canvas.height = viewport.height;
+  await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+  return canvas;
+}
+
+async function extractPdfFullText(pdfjsDoc) {
+  let text = "";
+  for (let i = 1; i <= pdfjsDoc.numPages; i++) {
+    const page = await pdfjsDoc.getPage(i);
+    const content = await page.getTextContent();
+    text += content.items.map((it) => it.str).join(" ") + "\n\n";
+  }
+  return text.trim();
+}
+
+/* ---------- PDF 합치기 ---------- */
+function initPdfMerge() {
+  const input = document.getElementById("pm-input");
+  const hint = document.getElementById("pm-hint");
+  const errorEl = document.getElementById("pm-error");
+  const loadingEl = document.getElementById("pm-loading");
+  const downloadLink = document.getElementById("pm-download");
+
+  document.getElementById("pm-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    const files = Array.from(input.files);
+    if (files.length < 2) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF 파일을 2개 이상 선택해주세요.";
+      return;
+    }
+    hint.textContent = `${files.length}개 파일 선택됨`;
+    loadingEl.hidden = false;
+    try {
+      const { PDFDocument } = await loadPdfLibExt();
+      const outDoc = await PDFDocument.create();
+      for (const file of files) {
+        const srcDoc = await PDFDocument.load(await file.arrayBuffer());
+        const pages = await outDoc.copyPages(srcDoc, srcDoc.getPageIndices());
+        pages.forEach((p) => outDoc.addPage(p));
+      }
+      const outBytes = await outDoc.save();
+      downloadLink.href = URL.createObjectURL(new Blob([outBytes], { type: "application/pdf" }));
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF를 합치는 중 오류가 발생했습니다: " + e.message;
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+}
+
+/* ---------- PDF 용량 줄이기 ---------- */
+function initPdfCompress() {
+  const input = document.getElementById("pcps-input");
+  const hint = document.getElementById("pcps-hint");
+  const qualityInput = document.getElementById("pcps-quality");
+  const qualityLabel = document.getElementById("pcps-quality-label");
+  const errorEl = document.getElementById("pcps-error");
+  const loadingEl = document.getElementById("pcps-loading");
+  const resultEl = document.getElementById("pcps-result");
+  const downloadLink = document.getElementById("pcps-download");
+  let selectedFile = null;
+
+  const Q_LABEL = { 1: "낮음(용량 최소)", 2: "보통", 3: "높음(화질 우선)" };
+  const Q_SCALE = { 1: 0.8, 2: 1.2, 3: 1.8 };
+  const Q_JPEG = { 1: 0.5, 2: 0.7, 3: 0.85 };
+
+  qualityInput.addEventListener("input", () => { qualityLabel.textContent = Q_LABEL[qualityInput.value]; });
+
+  document.getElementById("pcps-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    selectedFile = input.files[0];
+    if (selectedFile) hint.textContent = selectedFile.name;
+  });
+
+  document.getElementById("pcps-run-btn").addEventListener("click", async () => {
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+    downloadLink.hidden = true;
+    if (!selectedFile) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF 파일을 먼저 선택해주세요.";
+      return;
+    }
+    loadingEl.hidden = false;
+    try {
+      const q = Number(qualityInput.value);
+      const originalBytes = await selectedFile.arrayBuffer();
+      const pdfjsLib = await loadPdfJsExt();
+      const pdfjsDoc = await pdfjsLib.getDocument({ data: originalBytes.slice(0) }).promise;
+      const { PDFDocument } = await loadPdfLibExt();
+      const outDoc = await PDFDocument.create();
+
+      for (let i = 1; i <= pdfjsDoc.numPages; i++) {
+        const page = await pdfjsDoc.getPage(i);
+        const baseViewport = page.getViewport({ scale: 1 });
+        const canvas = await renderPdfPageToCanvas(page, Q_SCALE[q]);
+        const jpegDataUrl = canvas.toDataURL("image/jpeg", Q_JPEG[q]);
+        const jpegBytes = await (await fetch(jpegDataUrl)).arrayBuffer();
+        const jpegImage = await outDoc.embedJpg(jpegBytes);
+        const outPage = outDoc.addPage([baseViewport.width, baseViewport.height]);
+        outPage.drawImage(jpegImage, { x: 0, y: 0, width: baseViewport.width, height: baseViewport.height });
+      }
+
+      const outBytes = await outDoc.save();
+      document.getElementById("pcps-before-value").textContent = formatBytes(originalBytes.byteLength);
+      document.getElementById("pcps-after-value").textContent = formatBytes(outBytes.byteLength);
+      resultEl.hidden = false;
+      document.getElementById("pcps-warn").hidden = outBytes.byteLength <= originalBytes.byteLength;
+      downloadLink.href = URL.createObjectURL(new Blob([outBytes], { type: "application/pdf" }));
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "압축 중 오류가 발생했습니다: " + e.message;
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+}
+
+/* ---------- PDF to JPG/PNG (공용) ---------- */
+function initPdfToImageConverter(prefix, mimeType, ext) {
+  const input = document.getElementById(`${prefix}-input`);
+  const hint = document.getElementById(`${prefix}-hint`);
+  const errorEl = document.getElementById(`${prefix}-error`);
+  const loadingEl = document.getElementById(`${prefix}-loading`);
+  const previewEl = document.getElementById(`${prefix}-preview`);
+  const downloadLink = document.getElementById(`${prefix}-download`);
+
+  document.getElementById(`${prefix}-select-btn`).addEventListener("click", () => input.click());
+
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    previewEl.innerHTML = "";
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    loadingEl.hidden = false;
+    try {
+      const pdfjsLib = await loadPdfJsExt();
+      const pdfDoc = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+      const JSZip = await loadJsZipLib();
+      const zip = new JSZip();
+      const dataUrls = [];
+
+      for (let i = 1; i <= pdfDoc.numPages; i++) {
+        const page = await pdfDoc.getPage(i);
+        const canvas = await renderPdfPageToCanvas(page, 1.5);
+        const dataUrl = canvas.toDataURL(mimeType, 0.92);
+        dataUrls.push(dataUrl);
+        zip.file(`page-${i}.${ext}`, dataUrl.split(",")[1], { base64: true });
+
+        const thumb = document.createElement("img");
+        thumb.src = dataUrl;
+        thumb.style.width = "80px";
+        thumb.style.height = "auto";
+        thumb.style.borderRadius = "6px";
+        thumb.style.border = "1px solid var(--border)";
+        previewEl.appendChild(thumb);
+      }
+
+      if (dataUrls.length === 1) {
+        downloadLink.href = dataUrls[0];
+        downloadLink.download = file.name.replace(/\.[^.]+$/, "") + "." + ext;
+      } else {
+        downloadLink.href = URL.createObjectURL(await zip.generateAsync({ type: "blob" }));
+        downloadLink.download = file.name.replace(/\.[^.]+$/, "") + ".zip";
+      }
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "변환 중 오류가 발생했습니다: " + e.message;
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+}
+function initPdfToJpg() { initPdfToImageConverter("p2j", "image/jpeg", "jpg"); }
+function initPdfToPng() { initPdfToImageConverter("p2p", "image/png", "png"); }
+
+/* ---------- PDF 페이지 삭제 ---------- */
+function initPdfDeletePage() {
+  const input = document.getElementById("pdp-input");
+  const hint = document.getElementById("pdp-hint");
+  const errorEl = document.getElementById("pdp-error");
+  const downloadLink = document.getElementById("pdp-download");
+  let selectedFile = null;
+  let totalPages = 0;
+
+  document.getElementById("pdp-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", async () => {
+    selectedFile = input.files[0];
+    downloadLink.hidden = true;
+    errorEl.hidden = true;
+    if (!selectedFile) return;
+    try {
+      const { PDFDocument } = await loadPdfLibExt();
+      const doc = await PDFDocument.load(await selectedFile.arrayBuffer());
+      totalPages = doc.getPageCount();
+      hint.textContent = `${selectedFile.name} (총 ${totalPages}페이지)`;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF를 읽을 수 없습니다.";
+    }
+  });
+
+  document.getElementById("pdp-run-btn").addEventListener("click", async () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    if (!selectedFile) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF 파일을 먼저 선택해주세요.";
+      return;
+    }
+    const toDelete = parsePageRanges(document.getElementById("pdp-pages").value, totalPages);
+    if (toDelete.size === 0) {
+      errorEl.hidden = false;
+      errorEl.textContent = "삭제할 페이지 번호를 입력해주세요.";
+      return;
+    }
+    if (toDelete.size >= totalPages) {
+      errorEl.hidden = false;
+      errorEl.textContent = "모든 페이지를 삭제할 수는 없습니다.";
+      return;
+    }
+    try {
+      const { PDFDocument } = await loadPdfLibExt();
+      const doc = await PDFDocument.load(await selectedFile.arrayBuffer());
+      const keepIndices = [];
+      for (let i = 0; i < totalPages; i++) if (!toDelete.has(i + 1)) keepIndices.push(i);
+      const outDoc = await PDFDocument.create();
+      const pages = await outDoc.copyPages(doc, keepIndices);
+      pages.forEach((p) => outDoc.addPage(p));
+      const outBytes = await outDoc.save();
+      downloadLink.href = URL.createObjectURL(new Blob([outBytes], { type: "application/pdf" }));
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "처리 중 오류가 발생했습니다: " + e.message;
+    }
+  });
+}
+
+/* ---------- PDF 나누기 ---------- */
+function initPdfSplit() {
+  const input = document.getElementById("psp-input");
+  const hint = document.getElementById("psp-hint");
+  const errorEl = document.getElementById("psp-error");
+  const loadingEl = document.getElementById("psp-loading");
+  const downloadLink = document.getElementById("psp-download");
+  let selectedFile = null;
+
+  document.getElementById("psp-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    selectedFile = input.files[0];
+    if (selectedFile) hint.textContent = selectedFile.name;
+    downloadLink.hidden = true;
+  });
+
+  document.getElementById("psp-run-btn").addEventListener("click", async () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    if (!selectedFile) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF 파일을 먼저 선택해주세요.";
+      return;
+    }
+    const chunkSize = Math.max(1, parseInt(document.getElementById("psp-chunk").value, 10) || 1);
+    loadingEl.hidden = false;
+    try {
+      const { PDFDocument } = await loadPdfLibExt();
+      const srcDoc = await PDFDocument.load(await selectedFile.arrayBuffer());
+      const totalPages = srcDoc.getPageCount();
+      const JSZip = await loadJsZipLib();
+      const zip = new JSZip();
+      let partNum = 1;
+      for (let start = 0; start < totalPages; start += chunkSize) {
+        const indices = [];
+        for (let i = start; i < Math.min(start + chunkSize, totalPages); i++) indices.push(i);
+        const outDoc = await PDFDocument.create();
+        const pages = await outDoc.copyPages(srcDoc, indices);
+        pages.forEach((p) => outDoc.addPage(p));
+        zip.file(`part-${partNum}.pdf`, await outDoc.save());
+        partNum++;
+      }
+      downloadLink.href = URL.createObjectURL(await zip.generateAsync({ type: "blob" }));
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "나누는 중 오류가 발생했습니다: " + e.message;
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+}
+
+/* ---------- PDF 간편 편집(서명) ---------- */
+function initPdfSign() {
+  const input = document.getElementById("psg-input");
+  const hint = document.getElementById("psg-hint");
+  const errorEl = document.getElementById("psg-error");
+  const downloadLink = document.getElementById("psg-download");
+  initSegmented("psg-position");
+  let selectedFile = null;
+
+  document.getElementById("psg-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    selectedFile = input.files[0];
+    if (selectedFile) hint.textContent = selectedFile.name;
+    downloadLink.hidden = true;
+  });
+
+  document.getElementById("psg-run-btn").addEventListener("click", async () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    const text = document.getElementById("psg-text").value.trim();
+    if (!selectedFile || !text) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF 파일과 서명 텍스트를 모두 입력해주세요.";
+      return;
+    }
+    try {
+      const { PDFDocument, rgb } = await loadPdfLibExt();
+      const doc = await PDFDocument.load(await selectedFile.arrayBuffer());
+      const pageNum = Math.min(Math.max(1, parseInt(document.getElementById("psg-page").value, 10) || 1), doc.getPageCount());
+      const page = doc.getPages()[pageNum - 1];
+      const font = await embedTextFont(doc);
+      const { width, height } = page.getSize();
+      const fontSize = 18;
+      const textWidth = font.widthOfTextAtSize(text, fontSize);
+      const margin = 30;
+      const pos = getSegmentedValue("psg-position");
+      const x = pos.includes("right") ? width - textWidth - margin : margin;
+      const y = pos.includes("top") ? height - margin - fontSize : margin;
+      page.drawText(text, { x, y, size: fontSize, font, color: rgb(0.1, 0.3, 0.85) });
+      const outBytes = await doc.save();
+      downloadLink.href = URL.createObjectURL(new Blob([outBytes], { type: "application/pdf" }));
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "서명 추가 중 오류가 발생했습니다: " + e.message;
+    }
+  });
+}
+
+/* ---------- PDF 페이지 반으로 나누기 ---------- */
+function initPdfHalfSplit() {
+  const input = document.getElementById("phs-input");
+  const hint = document.getElementById("phs-hint");
+  const errorEl = document.getElementById("phs-error");
+  const downloadLink = document.getElementById("phs-download");
+  let selectedFile = null;
+
+  document.getElementById("phs-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    selectedFile = input.files[0];
+    if (selectedFile) hint.textContent = selectedFile.name;
+    downloadLink.hidden = true;
+  });
+
+  document.getElementById("phs-run-btn").addEventListener("click", async () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    if (!selectedFile) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF 파일을 먼저 선택해주세요.";
+      return;
+    }
+    try {
+      const { PDFDocument } = await loadPdfLibExt();
+      const srcDoc = await PDFDocument.load(await selectedFile.arrayBuffer());
+      const outDoc = await PDFDocument.create();
+      for (const srcPage of srcDoc.getPages()) {
+        const { width, height } = srcPage.getSize();
+        const halfW = width / 2;
+        const leftEmbed = await outDoc.embedPage(srcPage, { left: 0, bottom: 0, right: halfW, top: height });
+        const rightEmbed = await outDoc.embedPage(srcPage, { left: halfW, bottom: 0, right: width, top: height });
+        const leftPage = outDoc.addPage([halfW, height]);
+        leftPage.drawPage(leftEmbed, { x: 0, y: 0, width: halfW, height });
+        const rightPage = outDoc.addPage([halfW, height]);
+        rightPage.drawPage(rightEmbed, { x: 0, y: 0, width: halfW, height });
+      }
+      const outBytes = await outDoc.save();
+      downloadLink.href = URL.createObjectURL(new Blob([outBytes], { type: "application/pdf" }));
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "나누는 중 오류가 발생했습니다: " + e.message;
+    }
+  });
+}
+
+/* ---------- PDF 페이지 2장씩 합치기 ---------- */
+function initPdf2Up() {
+  const input = document.getElementById("p2u-input");
+  const hint = document.getElementById("p2u-hint");
+  const errorEl = document.getElementById("p2u-error");
+  const downloadLink = document.getElementById("p2u-download");
+  let selectedFile = null;
+
+  document.getElementById("p2u-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    selectedFile = input.files[0];
+    if (selectedFile) hint.textContent = selectedFile.name;
+    downloadLink.hidden = true;
+  });
+
+  document.getElementById("p2u-run-btn").addEventListener("click", async () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    if (!selectedFile) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF 파일을 먼저 선택해주세요.";
+      return;
+    }
+    try {
+      const { PDFDocument } = await loadPdfLibExt();
+      const srcDoc = await PDFDocument.load(await selectedFile.arrayBuffer());
+      const outDoc = await PDFDocument.create();
+      const srcPages = srcDoc.getPages();
+      for (let i = 0; i < srcPages.length; i += 2) {
+        const p1 = srcPages[i];
+        const p2 = srcPages[i + 1];
+        const size1 = p1.getSize();
+        const size2 = p2 ? p2.getSize() : { width: 0, height: 0 };
+        const maxH = Math.max(size1.height, size2.height);
+        const outPage = outDoc.addPage([size1.width + size2.width, maxH]);
+
+        const embed1 = await outDoc.embedPage(p1);
+        outPage.drawPage(embed1, { x: 0, y: maxH - size1.height, width: size1.width, height: size1.height });
+
+        if (p2) {
+          const embed2 = await outDoc.embedPage(p2);
+          outPage.drawPage(embed2, { x: size1.width, y: maxH - size2.height, width: size2.width, height: size2.height });
+        }
+      }
+      const outBytes = await outDoc.save();
+      downloadLink.href = URL.createObjectURL(new Blob([outBytes], { type: "application/pdf" }));
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "합치는 중 오류가 발생했습니다: " + e.message;
+    }
+  });
+}
+
+/* ---------- PDF 여백 자르기 ---------- */
+function initPdfCrop() {
+  const input = document.getElementById("pcr-input");
+  const hint = document.getElementById("pcr-hint");
+  const marginInput = document.getElementById("pcr-margin");
+  const marginLabel = document.getElementById("pcr-margin-label");
+  const errorEl = document.getElementById("pcr-error");
+  const downloadLink = document.getElementById("pcr-download");
+  let selectedFile = null;
+
+  marginInput.addEventListener("input", () => { marginLabel.textContent = `${marginInput.value}%`; });
+
+  document.getElementById("pcr-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    selectedFile = input.files[0];
+    if (selectedFile) hint.textContent = selectedFile.name;
+    downloadLink.hidden = true;
+  });
+
+  document.getElementById("pcr-run-btn").addEventListener("click", async () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    if (!selectedFile) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF 파일을 먼저 선택해주세요.";
+      return;
+    }
+    try {
+      const { PDFDocument } = await loadPdfLibExt();
+      const srcDoc = await PDFDocument.load(await selectedFile.arrayBuffer());
+      const outDoc = await PDFDocument.create();
+      const marginPct = Number(marginInput.value) / 100;
+      for (const srcPage of srcDoc.getPages()) {
+        const { width, height } = srcPage.getSize();
+        const mx = width * marginPct;
+        const my = height * marginPct;
+        const cropW = width - mx * 2;
+        const cropH = height - my * 2;
+        const embedded = await outDoc.embedPage(srcPage, { left: mx, bottom: my, right: width - mx, top: height - my });
+        const outPage = outDoc.addPage([cropW, cropH]);
+        outPage.drawPage(embedded, { x: 0, y: 0, width: cropW, height: cropH });
+      }
+      const outBytes = await outDoc.save();
+      downloadLink.href = URL.createObjectURL(new Blob([outBytes], { type: "application/pdf" }));
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "자르는 중 오류가 발생했습니다: " + e.message;
+    }
+  });
+}
+
+/* ---------- PDF 텍스트 추출 ---------- */
+function initPdfExtractText() {
+  const input = document.getElementById("pet-input");
+  const hint = document.getElementById("pet-hint");
+  const errorEl = document.getElementById("pet-error");
+  const loadingEl = document.getElementById("pet-loading");
+  const resultGroup = document.getElementById("pet-result-group");
+  const output = document.getElementById("pet-output");
+  const downloadLink = document.getElementById("pet-download");
+
+  document.getElementById("pet-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    resultGroup.hidden = true;
+    downloadLink.hidden = true;
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    loadingEl.hidden = false;
+    try {
+      const pdfjsLib = await loadPdfJsExt();
+      const pdfDoc = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+      const text = await extractPdfFullText(pdfDoc);
+      output.value = text || "(텍스트를 찾을 수 없습니다. 스캔된 이미지 PDF일 수 있습니다.)";
+      resultGroup.hidden = false;
+      downloadLink.href = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+      downloadLink.download = file.name.replace(/\.[^.]+$/, "") + ".txt";
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "텍스트 추출에 실패했습니다: " + e.message;
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+
+  document.getElementById("pet-copy-btn").addEventListener("click", async (e) => {
+    if (!output.value) return;
+    if (await copyText(output.value)) flashCopied(e.target, "결과 복사");
+  });
+}
+
+/* ---------- PDF 비교 ---------- */
+function initPdfCompare() {
+  document.getElementById("pcm-run-btn").addEventListener("click", async () => {
+    const errorEl = document.getElementById("pcm-error");
+    const loadingEl = document.getElementById("pcm-loading");
+    const resultWrap = document.getElementById("pcm-result-wrap");
+    errorEl.hidden = true;
+    resultWrap.hidden = true;
+
+    const fileA = document.getElementById("pcm-input-a").files[0];
+    const fileB = document.getElementById("pcm-input-b").files[0];
+    if (!fileA || !fileB) {
+      errorEl.hidden = false;
+      errorEl.textContent = "두 개의 PDF 파일을 모두 선택해주세요.";
+      return;
+    }
+    loadingEl.hidden = false;
+    try {
+      const pdfjsLib = await loadPdfJsExt();
+      const [docA, docB] = await Promise.all([
+        pdfjsLib.getDocument({ data: await fileA.arrayBuffer() }).promise,
+        pdfjsLib.getDocument({ data: await fileB.arrayBuffer() }).promise,
+      ]);
+      const [textA, textB] = await Promise.all([extractPdfFullText(docA), extractPdfFullText(docB)]);
+
+      const diff = diffLines(textA, textB);
+      const container = document.getElementById("pcm-result");
+      container.innerHTML = "";
+      let added = 0, removed = 0;
+      diff.forEach((d) => {
+        const div = document.createElement("div");
+        div.style.whiteSpace = "pre-wrap";
+        div.style.padding = "2px 8px";
+        div.style.fontFamily = "monospace";
+        div.style.fontSize = "13px";
+        if (d.type === "added") { div.style.background = "rgba(44,158,68,0.18)"; div.textContent = "+ " + d.text; added++; }
+        else if (d.type === "removed") { div.style.background = "rgba(216,49,79,0.18)"; div.textContent = "- " + d.text; removed++; }
+        else { div.style.color = "var(--text-muted)"; div.textContent = "  " + d.text; }
+        container.appendChild(div);
+      });
+      document.getElementById("pcm-stat").textContent = `추가 ${added}줄 · 삭제 ${removed}줄`;
+      resultWrap.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "비교 중 오류가 발생했습니다: " + e.message;
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+}
+
+/* ---------- 이미지→PDF 변환 ---------- */
+function imageFileToJpegBytes(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = async () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+        const buf = await (await fetch(canvas.toDataURL("image/jpeg", 0.92))).arrayBuffer();
+        resolve(buf);
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function initImgToPdf() {
+  const input = document.getElementById("i2p-input");
+  const hint = document.getElementById("i2p-hint");
+  const errorEl = document.getElementById("i2p-error");
+  const loadingEl = document.getElementById("i2p-loading");
+  const downloadLink = document.getElementById("i2p-download");
+
+  document.getElementById("i2p-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    const files = Array.from(input.files);
+    if (files.length === 0) return;
+    hint.textContent = `${files.length}장 선택됨`;
+    loadingEl.hidden = false;
+    try {
+      const { PDFDocument } = await loadPdfLibExt();
+      const doc = await PDFDocument.create();
+      for (const file of files) {
+        const image = file.type === "image/png"
+          ? await doc.embedPng(await file.arrayBuffer())
+          : await doc.embedJpg(await imageFileToJpegBytes(file));
+        const page = doc.addPage([image.width, image.height]);
+        page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
+      }
+      const outBytes = await doc.save();
+      downloadLink.href = URL.createObjectURL(new Blob([outBytes], { type: "application/pdf" }));
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "PDF 생성 중 오류가 발생했습니다: " + e.message;
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
@@ -3016,6 +3729,19 @@ function init() {
   initEpubToTxt();
   initMdViewer();
   initTextCompare();
+  initPdfMerge();
+  initPdfCompress();
+  initPdfToJpg();
+  initPdfToPng();
+  initPdfDeletePage();
+  initPdfSplit();
+  initPdfSign();
+  initPdfHalfSplit();
+  initPdf2Up();
+  initPdfCrop();
+  initPdfExtractText();
+  initPdfCompare();
+  initImgToPdf();
 }
 
 document.addEventListener("DOMContentLoaded", init);
