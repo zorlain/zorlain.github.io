@@ -1750,6 +1750,407 @@ function initGitignoreGenerator() {
   });
 }
 
+/* ---------- 한영타 변환기 (2벌식 자판 매핑) ---------- */
+const CHO_LIST = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const JUNG_LIST = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+const JONG_LIST = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+const VOWEL_COMBOS = { 'ㅗㅏ':'ㅘ', 'ㅗㅐ':'ㅙ', 'ㅗㅣ':'ㅚ', 'ㅜㅓ':'ㅝ', 'ㅜㅔ':'ㅞ', 'ㅜㅣ':'ㅟ', 'ㅡㅣ':'ㅢ' };
+const JONG_COMBOS = { 'ㄱㅅ':'ㄳ', 'ㄴㅈ':'ㄵ', 'ㄴㅎ':'ㄶ', 'ㄹㄱ':'ㄺ', 'ㄹㅁ':'ㄻ', 'ㄹㅂ':'ㄼ', 'ㄹㅅ':'ㄽ', 'ㄹㅌ':'ㄾ', 'ㄹㅍ':'ㄿ', 'ㄹㅎ':'ㅀ', 'ㅂㅅ':'ㅄ' };
+const VOWEL_SPLIT = Object.fromEntries(Object.entries(VOWEL_COMBOS).map(([pair, combo]) => [combo, pair]));
+const JONG_SPLIT = Object.fromEntries(Object.entries(JONG_COMBOS).map(([pair, combo]) => [combo, pair]));
+const KEY_TO_JAMO = {
+  q:'ㅂ', Q:'ㅃ', w:'ㅈ', W:'ㅉ', e:'ㄷ', E:'ㄸ', r:'ㄱ', R:'ㄲ', t:'ㅅ', T:'ㅆ',
+  y:'ㅛ', u:'ㅕ', i:'ㅑ', o:'ㅐ', O:'ㅒ', p:'ㅔ', P:'ㅖ',
+  a:'ㅁ', s:'ㄴ', d:'ㅇ', f:'ㄹ', g:'ㅎ', h:'ㅗ', j:'ㅓ', k:'ㅏ', l:'ㅣ',
+  z:'ㅋ', x:'ㅌ', c:'ㅊ', v:'ㅍ', b:'ㅠ', n:'ㅜ', m:'ㅡ',
+};
+const JAMO_TO_KEY = Object.fromEntries(Object.entries(KEY_TO_JAMO).map(([k, v]) => [v, k]));
+
+function keysToJamoArray(str) {
+  return Array.from(str).map((ch) => KEY_TO_JAMO[ch] || ch);
+}
+
+function jamoArrayToHangul(jamoArr) {
+  let result = "";
+  let cho = null, jung = null, jong = null;
+
+  function flush() {
+    if (cho !== null && jung !== null) {
+      const choIdx = CHO_LIST.indexOf(cho);
+      const jungIdx = JUNG_LIST.indexOf(jung);
+      const jongIdx = jong ? JONG_LIST.indexOf(jong) : 0;
+      if (choIdx >= 0 && jungIdx >= 0 && jongIdx >= 0) {
+        result += String.fromCharCode(0xac00 + (choIdx * 21 + jungIdx) * 28 + jongIdx);
+      } else {
+        result += cho + jung + (jong || "");
+      }
+    } else if (cho !== null) result += cho;
+    else if (jung !== null) result += jung;
+    cho = null; jung = null; jong = null;
+  }
+
+  for (let i = 0; i < jamoArr.length; i++) {
+    const ch = jamoArr[i];
+    const isCho = CHO_LIST.includes(ch);
+    const isJung = JUNG_LIST.includes(ch);
+
+    if (!isCho && !isJung) { flush(); result += ch; continue; }
+
+    if (isJung) {
+      if (jung === null) { jung = ch; continue; }
+      const combo = VOWEL_COMBOS[jung + ch];
+      if (combo && jong === null) { jung = combo; continue; }
+      flush();
+      jung = ch;
+      continue;
+    }
+
+    // isCho
+    if (cho === null) { cho = ch; continue; }
+    if (jung === null) { flush(); cho = ch; continue; }
+    const nextCh = jamoArr[i + 1];
+    const nextIsJung = nextCh !== undefined && JUNG_LIST.includes(nextCh);
+    if (jong === null) {
+      if (nextIsJung) { flush(); cho = ch; }
+      else jong = ch;
+      continue;
+    }
+    const combo = JONG_COMBOS[jong + ch];
+    if (combo && !nextIsJung) { jong = combo; continue; }
+    flush();
+    cho = ch;
+  }
+  flush();
+  return result;
+}
+
+function hangulToJamoArray(str) {
+  const jamoArr = [];
+  for (const ch of str) {
+    const code = ch.charCodeAt(0);
+    if (code >= 0xac00 && code <= 0xd7a3) {
+      const offset = code - 0xac00;
+      const cho = CHO_LIST[Math.floor(offset / (21 * 28))];
+      const jung = JUNG_LIST[Math.floor((offset % (21 * 28)) / 28)];
+      const jong = JONG_LIST[offset % 28];
+      jamoArr.push(cho);
+      jamoArr.push(...(VOWEL_SPLIT[jung] ? VOWEL_SPLIT[jung].split("") : [jung]));
+      if (jong) jamoArr.push(...(JONG_SPLIT[jong] ? JONG_SPLIT[jong].split("") : [jong]));
+    } else jamoArr.push(ch);
+  }
+  return jamoArr;
+}
+
+function initHangulTypoFix() {
+  const input = document.getElementById("hgt-input");
+  const output = document.getElementById("hgt-output");
+
+  document.getElementById("hgt-to-korean-btn").addEventListener("click", () => {
+    output.value = jamoArrayToHangul(keysToJamoArray(input.value));
+  });
+  document.getElementById("hgt-to-english-btn").addEventListener("click", () => {
+    output.value = hangulToJamoArray(input.value).map((j) => JAMO_TO_KEY[j] || j).join("");
+  });
+  document.getElementById("hgt-copy-btn").addEventListener("click", async (e) => {
+    if (!output.value) return;
+    if (await copyText(output.value)) flashCopied(e.target, "결과 복사");
+  });
+}
+
+/* ---------- 아이피 조회 ---------- */
+function initIpLookup() {
+  document.getElementById("ip-lookup-btn").addEventListener("click", async () => {
+    const errorEl = document.getElementById("ip-error");
+    const resultEl = document.getElementById("ip-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+    try {
+      const res = await fetch("https://api.ipify.org?format=json");
+      if (!res.ok) throw new Error("조회 실패");
+      const data = await res.json();
+      document.getElementById("ip-value").textContent = data.ip;
+      resultEl.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "IP 조회에 실패했습니다. 네트워크 상태를 확인해주세요.";
+    }
+  });
+}
+
+/* ---------- 바코드 생성기 (Code 39) ---------- */
+const CODE39_PATTERNS = {
+  '0':'NNNWWNWNN','1':'WNNWNNNNW','2':'NNWWNNNNW','3':'WNWWNNNNN','4':'NNNWWNNNW',
+  '5':'WNNWWNNNN','6':'NNWWWNNNN','7':'NNNWNNWNW','8':'WNNWNNWNN','9':'NNWWNNWNN',
+  'A':'WNNNNWNNW','B':'NNWNNWNNW','C':'WNWNNWNNN','D':'NNNNWWNNW','E':'WNNNWWNNN',
+  'F':'NNWNWWNNN','G':'NNNNNWWNW','H':'WNNNNWWNN','I':'NNWNNWWNN','J':'NNNNWWWNN',
+  'K':'WNNNNNNWW','L':'NNWNNNNWW','M':'WNWNNNNWN','N':'NNNNWNNWW','O':'WNNNWNNWN',
+  'P':'NNWNWNNWN','Q':'NNNNNNWWW','R':'WNNNNNWWN','S':'NNWNNNWWN','T':'NNNNWNWWN',
+  'U':'WWNNNNNNW','V':'NWWNNNNNW','W':'WWWNNNNNN','X':'NWNNWNNNW','Y':'WWNNWNNNN',
+  'Z':'NWWNWNNNN','-':'NWNNNNWNW','.':'WWNNNNWNN',' ':'NWWNNNWNN','$':'NWNWNWNNN',
+  '/':'NWNWNNNWN','+':'NWNNNWNWN','%':'NNNWNWNWN','*':'NWNNWNWNN',
+};
+
+function drawCode39(canvas, text) {
+  const upper = text.toUpperCase();
+  const chars = ['*', ...upper.split(""), '*'];
+  chars.forEach((c) => {
+    if (!CODE39_PATTERNS[c]) throw new Error(`'${c}'는 지원하지 않는 문자입니다.`);
+  });
+
+  const narrow = 2, wide = 6, height = 80, quiet = 10;
+  let totalWidth = quiet * 2;
+  chars.forEach((c) => {
+    const pattern = CODE39_PATTERNS[c];
+    for (const p of pattern) totalWidth += p === "W" ? wide : narrow;
+    totalWidth += narrow;
+  });
+
+  canvas.width = totalWidth;
+  canvas.height = height + 30;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#000";
+
+  let x = quiet;
+  chars.forEach((c) => {
+    const pattern = CODE39_PATTERNS[c];
+    for (let i = 0; i < pattern.length; i++) {
+      const w = pattern[i] === "W" ? wide : narrow;
+      if (i % 2 === 0) ctx.fillRect(x, 0, w, height);
+      x += w;
+    }
+    x += narrow;
+  });
+
+  ctx.font = "14px monospace";
+  ctx.textAlign = "center";
+  ctx.fillText(text, canvas.width / 2, height + 20);
+}
+
+function initBarcodeGenerator() {
+  const canvas = document.getElementById("bar-canvas");
+  const downloadLink = document.getElementById("bar-download");
+
+  document.getElementById("bar-generate-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("bar-error");
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    const value = document.getElementById("bar-input").value.trim();
+    if (!value) return;
+    try {
+      drawCode39(canvas, value);
+      downloadLink.href = canvas.toDataURL("image/png");
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = e.message;
+    }
+  });
+}
+
+/* ---------- SMI→SRT 자막 변환기 ---------- */
+function parseSmiToSrt(smiText) {
+  const syncRegex = /<sync\s+start\s*=\s*["']?(\d+)["']?[^>]*>/gi;
+  const matches = [...smiText.matchAll(syncRegex)];
+  if (matches.length === 0) throw new Error("SYNC 태그를 찾을 수 없습니다. 올바른 SMI 파일인지 확인해주세요.");
+
+  const blocks = matches.map((m, i) => ({
+    start: Number(m[1]),
+    raw: smiText.slice(m.index + m[0].length, i + 1 < matches.length ? matches[i + 1].index : smiText.length),
+  }));
+
+  function cleanText(raw) {
+    let t = raw.replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "");
+    t = t.replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&").replace(/&lt;/gi, "<").replace(/&gt;/gi, ">").replace(/&quot;/gi, '"');
+    return t.split("\n").map((l) => l.trim()).filter(Boolean).join("\n").trim();
+  }
+
+  function formatSrtTime(ms) {
+    const pad = (n, l) => String(n).padStart(l, "0");
+    return `${pad(Math.floor(ms / 3600000), 2)}:${pad(Math.floor((ms % 3600000) / 60000), 2)}:${pad(Math.floor((ms % 60000) / 1000), 2)},${pad(ms % 1000, 3)}`;
+  }
+
+  const entries = [];
+  for (let i = 0; i < blocks.length; i++) {
+    const text = cleanText(blocks[i].raw);
+    if (!text) continue;
+    entries.push({
+      start: blocks[i].start,
+      end: i + 1 < blocks.length ? blocks[i + 1].start : blocks[i].start + 3000,
+      text,
+    });
+  }
+  if (entries.length === 0) throw new Error("변환할 자막 텍스트를 찾지 못했습니다.");
+
+  return entries.map((e, idx) => `${idx + 1}\n${formatSrtTime(e.start)} --> ${formatSrtTime(e.end)}\n${e.text}\n`).join("\n");
+}
+
+function initSmiToSrt() {
+  const input = document.getElementById("smi-input");
+  const hint = document.getElementById("smi-hint");
+  const errorEl = document.getElementById("smi-error");
+  const resultGroup = document.getElementById("smi-result-group");
+  const output = document.getElementById("smi-output");
+  const downloadLink = document.getElementById("smi-download");
+
+  document.getElementById("smi-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", () => {
+    errorEl.hidden = true;
+    resultGroup.hidden = true;
+    downloadLink.hidden = true;
+
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const srt = parseSmiToSrt(e.target.result);
+        output.value = srt;
+        resultGroup.hidden = false;
+        const blob = new Blob([srt], { type: "text/plain" });
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.hidden = false;
+      } catch (err) {
+        errorEl.hidden = false;
+        errorEl.textContent = err.message;
+      }
+    };
+    reader.readAsText(file, "utf-8");
+  });
+}
+
+/* ---------- 타자 속도 테스트 ---------- */
+const TYPING_SAMPLES = [
+  "오늘도 좋은 하루 되세요.",
+  "빠르고 정확하게 타이핑 연습을 해봅시다.",
+  "지금 이 순간에 집중하는 것이 가장 중요합니다.",
+  "꾸준한 연습이 실력을 만듭니다.",
+  "새로운 것을 배우는 즐거움을 느껴보세요.",
+];
+
+function initTypingSpeedTest() {
+  const sampleEl = document.getElementById("tst-sample");
+  const input = document.getElementById("tst-input");
+  const resultEl = document.getElementById("tst-result");
+  let sample = "";
+  let startTime = null;
+  let started = false;
+
+  function finish() {
+    const elapsedMin = (Date.now() - startTime) / 60000;
+    const typed = input.value;
+    let correct = 0;
+    for (let i = 0; i < typed.length && i < sample.length; i++) {
+      if (typed[i] === sample[i]) correct++;
+    }
+    const cpm = Math.round(typed.length / Math.max(elapsedMin, 0.001));
+    const accuracy = typed.length ? Math.round((correct / typed.length) * 100) : 0;
+    document.getElementById("tst-cpm-value").textContent = `${cpm}타`;
+    document.getElementById("tst-accuracy-value").textContent = `${accuracy}%`;
+    resultEl.hidden = false;
+    input.disabled = true;
+    started = false;
+  }
+
+  input.addEventListener("input", () => {
+    if (!started) return;
+    if (!startTime) startTime = Date.now();
+    if (input.value.length >= sample.length) finish();
+  });
+
+  document.getElementById("tst-start-btn").addEventListener("click", () => {
+    sample = TYPING_SAMPLES[Math.floor(Math.random() * TYPING_SAMPLES.length)];
+    sampleEl.textContent = sample;
+    input.value = "";
+    input.disabled = false;
+    input.focus();
+    startTime = null;
+    started = true;
+    resultEl.hidden = true;
+  });
+}
+
+/* ---------- 반응속도 테스트 ---------- */
+function initReactionSpeedTest() {
+  const box = document.getElementById("rst-box");
+  const resultEl = document.getElementById("rst-result");
+  const valueEl = document.getElementById("rst-value");
+  let state = "idle";
+  let timeoutId = null;
+  let goTime = 0;
+
+  function setBox(text, bg, color) {
+    box.textContent = text;
+    box.style.background = bg;
+    box.style.color = color;
+  }
+
+  box.addEventListener("click", () => {
+    if (state === "idle" || state === "result") {
+      state = "waiting";
+      resultEl.hidden = true;
+      setBox("초록색이 되면 클릭하세요...", "var(--card-elevated)", "var(--text-muted)");
+      timeoutId = setTimeout(() => {
+        state = "go";
+        goTime = Date.now();
+        setBox("지금 클릭!", "#2c9e44", "#fff");
+      }, 1000 + Math.random() * 3000);
+    } else if (state === "waiting") {
+      clearTimeout(timeoutId);
+      state = "idle";
+      setBox("너무 빨랐습니다! 다시 클릭해서 시작하세요", "var(--card-elevated)", "var(--negative)");
+    } else if (state === "go") {
+      valueEl.textContent = `${Date.now() - goTime} ms`;
+      resultEl.hidden = false;
+      state = "result";
+      setBox("다시 시도하려면 클릭하세요", "var(--card-elevated)", "var(--text-muted)");
+    }
+  });
+}
+
+/* ---------- CPS 테스트 ---------- */
+function initCpsTest() {
+  const box = document.getElementById("cps-box");
+  const countEl = document.getElementById("cps-count");
+  const timerEl = document.getElementById("cps-timer");
+  const resultEl = document.getElementById("cps-result");
+  const DURATION = 5000;
+  let clicks = 0;
+  let startTime = null;
+  let running = false;
+  let intervalId = null;
+
+  function finish() {
+    clearInterval(intervalId);
+    running = false;
+    document.getElementById("cps-value").textContent = `${(clicks / (DURATION / 1000)).toFixed(2)} 클릭/초`;
+    resultEl.hidden = false;
+    timerEl.textContent = "클릭해서 다시 시작";
+  }
+
+  box.addEventListener("click", () => {
+    if (!running) {
+      running = true;
+      clicks = 1;
+      startTime = Date.now();
+      countEl.textContent = clicks;
+      resultEl.hidden = true;
+      intervalId = setInterval(() => {
+        const remain = Math.max(0, DURATION - (Date.now() - startTime));
+        timerEl.textContent = `${(remain / 1000).toFixed(1)}초 남음`;
+        if (remain <= 0) finish();
+      }, 100);
+      return;
+    }
+    clicks++;
+    countEl.textContent = clicks;
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
@@ -1790,6 +2191,13 @@ function init() {
   initCurlConverter();
   initFaviconGenerator();
   initGitignoreGenerator();
+  initHangulTypoFix();
+  initIpLookup();
+  initBarcodeGenerator();
+  initSmiToSrt();
+  initTypingSpeedTest();
+  initReactionSpeedTest();
+  initCpsTest();
 }
 
 document.addEventListener("DOMContentLoaded", init);

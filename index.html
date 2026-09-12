@@ -2463,121 +2463,135 @@
   <section class="tab-panel" data-tab-panel="hangul-typo-fix" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>한영타 변환기</h2>
-      <p class="card-desc-short">한/영 자판 오타로 잘못 입력된 문자를 원래 의도한 글자로 바꿔줍니다.</p>
+      <p class="card-desc-short">한/영 자판 상태를 착각하고 입력해 깨진 문자를 원래 의도한 글자로 바꿔줍니다. (2벌식 기준)</p>
       <div class="field-row">
         <div class="field-group">
-          <label>입력</label>
-          <div class="field-input-wrap"><textarea rows="6" disabled placeholder="오타가 섞인 텍스트를 입력하세요"></textarea></div>
+          <label for="hgt-input">입력</label>
+          <div class="field-input-wrap"><textarea id="hgt-input" rows="6" placeholder="예: dkssudgktpdy"></textarea></div>
         </div>
         <div class="field-group">
-          <label>결과</label>
-          <div class="field-input-wrap"><textarea rows="6" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+          <label for="hgt-output">결과</label>
+          <div class="field-input-wrap"><textarea id="hgt-output" rows="6" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
       </div>
-      <button type="button" class="calc-btn" disabled>변환하기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="hgt-to-korean-btn">영타 → 한글</button>
+        <button type="button" class="secondary-btn" id="hgt-to-english-btn">한글 → 영타</button>
+      </div>
+      <button class="calc-btn" id="hgt-copy-btn">결과 복사</button>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="ip-lookup" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>아이피 조회</h2>
       <p class="card-desc-short">현재 접속한 공인 IP 주소를 바로 확인합니다.</p>
-      <button type="button" class="calc-btn" disabled>내 IP 조회하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
+      <button class="calc-btn" id="ip-lookup-btn">내 IP 조회하기</button>
+      <p class="calc-error-msg" id="ip-error" hidden></p>
+      <div class="result-stat highlight" id="ip-result" hidden>
         <div class="result-stat-label">공인 IP 주소</div>
-        <div class="result-stat-value">준비 중</div>
+        <div class="result-stat-value" id="ip-value">-</div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="barcode-generator" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>바코드 생성기</h2>
-      <p class="card-desc-short">숫자나 문자를 입력하면 바코드 이미지를 바로 생성합니다.</p>
+      <p class="card-desc-short">숫자·영문 대문자를 입력하면 Code 39 바코드 이미지를 생성합니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="바코드로 만들 값을 입력하세요" /></div>
+        <div class="field-input-wrap"><input type="text" id="bar-input" placeholder="예: LOTTO2026" value="LOTTO2026" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>생성하기</button>
-      <div class="wip-dropzone" style="margin-top: 20px;">
-        <p>바코드 미리보기가 여기에 표시됩니다</p>
+      <button class="calc-btn" id="bar-generate-btn">생성하기</button>
+      <p class="calc-error-msg" id="bar-error" hidden></p>
+      <div style="overflow-x: auto; text-align: center; margin-top: 20px;">
+        <canvas id="bar-canvas" style="max-width: 100%;"></canvas>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <a class="calc-btn secondary-btn" id="bar-download" style="text-align:center; text-decoration:none; display:block;" download="barcode.png" hidden>PNG 다운로드</a>
+      <p class="wip-note">지원 문자: 0-9, A-Z(자동 대문자 변환), 공백, - . $ / + %</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="smi-to-srt" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>SMI→SRT 자막 변환기</h2>
-      <p class="card-desc-short">SMI 자막 파일을 SRT 형식으로 변환합니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">SMI(.smi) 자막 파일을 SRT 형식으로 변환합니다.</p>
+      <div class="wip-dropzone" id="smi-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>SMI 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="smi-hint">SMI 파일을 선택해주세요</p>
+        <input type="file" id="smi-input" accept=".smi,.sami,text/plain" style="display: none;" />
+        <button type="button" class="secondary-btn" id="smi-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="smi-error" hidden></p>
+      <div class="field-group" id="smi-result-group" hidden style="margin-top: 20px;">
+        <label>SRT 결과</label>
+        <div class="field-input-wrap"><textarea id="smi-output" rows="10" readonly></textarea></div>
+      </div>
+      <a class="calc-btn secondary-btn" id="smi-download" style="text-align:center; text-decoration:none; display:block;" download="subtitle.srt" hidden>SRT 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="typing-speed-test" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>타자 속도 테스트</h2>
-      <p class="card-desc-short">1분간 타이핑 속도와 정확도를 측정합니다.</p>
-      <div class="tool-btn-grid" style="opacity:.6;">
+      <p class="card-desc-short">아래 문장을 최대한 빠르고 정확하게 입력해보세요.</p>
+      <div class="field-group">
+        <label>연습 문장</label>
+        <div class="field-input-wrap" style="background: var(--card-elevated); border: none;">
+          <p id="tst-sample" style="margin:0; line-height:1.6; font-weight:600;">시작하기를 눌러주세요.</p>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="tst-input">입력</label>
+        <div class="field-input-wrap"><textarea id="tst-input" rows="3" placeholder="시작하기를 누른 뒤 입력하세요" disabled></textarea></div>
+      </div>
+      <button class="calc-btn" id="tst-start-btn">시작하기</button>
+      <div class="tool-btn-grid" id="tst-result" hidden>
         <div class="result-stat">
-          <div class="result-stat-label">타수(WPM)</div>
-          <div class="result-stat-value">-</div>
+          <div class="result-stat-label">타수(분당 글자수)</div>
+          <div class="result-stat-value" id="tst-cpm-value">-</div>
         </div>
         <div class="result-stat highlight">
           <div class="result-stat-label">정확도</div>
-          <div class="result-stat-value">-</div>
+          <div class="result-stat-value" id="tst-accuracy-value">-</div>
         </div>
       </div>
-      <button type="button" class="calc-btn" disabled>시작하기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="reaction-speed-test" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>반응속도 테스트</h2>
-      <p class="card-desc-short">화면이 바뀌는 순간부터 클릭까지 반응 속도를 밀리초 단위로 측정합니다.</p>
-      <div class="result-stat highlight" style="opacity:.6;">
+      <p class="card-desc-short">화면이 초록색으로 바뀌는 순간 최대한 빨리 클릭하세요.</p>
+      <div id="rst-box" style="height:160px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; cursor:pointer; background: var(--card-elevated); color: var(--text-muted); text-align:center; padding: 0 20px; transition: background 0.1s;">클릭해서 시작하세요</div>
+      <div class="result-stat highlight" id="rst-result" hidden style="margin-top:20px;">
         <div class="result-stat-label">반응 속도</div>
-        <div class="result-stat-value">- ms</div>
+        <div class="result-stat-value" id="rst-value">-</div>
       </div>
-      <button type="button" class="calc-btn" disabled>시작하기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="cps-test" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>CPS 테스트</h2>
-      <p class="card-desc-short">1~60초 라운드로 초당 클릭 수를 측정합니다.</p>
-      <div class="result-stat highlight" style="opacity:.6;">
-        <div class="result-stat-label">CPS</div>
-        <div class="result-stat-value">-</div>
+      <p class="card-desc-short">아래 버튼을 5초 동안 최대한 많이 클릭하세요.</p>
+      <div id="cps-box" style="height:160px; border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-weight:700; cursor:pointer; background: var(--accent); color: var(--accent-on); user-select:none;">
+        <div style="font-size:32px;" id="cps-count">0</div>
+        <div style="font-size:13px; margin-top:6px;" id="cps-timer">클릭해서 시작</div>
       </div>
-      <button type="button" class="calc-btn" disabled>테스트 시작</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="result-stat highlight" id="cps-result" hidden style="margin-top:20px;">
+        <div class="result-stat-label">CPS (초당 클릭 수)</div>
+        <div class="result-stat-value" id="cps-value">-</div>
+      </div>
     </div>
   </section>
 
