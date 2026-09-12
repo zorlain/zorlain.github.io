@@ -3666,6 +3666,113 @@ function initImgToPdf() {
   });
 }
 
+/* ---------- 동영상 GIF 변환 (gif.js CDN 지연 로딩, Worker는 CORS 우회를 위해 blob URL로 재구성) ---------- */
+function loadGifJsExt() { return loadExternalScript("https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js", () => window.GIF); }
+let _gifWorkerBlobUrlPromise = null;
+function getGifWorkerBlobUrl() {
+  if (!_gifWorkerBlobUrlPromise) {
+    _gifWorkerBlobUrlPromise = fetch("https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js")
+      .then((r) => r.text())
+      .then((code) => URL.createObjectURL(new Blob([code], { type: "application/javascript" })));
+  }
+  return _gifWorkerBlobUrlPromise;
+}
+
+function initVideoToGif() {
+  const input = document.getElementById("vtg-input");
+  const hint = document.getElementById("vtg-hint");
+  const preview = document.getElementById("vtg-preview");
+  const errorEl = document.getElementById("vtg-error");
+  const progressEl = document.getElementById("vtg-progress");
+  const resultWrap = document.getElementById("vtg-result-wrap");
+  const resultImg = document.getElementById("vtg-result");
+  const downloadLink = document.getElementById("vtg-download");
+  let videoFile = null;
+
+  document.getElementById("vtg-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    videoFile = input.files[0];
+    if (!videoFile) return;
+    hint.textContent = videoFile.name;
+    preview.src = URL.createObjectURL(videoFile);
+    preview.style.display = "block";
+    resultWrap.hidden = true;
+    downloadLink.hidden = true;
+  });
+
+  document.getElementById("vtg-convert-btn").addEventListener("click", async () => {
+    errorEl.hidden = true;
+    resultWrap.hidden = true;
+    downloadLink.hidden = true;
+    if (!videoFile) {
+      errorEl.hidden = false;
+      errorEl.textContent = "동영상 파일을 먼저 선택해주세요.";
+      return;
+    }
+
+    const start = Math.max(0, Number(document.getElementById("vtg-start").value) || 0);
+    const duration = Math.min(8, Math.max(0.5, Number(document.getElementById("vtg-duration").value) || 3));
+    const fps = Math.min(15, Math.max(2, parseInt(document.getElementById("vtg-fps").value, 10) || 8));
+    const targetWidth = Math.min(640, Math.max(80, parseInt(document.getElementById("vtg-width").value, 10) || 320));
+
+    progressEl.hidden = false;
+    progressEl.textContent = "동영상을 불러오는 중입니다...";
+
+    try {
+      const video = document.createElement("video");
+      video.muted = true;
+      video.src = URL.createObjectURL(videoFile);
+      await new Promise((resolve, reject) => {
+        video.onloadedmetadata = resolve;
+        video.onerror = () => reject(new Error("동영상을 불러올 수 없습니다."));
+      });
+
+      const actualDuration = Math.min(duration, Math.max(0.1, video.duration - start));
+      const frameCount = Math.max(1, Math.round(actualDuration * fps));
+      const scale = targetWidth / video.videoWidth;
+      const targetHeight = Math.round(video.videoHeight * scale);
+
+      const captureCanvas = document.createElement("canvas");
+      captureCanvas.width = targetWidth;
+      captureCanvas.height = targetHeight;
+      const captureCtx = captureCanvas.getContext("2d");
+
+      const GIF = await loadGifJsExt();
+      const workerUrl = await getGifWorkerBlobUrl();
+      const gif = new GIF({ workers: 2, quality: 10, width: targetWidth, height: targetHeight, workerScript: workerUrl });
+
+      for (let i = 0; i < frameCount; i++) {
+        const t = start + i / fps;
+        await new Promise((resolve) => {
+          video.currentTime = Math.min(t, video.duration - 0.01);
+          video.onseeked = resolve;
+        });
+        captureCtx.drawImage(video, 0, 0, targetWidth, targetHeight);
+        gif.addFrame(captureCanvas, { copy: true, delay: 1000 / fps });
+        progressEl.textContent = `프레임 캡처 중... (${i + 1}/${frameCount})`;
+      }
+
+      progressEl.textContent = "GIF로 인코딩하는 중입니다...";
+      const blob = await new Promise((resolve, reject) => {
+        gif.on("finished", resolve);
+        gif.on("abort", () => reject(new Error("GIF 생성이 중단되었습니다.")));
+        gif.render();
+      });
+
+      const url = URL.createObjectURL(blob);
+      resultImg.src = url;
+      resultWrap.hidden = false;
+      downloadLink.href = url;
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "변환 중 오류가 발생했습니다: " + e.message;
+    } finally {
+      progressEl.hidden = true;
+    }
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
@@ -3742,6 +3849,7 @@ function init() {
   initPdfExtractText();
   initPdfCompare();
   initImgToPdf();
+  initVideoToGif();
 }
 
 document.addEventListener("DOMContentLoaded", init);
