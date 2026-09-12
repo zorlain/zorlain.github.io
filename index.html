@@ -2609,14 +2609,17 @@
   <section class="tab-panel" data-tab-panel="sql-formatter" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>SQL 포매터</h2>
-      <p class="card-desc-short">한 줄로 붙어있는 SQL 쿼리를 보기 좋게 정렬합니다.</p>
+      <p class="card-desc-short">한 줄로 붙어있는 SQL 쿼리를 주요 절 기준으로 줄바꿈·들여쓰기해 보기 좋게 정렬합니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><textarea rows="10" disabled placeholder="SQL 쿼리를 입력하세요"></textarea></div>
+        <div class="field-input-wrap"><textarea id="sql-input" rows="6" placeholder="SELECT * FROM users WHERE age > 20 ORDER BY name"></textarea></div>
       </div>
-      <button type="button" class="calc-btn" disabled>포맷하기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn" id="sql-format-btn">포맷하기</button>
+      <div class="field-group" id="sql-output-group" hidden style="margin-top: 20px;">
+        <label>결과</label>
+        <div class="field-input-wrap"><textarea id="sql-output" rows="10" readonly></textarea></div>
+      </div>
+      <button class="calc-btn secondary-btn" id="sql-copy-btn">결과 복사</button>
     </div>
   </section>
 
@@ -2733,21 +2736,34 @@
   <section class="tab-panel" data-tab-panel="code-minifier" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>코드 압축기</h2>
-      <p class="card-desc-short">JS, CSS 코드의 불필요한 공백과 줄바꿈을 제거해 압축합니다.</p>
-      <div class="field-row">
-        <div class="field-group">
-          <label>입력</label>
-          <div class="field-input-wrap"><textarea rows="8" disabled placeholder="JS 또는 CSS 코드를 입력하세요"></textarea></div>
-        </div>
-        <div class="field-group">
-          <label>결과</label>
-          <div class="field-input-wrap"><textarea rows="8" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+      <p class="card-desc-short">JS, CSS 코드의 주석과 불필요한 공백·줄바꿈을 제거해 압축합니다.</p>
+      <div class="field-group">
+        <label>언어</label>
+        <div class="segmented" id="min-lang">
+          <button type="button" class="active" data-value="css">CSS</button>
+          <button type="button" data-value="js">JS</button>
         </div>
       </div>
-      <button type="button" class="calc-btn" disabled>압축하기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="min-input">입력</label>
+          <div class="field-input-wrap"><textarea id="min-input" rows="8" placeholder="JS 또는 CSS 코드를 입력하세요"></textarea></div>
+        </div>
+        <div class="field-group">
+          <label for="min-output">결과</label>
+          <div class="field-input-wrap"><textarea id="min-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+        </div>
+      </div>
+      <div class="result-stat" id="min-stat" hidden>
+        <div class="result-stat-label">압축률</div>
+        <div class="result-stat-value" id="min-stat-value">-</div>
+      </div>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="min-run-btn">압축하기</button>
+        <button type="button" class="secondary-btn" id="min-copy-btn">결과 복사</button>
+      </div>
+      <p class="wip-note" id="min-js-note" hidden>JS는 주석 제거와 각 줄 앞뒤 공백·빈 줄만 제거합니다. (세미콜론 없는 코드의 줄바꿈 결합은 오류 위험이 있어 생략)</p>
     </div>
   </section>
 
@@ -2770,18 +2786,18 @@
   <section class="tab-panel" data-tab-panel="cron-generator" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>Cron 표현식 생성기</h2>
-      <p class="card-desc-short">Cron 표현식을 만들고 다음 실행 시간을 미리 확인합니다.</p>
+      <p class="card-desc-short">5개 필드(분 시 일 월 요일) Cron 표현식을 해석해 다음 실행 시간을 확인합니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="예: * * * * *" /></div>
+        <label for="cron-input">Cron 표현식</label>
+        <div class="field-input-wrap"><input type="text" id="cron-input" placeholder="예: */5 * * * *" value="*/5 * * * *" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>해석하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
-        <div class="result-stat-label">다음 실행 시간</div>
-        <div class="result-stat-value">준비 중</div>
+      <button class="calc-btn" id="cron-calc-btn">해석하기</button>
+      <p class="calc-error-msg" id="cron-error" hidden></p>
+      <div class="field-group" id="cron-result-group" hidden style="margin-top: 20px;">
+        <label>다음 실행 시간 5회</label>
+        <div class="field-input-wrap"><textarea id="cron-result" rows="5" readonly></textarea></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
@@ -2805,21 +2821,23 @@
   <section class="tab-panel" data-tab-panel="curl-converter" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>cURL 변환기</h2>
-      <p class="card-desc-short">curl 명령어를 fetch, axios 등 코드로 변환합니다.</p>
+      <p class="card-desc-short">curl 명령어를 JavaScript fetch 코드로 변환합니다.</p>
       <div class="field-row">
         <div class="field-group">
-          <label>curl 명령어</label>
-          <div class="field-input-wrap"><textarea rows="8" disabled placeholder="curl 명령어를 입력하세요"></textarea></div>
+          <label for="curl-input">curl 명령어</label>
+          <div class="field-input-wrap"><textarea id="curl-input" rows="8" placeholder="curl -X POST https://api.example.com/users -H &quot;Content-Type: application/json&quot; -d &quot;{'name':'홍길동'}&quot;"></textarea></div>
         </div>
         <div class="field-group">
-          <label>결과</label>
-          <div class="field-input-wrap"><textarea rows="8" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+          <label for="curl-output">결과 (fetch)</label>
+          <div class="field-input-wrap"><textarea id="curl-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
       </div>
-      <button type="button" class="calc-btn" disabled>변환하기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="curl-error" hidden></p>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="curl-convert-btn">변환하기</button>
+        <button type="button" class="secondary-btn" id="curl-copy-btn">결과 복사</button>
+      </div>
     </div>
   </section>
 
@@ -2876,34 +2894,54 @@
   <section class="tab-panel" data-tab-panel="favicon-generator" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>파비콘 생성기</h2>
-      <p class="card-desc-short">이미지를 업로드하면 다양한 크기의 파비콘을 만들어줍니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">이미지를 업로드하면 16·32·48·180px 크기의 파비콘 PNG를 만들어줍니다.</p>
+      <div class="wip-dropzone" id="fav-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>이미지를 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="fav-hint">이미지를 선택해주세요</p>
+        <input type="file" id="fav-input" accept="image/*" style="display: none;" />
+        <button type="button" class="secondary-btn" id="fav-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="fav-error" hidden></p>
+      <div class="tool-btn-grid" id="fav-result" hidden style="grid-template-columns: repeat(4, 1fr); align-items: end;">
+        <div style="text-align:center;"><canvas id="fav-16" width="16" height="16" style="image-rendering: pixelated; border-radius:4px;"></canvas><div style="font-size:11.5px; color:var(--text-muted); margin-top:6px;">16×16</div></div>
+        <div style="text-align:center;"><canvas id="fav-32" width="32" height="32" style="image-rendering: pixelated; border-radius:4px;"></canvas><div style="font-size:11.5px; color:var(--text-muted); margin-top:6px;">32×32</div></div>
+        <div style="text-align:center;"><canvas id="fav-48" width="48" height="48" style="border-radius:6px;"></canvas><div style="font-size:11.5px; color:var(--text-muted); margin-top:6px;">48×48</div></div>
+        <div style="text-align:center;"><canvas id="fav-180" width="60" height="60" style="border-radius:10px;"></canvas><div style="font-size:11.5px; color:var(--text-muted); margin-top:6px;">180×180</div></div>
+      </div>
+      <div class="tool-btn-grid" id="fav-downloads" hidden>
+        <a class="secondary-btn calc-btn" style="text-align:center; text-decoration:none;" id="fav-dl-32" download="favicon-32.png">32px 다운로드</a>
+        <a class="secondary-btn calc-btn" style="text-align:center; text-decoration:none;" id="fav-dl-180" download="favicon-180.png">180px 다운로드</a>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="gitignore-generator" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>.gitignore 생성기</h2>
-      <p class="card-desc-short">언어·프레임워크를 입력하면 알맞은 .gitignore 파일을 만들어줍니다.</p>
+      <p class="card-desc-short">언어·프레임워크를 선택하면 알맞은 .gitignore 파일을 만들어줍니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="예: Node, Python, React" /></div>
+        <label>포함할 항목 (복수 선택 가능)</label>
+        <div class="tool-btn-grid" id="gi-options" style="grid-template-columns: repeat(3, 1fr);">
+          <label class="checkbox-label"><input type="checkbox" value="node" checked /> Node</label>
+          <label class="checkbox-label"><input type="checkbox" value="python" /> Python</label>
+          <label class="checkbox-label"><input type="checkbox" value="react" /> React</label>
+          <label class="checkbox-label"><input type="checkbox" value="java" /> Java</label>
+          <label class="checkbox-label"><input type="checkbox" value="go" /> Go</label>
+          <label class="checkbox-label"><input type="checkbox" value="macos" /> macOS</label>
+          <label class="checkbox-label"><input type="checkbox" value="windows" /> Windows</label>
+          <label class="checkbox-label"><input type="checkbox" value="vscode" /> VSCode</label>
+          <label class="checkbox-label"><input type="checkbox" value="intellij" /> IntelliJ</label>
+        </div>
       </div>
-      <button type="button" class="calc-btn" disabled>생성하기</button>
+      <button class="calc-btn" id="gi-generate-btn">생성하기</button>
       <div class="field-group" style="margin-top: 20px;">
-        <div class="field-input-wrap"><textarea rows="8" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+        <div class="field-input-wrap"><textarea id="gi-output" rows="10" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn secondary-btn" id="gi-copy-btn">결과 복사</button>
     </div>
   </section>
 

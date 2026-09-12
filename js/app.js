@@ -1392,6 +1392,364 @@ function initCubicBezier() {
   });
 }
 
+/* ---------- SQL 포매터 ---------- */
+const SQL_MAIN_KEYWORDS = [
+  "SELECT", "FROM", "WHERE", "GROUP BY", "HAVING", "ORDER BY", "LIMIT",
+  "INSERT INTO", "VALUES", "UPDATE", "SET", "DELETE FROM",
+  "LEFT JOIN", "RIGHT JOIN", "INNER JOIN", "FULL JOIN", "JOIN", "ON",
+  "UNION ALL", "UNION",
+];
+
+function formatSql(sql) {
+  let s = sql.replace(/\s+/g, " ").trim();
+  [...SQL_MAIN_KEYWORDS].sort((a, b) => b.length - a.length).forEach((kw) => {
+    const re = new RegExp(`\\b${kw.replace(" ", "\\s+")}\\b`, "gi");
+    s = s.replace(re, `\n${kw.toUpperCase()}`);
+  });
+  s = s.replace(/\s+(AND|OR)\s+/gi, "\n  $1 ");
+  return s.split("\n").map((line) => line.trim()).filter(Boolean).join("\n");
+}
+
+function initSqlFormatter() {
+  const outputGroup = document.getElementById("sql-output-group");
+  const output = document.getElementById("sql-output");
+
+  document.getElementById("sql-format-btn").addEventListener("click", () => {
+    const input = document.getElementById("sql-input").value.trim();
+    if (!input) return;
+    output.value = formatSql(input);
+    outputGroup.hidden = false;
+  });
+
+  document.getElementById("sql-copy-btn").addEventListener("click", async (e) => {
+    if (!output.value) return;
+    if (await copyText(output.value)) flashCopied(e.target, "결과 복사");
+  });
+}
+
+/* ---------- 코드 압축기 ---------- */
+function stripCodeComments(code, lang) {
+  let out = "";
+  let i = 0;
+  const n = code.length;
+  let inStr = null;
+  while (i < n) {
+    const c = code[i];
+    const next = code[i + 1];
+    if (inStr) {
+      out += c;
+      if (c === "\\") { out += next || ""; i += 2; continue; }
+      if (c === inStr) inStr = null;
+      i++;
+      continue;
+    }
+    if (c === '"' || c === "'" || (lang === "js" && c === "`")) {
+      inStr = c;
+      out += c;
+      i++;
+      continue;
+    }
+    if (lang === "js" && c === "/" && next === "/") {
+      while (i < n && code[i] !== "\n") i++;
+      continue;
+    }
+    if (c === "/" && next === "*") {
+      i += 2;
+      while (i < n && !(code[i] === "*" && code[i + 1] === "/")) i++;
+      i += 2;
+      continue;
+    }
+    out += c;
+    i++;
+  }
+  return out;
+}
+
+function minifyCode(code, lang) {
+  const stripped = stripCodeComments(code, lang);
+  if (lang === "css") {
+    return stripped.replace(/\s+/g, " ").replace(/\s*([{}:;,])\s*/g, "$1").replace(/;}/g, "}").trim();
+  }
+  return stripped.split("\n").map((line) => line.trim()).filter((line) => line.length > 0).join("\n");
+}
+
+function initCodeMinifier() {
+  initSegmented("min-lang");
+  const jsNote = document.getElementById("min-js-note");
+  document.getElementById("min-lang").addEventListener("click", () => {
+    jsNote.hidden = getSegmentedValue("min-lang") !== "js";
+  });
+
+  document.getElementById("min-run-btn").addEventListener("click", () => {
+    const lang = getSegmentedValue("min-lang");
+    const input = document.getElementById("min-input").value;
+    const output = minifyCode(input, lang);
+    document.getElementById("min-output").value = output;
+
+    if (input.length > 0) {
+      const reduction = Math.round((1 - output.length / input.length) * 100);
+      document.getElementById("min-stat-value").textContent =
+        `${input.length.toLocaleString()}자 → ${output.length.toLocaleString()}자 (${reduction}% 감소)`;
+      document.getElementById("min-stat").hidden = false;
+    }
+  });
+
+  document.getElementById("min-copy-btn").addEventListener("click", async (e) => {
+    const output = document.getElementById("min-output").value;
+    if (!output) return;
+    if (await copyText(output)) flashCopied(e.target, "결과 복사");
+  });
+}
+
+/* ---------- Cron 표현식 생성기 ---------- */
+function parseCronField(field, min, max) {
+  const values = new Set();
+  field.split(",").forEach((part) => {
+    let step = 1;
+    let range = part;
+    if (part.includes("/")) {
+      const [r, s] = part.split("/");
+      range = r;
+      step = Number(s);
+    }
+    let start = min, end = max;
+    if (range !== "*") {
+      if (range.includes("-")) {
+        const [a, b] = range.split("-").map(Number);
+        start = a; end = b;
+      } else {
+        start = end = Number(range);
+      }
+    }
+    for (let v = start; v <= end; v += step) values.add(v);
+  });
+  return values;
+}
+
+function nextCronRuns(expr, count) {
+  const parts = expr.trim().split(/\s+/);
+  if (parts.length !== 5) throw new Error("cron 표현식은 5개 필드(분 시 일 월 요일)로 이루어져야 합니다.");
+  const [minF, hourF, domF, monF, dowF] = parts;
+  const minutes = parseCronField(minF, 0, 59);
+  const hours = parseCronField(hourF, 0, 23);
+  const doms = parseCronField(domF, 1, 31);
+  const months = parseCronField(monF, 1, 12);
+  const dows = parseCronField(dowF, 0, 6);
+
+  let date = new Date();
+  date.setSeconds(0, 0);
+  date.setMinutes(date.getMinutes() + 1);
+
+  const results = [];
+  const maxIterations = 60 * 24 * 366;
+  for (let i = 0; i < maxIterations && results.length < count; i++) {
+    if (
+      minutes.has(date.getMinutes()) &&
+      hours.has(date.getHours()) &&
+      doms.has(date.getDate()) &&
+      months.has(date.getMonth() + 1) &&
+      dows.has(date.getDay())
+    ) {
+      results.push(new Date(date));
+    }
+    date.setMinutes(date.getMinutes() + 1);
+  }
+  return results;
+}
+
+function initCronGenerator() {
+  document.getElementById("cron-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("cron-error");
+    const resultGroup = document.getElementById("cron-result-group");
+    errorEl.hidden = true;
+    resultGroup.hidden = true;
+
+    try {
+      const runs = nextCronRuns(document.getElementById("cron-input").value, 5);
+      if (runs.length === 0) {
+        errorEl.hidden = false;
+        errorEl.textContent = "앞으로 1년 안에 실행될 시각을 찾지 못했습니다. 표현식을 확인해주세요.";
+        return;
+      }
+      document.getElementById("cron-result").value = runs
+        .map((d) => d.toLocaleString("ko-KR", { dateStyle: "medium", timeStyle: "short" }))
+        .join("\n");
+      resultGroup.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = e.message;
+    }
+  });
+}
+
+/* ---------- cURL 변환기 ---------- */
+function tokenizeShellCommand(cmd) {
+  const tokens = [];
+  let cur = "";
+  let quote = null;
+  for (let i = 0; i < cmd.length; i++) {
+    const c = cmd[i];
+    if (quote) {
+      if (c === quote) { quote = null; }
+      else if (c === "\\" && quote === '"') { cur += cmd[++i]; }
+      else cur += c;
+    } else if (c === '"' || c === "'") {
+      quote = c;
+    } else if (c === "\\" && cmd[i + 1] === "\n") {
+      i++;
+    } else if (/\s/.test(c)) {
+      if (cur) { tokens.push(cur); cur = ""; }
+    } else {
+      cur += c;
+    }
+  }
+  if (cur) tokens.push(cur);
+  return tokens;
+}
+
+function curlToFetch(curlCmd) {
+  const tokens = tokenizeShellCommand(curlCmd.trim());
+  if (tokens[0] !== "curl") throw new Error("curl 명령어로 시작해야 합니다.");
+
+  let url = null;
+  let method = null;
+  const headers = {};
+  let data = null;
+
+  for (let i = 1; i < tokens.length; i++) {
+    const t = tokens[i];
+    if (t === "-X" || t === "--request") { method = tokens[++i]; }
+    else if (t === "-H" || t === "--header") {
+      const h = tokens[++i] || "";
+      const idx = h.indexOf(":");
+      if (idx > -1) headers[h.slice(0, idx).trim()] = h.slice(idx + 1).trim();
+    }
+    else if (t === "-d" || t === "--data" || t === "--data-raw" || t === "--data-binary") { data = tokens[++i]; }
+    else if (t === "-u" || t === "--user") { i++; }
+    else if (t.startsWith("-")) { /* 그 외 플래그는 무시 */ }
+    else if (!url) { url = t; }
+  }
+
+  if (!url) throw new Error("URL을 찾을 수 없습니다.");
+  if (!method) method = data ? "POST" : "GET";
+
+  let bodyLine = "";
+  if (data !== null) {
+    let looksJson = false;
+    try { JSON.parse(data); looksJson = true; } catch (e) {}
+    bodyLine = looksJson ? `JSON.stringify(${data})` : JSON.stringify(data);
+  }
+
+  const lines = [`fetch(${JSON.stringify(url)}, {`, `  method: ${JSON.stringify(method)},`];
+  if (Object.keys(headers).length) {
+    lines.push(`  headers: ${JSON.stringify(headers, null, 2).split("\n").join("\n  ")},`);
+  }
+  if (data !== null) lines.push(`  body: ${bodyLine},`);
+  lines.push("})", "  .then((res) => res.json())", "  .then((data) => console.log(data));");
+  return lines.join("\n");
+}
+
+function initCurlConverter() {
+  document.getElementById("curl-convert-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("curl-error");
+    errorEl.hidden = true;
+    try {
+      document.getElementById("curl-output").value = curlToFetch(document.getElementById("curl-input").value);
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = e.message;
+    }
+  });
+
+  document.getElementById("curl-copy-btn").addEventListener("click", async (e) => {
+    const output = document.getElementById("curl-output").value;
+    if (!output) return;
+    if (await copyText(output)) flashCopied(e.target, "결과 복사");
+  });
+}
+
+/* ---------- 파비콘 생성기 ---------- */
+function initFaviconGenerator() {
+  const input = document.getElementById("fav-input");
+  const hint = document.getElementById("fav-hint");
+  const errorEl = document.getElementById("fav-error");
+  const resultEl = document.getElementById("fav-result");
+  const downloadsEl = document.getElementById("fav-downloads");
+
+  document.getElementById("fav-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", () => {
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+    downloadsEl.hidden = true;
+
+    const file = input.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      errorEl.hidden = false;
+      errorEl.textContent = "이미지 파일만 업로드할 수 있습니다.";
+      return;
+    }
+
+    const img = new Image();
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      img.onload = () => {
+        [16, 32, 48].forEach((size) => {
+          const canvas = document.getElementById(`fav-${size}`);
+          canvas.getContext("2d").drawImage(img, 0, 0, size, size);
+        });
+        const canvas180 = document.getElementById("fav-180");
+        canvas180.getContext("2d").drawImage(img, 0, 0, 60, 60);
+
+        const dl32 = document.createElement("canvas");
+        dl32.width = 32; dl32.height = 32;
+        dl32.getContext("2d").drawImage(img, 0, 0, 32, 32);
+        document.getElementById("fav-dl-32").href = dl32.toDataURL("image/png");
+
+        const dl180 = document.createElement("canvas");
+        dl180.width = 180; dl180.height = 180;
+        dl180.getContext("2d").drawImage(img, 0, 0, 180, 180);
+        document.getElementById("fav-dl-180").href = dl180.toDataURL("image/png");
+
+        hint.textContent = file.name;
+        resultEl.hidden = false;
+        downloadsEl.hidden = false;
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ---------- .gitignore 생성기 ---------- */
+const GITIGNORE_TEMPLATES = {
+  node: "# Node\nnode_modules/\nnpm-debug.log*\nyarn-debug.log*\nyarn-error.log*\ndist/\nbuild/\n.env\n.env.local",
+  python: "# Python\n__pycache__/\n*.py[cod]\n*$py.class\n.venv/\nvenv/\n.env\n*.egg-info/\ndist/\nbuild/",
+  react: "# React\nbuild/\n.env.local\n.env.development.local\n.env.test.local\n.env.production.local",
+  java: "# Java\n*.class\n*.jar\n*.war\ntarget/\n.mvn/\nhs_err_pid*",
+  go: "# Go\n*.exe\n*.exe~\n*.dll\n*.so\n*.dylib\n*.test\n*.out\nvendor/",
+  macos: "# macOS\n.DS_Store\n.AppleDouble\n.LSOverride\n._*",
+  windows: "# Windows\nThumbs.db\nDesktop.ini\n$RECYCLE.BIN/",
+  vscode: "# VSCode\n.vscode/*\n!.vscode/extensions.json",
+  intellij: "# IntelliJ\n.idea/\n*.iml\n*.iws",
+};
+
+function initGitignoreGenerator() {
+  document.getElementById("gi-generate-btn").addEventListener("click", () => {
+    const checked = Array.from(document.querySelectorAll("#gi-options input:checked")).map((cb) => cb.value);
+    document.getElementById("gi-output").value = checked.length
+      ? checked.map((key) => GITIGNORE_TEMPLATES[key]).join("\n\n")
+      : "";
+  });
+
+  document.getElementById("gi-copy-btn").addEventListener("click", async (e) => {
+    const output = document.getElementById("gi-output").value;
+    if (!output) return;
+    if (await copyText(output)) flashCopied(e.target, "결과 복사");
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
@@ -1426,6 +1784,12 @@ function init() {
   initCssBoxShadow();
   initWcagContrast();
   initCubicBezier();
+  initSqlFormatter();
+  initCodeMinifier();
+  initCronGenerator();
+  initCurlConverter();
+  initFaviconGenerator();
+  initGitignoreGenerator();
 }
 
 document.addEventListener("DOMContentLoaded", init);
