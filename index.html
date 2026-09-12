@@ -77,9 +77,24 @@
         </svg>
         <input type="text" id="tool-search" class="tool-search-input" placeholder="도구 이름이나 태그로 검색 (예: QR, 대출, 압축)" />
       </div>
+      <div class="tool-hub-badges">
+        <span class="tool-hub-badge"><strong>97개</strong> 도구 무료 제공</span>
+        <span class="tool-hub-badge">회원가입 불필요</span>
+        <span class="tool-hub-badge">서버 업로드 없이 브라우저에서 처리</span>
+      </div>
     </div>
 
-    <div class="tool-section-label">도구 모음</div>
+    <nav class="cat-nav" id="cat-nav" aria-label="카테고리 바로가기">
+      <button type="button" class="cat-nav-btn" data-cat-target="cat-tools">도구 모음</button>
+      <button type="button" class="cat-nav-btn" data-cat-target="cat-calc">계산기</button>
+      <button type="button" class="cat-nav-btn" data-cat-target="cat-text2">텍스트</button>
+      <button type="button" class="cat-nav-btn" data-cat-target="cat-image">이미지</button>
+      <button type="button" class="cat-nav-btn" data-cat-target="cat-pdf">PDF</button>
+      <button type="button" class="cat-nav-btn" data-cat-target="cat-util">유틸리티</button>
+      <button type="button" class="cat-nav-btn" data-cat-target="cat-dev">개발자 도구</button>
+    </nav>
+
+    <div class="tool-section-label" id="cat-tools">도구 모음</div>
     <div class="tool-grid" id="tool-grid-tools">
       <a class="tool-card" href="https://zorlain.github.io/qr-generator/" data-tags="QR 코드 와이파이 연락처">
         <span class="tool-card-icon">
@@ -177,7 +192,7 @@
       </button>
     </div>
 
-    <div class="tool-section-label">계산기</div>
+    <div class="tool-section-label" id="cat-calc">계산기</div>
     <div class="tool-grid" id="tool-grid-calc">
       <button type="button" class="tool-card" data-tab="percent" data-tags="퍼센트 계산기 비율 증감률">
         <span class="tool-card-icon">
@@ -291,7 +306,7 @@
       </button>
     </div>
 
-    <div class="tool-section-label">텍스트</div>
+    <div class="tool-section-label" id="cat-text2">텍스트</div>
     <div class="tool-grid" id="tool-grid-text2">
       <button type="button" class="tool-card" data-tab="tts" data-tags="텍스트 읽어주기 TTS 음성변환">
         <span class="tool-card-icon">
@@ -375,7 +390,7 @@
       </button>
     </div>
 
-    <div class="tool-section-label">이미지</div>
+    <div class="tool-section-label" id="cat-image">이미지</div>
     <div class="tool-grid" id="tool-grid-image">
       <button type="button" class="tool-card" data-tab="img-to-jpg" data-tags="Image to JPG 이미지변환">
         <span class="tool-card-icon">
@@ -469,7 +484,7 @@
       </button>
     </div>
 
-    <div class="tool-section-label">PDF</div>
+    <div class="tool-section-label" id="cat-pdf">PDF</div>
     <div class="tool-grid" id="tool-grid-pdf">
       <button type="button" class="tool-card" data-tab="pdf-merge" data-tags="PDF 합치기 문서병합">
         <span class="tool-card-icon">
@@ -603,7 +618,7 @@
       </button>
     </div>
 
-    <div class="tool-section-label">유틸리티</div>
+    <div class="tool-section-label" id="cat-util">유틸리티</div>
     <div class="tool-grid" id="tool-grid-util">
       <button type="button" class="tool-card" data-tab="emoji-symbols" data-tags="특수문자 기호 모음 복사">
         <span class="tool-card-icon">
@@ -867,7 +882,7 @@
       </button>
     </div>
 
-    <div class="tool-section-label">개발자 도구</div>
+    <div class="tool-section-label" id="cat-dev">개발자 도구</div>
     <div class="tool-grid" id="tool-grid-dev">
       <button type="button" class="tool-card" data-tab="json-to-csv" data-tags="JSON CSV 변환기">
         <span class="tool-card-icon">

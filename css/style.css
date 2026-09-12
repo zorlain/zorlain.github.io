@@ -22,6 +22,21 @@
   --stage-bg: #0a0908;
   --led: #d9770a;
   --led-dim: rgba(217, 119, 10, 0.18);
+
+  /* 카테고리별 구분색 (여러 도구 모음 사이트를 참고: 섹션 단위로만 색을 달리해
+     한 카드 안에서는 여전히 단색을 유지, 전체적으로는 과하지 않게 절제된 톤) */
+  --cat-calc: #3b6bc4;
+  --cat-calc-soft: rgba(59, 107, 196, 0.1);
+  --cat-text: #1f9c80;
+  --cat-text-soft: rgba(31, 156, 128, 0.1);
+  --cat-image: #c85c7c;
+  --cat-image-soft: rgba(200, 92, 124, 0.1);
+  --cat-pdf: #c14a33;
+  --cat-pdf-soft: rgba(193, 74, 51, 0.1);
+  --cat-util: #7c5cc9;
+  --cat-util-soft: rgba(124, 92, 201, 0.1);
+  --cat-dev: #3f8f4f;
+  --cat-dev-soft: rgba(63, 143, 79, 0.1);
 }
 
 :root[data-theme="dark"] {
@@ -43,6 +58,19 @@
   --stage-bg: #0a0705;
   --led: #ffb020;
   --led-dim: rgba(255, 176, 32, 0.18);
+
+  --cat-calc: #8fb3e8;
+  --cat-calc-soft: rgba(143, 179, 232, 0.14);
+  --cat-text: #6fc9b0;
+  --cat-text-soft: rgba(111, 201, 176, 0.14);
+  --cat-image: #e39ab0;
+  --cat-image-soft: rgba(227, 154, 176, 0.14);
+  --cat-pdf: #e2836f;
+  --cat-pdf-soft: rgba(226, 131, 111, 0.14);
+  --cat-util: #b6a0e0;
+  --cat-util-soft: rgba(182, 160, 224, 0.14);
+  --cat-dev: #8bc98a;
+  --cat-dev-soft: rgba(139, 201, 138, 0.14);
 }
 
 * {
@@ -239,6 +267,79 @@ body {
   outline: none;
 }
 
+/* 신뢰 배지 + 규모 안내 (iTool의 "회원가입 없이 무제한 무료" 배지 +
+   TinyWow/OmniCalculator의 숫자 신뢰 요소를 우리 톤에 맞게 절제해서 결합) */
+.tool-hub-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 18px 0 0;
+}
+
+.tool-hub-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.tool-hub-badge strong {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* 카테고리 바로가기 필 (iLoveIMG의 필 필터 + OmniCalculator의 카테고리 목록을
+   참고한 스티키 내비게이션 — 롱 페이지에서 원하는 섹션으로 바로 이동) */
+.cat-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 12px 4px;
+  margin: 28px 0 32px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+}
+
+.cat-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.cat-nav-btn {
+  flex-shrink: 0;
+  padding: 9px 16px;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-muted);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.cat-nav-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.cat-nav-btn.active {
+  background: var(--btn-primary-bg);
+  border-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+}
+
 .tool-section-label {
   font-size: 13px;
   font-weight: 700;
@@ -317,6 +418,15 @@ body {
   width: 22px;
   height: 22px;
 }
+
+/* 섹션(카테고리)별로만 아이콘 색을 달리해 한 카드 안에서는 여전히 단색을
+   유지하면서도 섹션 간 구분은 되도록 함 */
+#tool-grid-calc .tool-card-icon { background: var(--cat-calc-soft); color: var(--cat-calc); }
+#tool-grid-text2 .tool-card-icon { background: var(--cat-text-soft); color: var(--cat-text); }
+#tool-grid-image .tool-card-icon { background: var(--cat-image-soft); color: var(--cat-image); }
+#tool-grid-pdf .tool-card-icon { background: var(--cat-pdf-soft); color: var(--cat-pdf); }
+#tool-grid-util .tool-card-icon { background: var(--cat-util-soft); color: var(--cat-util); }
+#tool-grid-dev .tool-card-icon { background: var(--cat-dev-soft); color: var(--cat-dev); }
 
 .tool-card-title {
   font-size: 16px;

@@ -79,6 +79,7 @@ function showHub() {
   document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
     panel.hidden = true;
   });
+  window.dispatchEvent(new Event("scroll"));
 }
 
 function initTabs() {
@@ -4447,11 +4448,59 @@ function initArchiveExtract() {
   });
 }
 
+function initCatNav() {
+  const nav = document.getElementById("cat-nav");
+  if (!nav) return;
+  const buttons = Array.from(nav.querySelectorAll(".cat-nav-btn"));
+  const sections = buttons
+    .map((btn) => ({ btn, el: document.getElementById(btn.dataset.catTarget) }))
+    .filter((s) => s.el);
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const target = document.getElementById(btn.dataset.catTarget);
+      if (!target) return;
+      const navHeight = nav.getBoundingClientRect().height;
+      const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 12;
+      window.scrollTo({ top, behavior: "smooth" });
+    });
+  });
+
+  // 얇은 IntersectionObserver 밴드는 빠른 스크롤에서 씹힐 수 있어,
+  // 현재 스크롤 위치를 기준으로 마지막으로 지나친 섹션을 직접 계산한다.
+  let ticking = false;
+  function updateActive() {
+    ticking = false;
+    const line = nav.getBoundingClientRect().height + 24;
+    let current = sections[0];
+    for (const s of sections) {
+      if (s.el.getBoundingClientRect().top - line <= 0) {
+        current = s;
+      }
+    }
+    if (current) {
+      buttons.forEach((b) => b.classList.toggle("active", b === current.btn));
+    }
+  }
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateActive);
+      }
+    },
+    { passive: true }
+  );
+  updateActive();
+}
+
 function init() {
   initThemeToggle();
   initMenu();
   initTabs();
   initSearch();
+  initCatNav();
   initJsonFormatter();
   initBase64();
   initLorem();
