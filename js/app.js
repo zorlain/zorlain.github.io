@@ -2497,6 +2497,462 @@ function initHeicViewer() {
   });
 }
 
+/* ---------- 외부 라이브러리 지연 로딩 공용 헬퍼 ---------- */
+const _scriptLoadCache = {};
+function loadExternalScript(src, getGlobal) {
+  if (getGlobal()) return Promise.resolve(getGlobal());
+  if (_scriptLoadCache[src]) return _scriptLoadCache[src];
+  _scriptLoadCache[src] = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = src;
+    script.onload = () => resolve(getGlobal());
+    script.onerror = () => reject(new Error("외부 라이브러리를 불러오지 못했습니다."));
+    document.head.appendChild(script);
+  });
+  return _scriptLoadCache[src];
+}
+function loadJsYaml() { return loadExternalScript("https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js", () => window.jsyaml); }
+function loadMarked() { return loadExternalScript("https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js", () => window.marked); }
+function loadDompurify() { return loadExternalScript("https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js", () => window.DOMPurify); }
+function loadJsZipLib() { return loadExternalScript("https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js", () => window.JSZip); }
+function loadXlsxLib() { return loadExternalScript("https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js", () => window.XLSX); }
+
+/* ---------- 텍스트 읽어주기(TTS) ---------- */
+function initTts() {
+  const input = document.getElementById("tts-input");
+  const voiceSelect = document.getElementById("tts-voice");
+  const rateInput = document.getElementById("tts-rate");
+  const rateLabel = document.getElementById("tts-rate-label");
+  const errorEl = document.getElementById("tts-error");
+
+  if (!("speechSynthesis" in window)) {
+    errorEl.hidden = false;
+    errorEl.textContent = "이 브라우저는 음성 합성을 지원하지 않습니다.";
+    document.getElementById("tts-play-btn").disabled = true;
+    return;
+  }
+
+  function populateVoices() {
+    const voices = speechSynthesis.getVoices();
+    voiceSelect.innerHTML = "";
+    voices.forEach((v, i) => {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(opt);
+    });
+    const koIdx = voices.findIndex((v) => v.lang.startsWith("ko"));
+    if (koIdx >= 0) voiceSelect.value = koIdx;
+  }
+  populateVoices();
+  speechSynthesis.onvoiceschanged = populateVoices;
+
+  rateInput.addEventListener("input", () => {
+    rateLabel.textContent = `${Number(rateInput.value).toFixed(1)}x`;
+  });
+
+  document.getElementById("tts-play-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    if (!input.value.trim()) return;
+    speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(input.value);
+    const voices = speechSynthesis.getVoices();
+    const selected = voices[Number(voiceSelect.value)];
+    if (selected) utter.voice = selected;
+    utter.rate = Number(rateInput.value);
+    speechSynthesis.speak(utter);
+  });
+
+  document.getElementById("tts-stop-btn").addEventListener("click", () => speechSynthesis.cancel());
+}
+
+/* ---------- 엑셀 파일 합치기 ---------- */
+function initExcelMerge() {
+  const input = document.getElementById("xlm-input");
+  const hint = document.getElementById("xlm-hint");
+  const errorEl = document.getElementById("xlm-error");
+  const loadingEl = document.getElementById("xlm-loading");
+  const downloadLink = document.getElementById("xlm-download");
+
+  document.getElementById("xlm-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    const files = Array.from(input.files);
+    if (files.length < 2) {
+      errorEl.hidden = false;
+      errorEl.textContent = "파일을 2개 이상 선택해주세요.";
+      return;
+    }
+    hint.textContent = `${files.length}개 파일 선택됨`;
+    loadingEl.hidden = false;
+    try {
+      const XLSX = await loadXlsxLib();
+      const outWb = XLSX.utils.book_new();
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const buf = await file.arrayBuffer();
+        const wb = XLSX.read(buf, { type: "array" });
+        const sheet = wb.Sheets[wb.SheetNames[0]];
+        let sheetName = (file.name.replace(/\.[^.]+$/, "") || `Sheet${i + 1}`).slice(0, 28);
+        let uniqueName = sheetName, n = 1;
+        while (outWb.SheetNames.includes(uniqueName)) uniqueName = `${sheetName}_${n++}`;
+        XLSX.utils.book_append_sheet(outWb, sheet, uniqueName);
+      }
+      const wbout = XLSX.write(outWb, { type: "array", bookType: "xlsx" });
+      downloadLink.href = URL.createObjectURL(new Blob([wbout], { type: "application/octet-stream" }));
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "파일을 합치는 중 오류가 발생했습니다: " + e.message;
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+}
+
+/* ---------- YAML/JSON/TOML 변환기 ---------- */
+function parseToml(text) {
+  const root = {};
+  let current = root;
+  text.split(/\r?\n/).forEach((rawLine) => {
+    const line = rawLine.replace(/#.*$/, "").trim();
+    if (!line) return;
+    const sectionMatch = line.match(/^\[([^\[\]]+)\]$/);
+    if (sectionMatch) {
+      current = root;
+      sectionMatch[1].split(".").map((s) => s.trim()).forEach((key) => {
+        if (!current[key] || typeof current[key] !== "object") current[key] = {};
+        current = current[key];
+      });
+      return;
+    }
+    const kvMatch = line.match(/^([^=]+)=(.*)$/);
+    if (kvMatch) {
+      const key = kvMatch[1].trim().replace(/^["']|["']$/g, "");
+      current[key] = parseTomlValue(kvMatch[2].trim());
+    }
+  });
+  return root;
+}
+function parseTomlValue(raw) {
+  if (/^".*"$/.test(raw) || /^'.*'$/.test(raw)) return raw.slice(1, -1);
+  if (raw === "true") return true;
+  if (raw === "false") return false;
+  if (/^-?\d+$/.test(raw)) return parseInt(raw, 10);
+  if (/^-?\d+\.\d+$/.test(raw)) return parseFloat(raw);
+  if (raw.startsWith("[") && raw.endsWith("]")) {
+    const inner = raw.slice(1, -1).trim();
+    return inner ? inner.split(",").map((v) => parseTomlValue(v.trim())) : [];
+  }
+  return raw;
+}
+function tomlValueToString(v) {
+  if (typeof v === "string") return JSON.stringify(v);
+  if (typeof v === "boolean" || typeof v === "number") return String(v);
+  if (Array.isArray(v)) return `[${v.map(tomlValueToString).join(", ")}]`;
+  return JSON.stringify(v);
+}
+function stringifyToml(obj, prefix) {
+  prefix = prefix || "";
+  const lines = [];
+  const scalarEntries = [], tableEntries = [];
+  Object.entries(obj).forEach(([k, v]) => {
+    (v !== null && typeof v === "object" && !Array.isArray(v) ? tableEntries : scalarEntries).push([k, v]);
+  });
+  scalarEntries.forEach(([k, v]) => lines.push(`${k} = ${tomlValueToString(v)}`));
+  tableEntries.forEach(([k, v]) => {
+    const path = prefix ? `${prefix}.${k}` : k;
+    lines.push("", `[${path}]`, stringifyToml(v, path));
+  });
+  return lines.join("\n").trim();
+}
+
+async function parseByFormat(format, text) {
+  if (format === "json") return JSON.parse(text);
+  if (format === "yaml") return (await loadJsYaml()).load(text);
+  if (format === "toml") return parseToml(text);
+  throw new Error("지원하지 않는 형식입니다.");
+}
+async function stringifyByFormat(format, obj) {
+  if (format === "json") return JSON.stringify(obj, null, 2);
+  if (format === "yaml") return (await loadJsYaml()).dump(obj);
+  if (format === "toml") return stringifyToml(obj);
+  throw new Error("지원하지 않는 형식입니다.");
+}
+
+function initYamlJsonToml() {
+  initSegmented("yjt-from");
+  initSegmented("yjt-to");
+  document.getElementById("yjt-convert-btn").addEventListener("click", async () => {
+    const errorEl = document.getElementById("yjt-error");
+    errorEl.hidden = true;
+    const input = document.getElementById("yjt-input").value;
+    if (!input.trim()) return;
+    try {
+      const obj = await parseByFormat(getSegmentedValue("yjt-from"), input);
+      document.getElementById("yjt-output").value = await stringifyByFormat(getSegmentedValue("yjt-to"), obj);
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = `변환 오류: ${e.message}`;
+    }
+  });
+}
+
+/* ---------- XML 파서·포맷터 ---------- */
+function prettyPrintXml(xmlString) {
+  const doc = new DOMParser().parseFromString(xmlString, "application/xml");
+  if (doc.getElementsByTagName("parsererror").length) throw new Error("올바른 XML 형식이 아닙니다.");
+
+  function serialize(node, depth) {
+    const indent = "  ".repeat(depth);
+    if (node.nodeType === Node.TEXT_NODE) {
+      const text = node.textContent.trim();
+      return text ? indent + text + "\n" : "";
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) return "";
+    const attrs = Array.from(node.attributes || []).map((a) => ` ${a.name}="${a.value}"`).join("");
+    const children = Array.from(node.childNodes);
+    const hasElementChildren = children.some((c) => c.nodeType === Node.ELEMENT_NODE);
+    const textContent = children.filter((c) => c.nodeType === Node.TEXT_NODE).map((c) => c.textContent.trim()).join("");
+
+    if (!hasElementChildren && textContent) return `${indent}<${node.tagName}${attrs}>${textContent}</${node.tagName}>\n`;
+    if (children.length === 0) return `${indent}<${node.tagName}${attrs} />\n`;
+    let result = `${indent}<${node.tagName}${attrs}>\n`;
+    children.forEach((child) => { result += serialize(child, depth + 1); });
+    result += `${indent}</${node.tagName}>\n`;
+    return result;
+  }
+  return serialize(doc.documentElement, 0).trim();
+}
+
+function initXmlParser() {
+  document.getElementById("xml-format-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("xml-error");
+    errorEl.hidden = true;
+    const input = document.getElementById("xml-input").value;
+    if (!input.trim()) return;
+    try {
+      document.getElementById("xml-output").value = prettyPrintXml(input);
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = e.message;
+    }
+  });
+}
+
+/* ---------- JSON↔XML 변환기 ---------- */
+function jsonToXml(obj, rootName) {
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function buildNode(key, value) {
+    if (Array.isArray(value)) return value.map((v) => buildNode(key, v)).join("");
+    if (value !== null && typeof value === "object") {
+      return `<${key}>${Object.entries(value).map(([k, v]) => buildNode(k, v)).join("")}</${key}>`;
+    }
+    return `<${key}>${esc(value)}</${key}>`;
+  }
+  return `<${rootName}>${Object.entries(obj).map(([k, v]) => buildNode(k, v)).join("")}</${rootName}>`;
+}
+
+function xmlToJson(xmlString) {
+  const doc = new DOMParser().parseFromString(xmlString, "application/xml");
+  if (doc.getElementsByTagName("parsererror").length) throw new Error("올바른 XML 형식이 아닙니다.");
+  function nodeToObj(node) {
+    const children = Array.from(node.children);
+    if (children.length === 0) return node.textContent;
+    const obj = {};
+    children.forEach((child) => {
+      const value = nodeToObj(child);
+      if (obj[child.tagName] !== undefined) {
+        if (!Array.isArray(obj[child.tagName])) obj[child.tagName] = [obj[child.tagName]];
+        obj[child.tagName].push(value);
+      } else obj[child.tagName] = value;
+    });
+    return obj;
+  }
+  return { [doc.documentElement.tagName]: nodeToObj(doc.documentElement) };
+}
+
+function initJsonXml() {
+  const errorEl = document.getElementById("jx-error");
+  document.getElementById("jx-to-xml-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    try {
+      const obj = JSON.parse(document.getElementById("jx-input").value);
+      const keys = Object.keys(obj);
+      const rootName = keys.length === 1 ? keys[0] : "root";
+      const body = keys.length === 1 ? obj[rootName] : obj;
+      document.getElementById("jx-output").value = prettyPrintXml(jsonToXml(body, rootName));
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = `변환 오류: ${e.message}`;
+    }
+  });
+  document.getElementById("jx-to-json-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    try {
+      document.getElementById("jx-output").value = JSON.stringify(xmlToJson(document.getElementById("jx-input").value), null, 2);
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = `변환 오류: ${e.message}`;
+    }
+  });
+}
+
+/* ---------- EPUB→TXT 변환 ---------- */
+function stripHtmlToText(html) {
+  const withBreaks = html
+    .replace(/<\/(p|div|h[1-6]|li|tr)>/gi, "$&\n")
+    .replace(/<br\s*\/?>/gi, "\n");
+  const doc = new DOMParser().parseFromString(withBreaks, "text/html");
+  return doc.body.textContent.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+async function epubToText(file) {
+  const JSZip = await loadJsZipLib();
+  const zip = await JSZip.loadAsync(file);
+
+  const containerEntry = zip.file("META-INF/container.xml");
+  if (!containerEntry) throw new Error("올바른 EPUB 파일이 아닙니다.");
+  const containerDoc = new DOMParser().parseFromString(await containerEntry.async("string"), "application/xml");
+  const opfPath = containerDoc.querySelector("rootfile").getAttribute("full-path");
+  const opfDir = opfPath.includes("/") ? opfPath.slice(0, opfPath.lastIndexOf("/") + 1) : "";
+
+  const opfDoc = new DOMParser().parseFromString(await zip.file(opfPath).async("string"), "application/xml");
+  const manifest = {};
+  opfDoc.querySelectorAll("manifest > item").forEach((item) => {
+    manifest[item.getAttribute("id")] = item.getAttribute("href");
+  });
+  const spineIds = Array.from(opfDoc.querySelectorAll("spine > itemref")).map((el) => el.getAttribute("idref"));
+
+  let fullText = "";
+  for (const id of spineIds) {
+    const href = manifest[id];
+    if (!href) continue;
+    const entry = zip.file(opfDir + href);
+    if (!entry) continue;
+    const text = stripHtmlToText(await entry.async("string"));
+    if (text) fullText += text + "\n\n";
+  }
+  return fullText.trim();
+}
+
+function initEpubToTxt() {
+  const input = document.getElementById("epub-input");
+  const hint = document.getElementById("epub-hint");
+  const errorEl = document.getElementById("epub-error");
+  const loadingEl = document.getElementById("epub-loading");
+  const resultGroup = document.getElementById("epub-result-group");
+  const output = document.getElementById("epub-output");
+  const downloadLink = document.getElementById("epub-download");
+
+  document.getElementById("epub-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    resultGroup.hidden = true;
+    downloadLink.hidden = true;
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    loadingEl.hidden = false;
+    try {
+      const text = await epubToText(file);
+      if (!text) throw new Error("텍스트를 추출하지 못했습니다.");
+      output.value = text;
+      resultGroup.hidden = false;
+      downloadLink.href = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+      downloadLink.download = file.name.replace(/\.[^.]+$/, "") + ".txt";
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "EPUB 변환에 실패했습니다: " + e.message;
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+}
+
+/* ---------- MD 파일 뷰어 ---------- */
+function initMdViewer() {
+  const input = document.getElementById("mdv-input");
+  const hint = document.getElementById("mdv-hint");
+  const source = document.getElementById("mdv-source");
+  const errorEl = document.getElementById("mdv-error");
+  const previewWrap = document.getElementById("mdv-preview-wrap");
+  const preview = document.getElementById("mdv-preview");
+
+  document.getElementById("mdv-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = (e) => { source.value = e.target.result; };
+    reader.readAsText(file, "utf-8");
+  });
+
+  document.getElementById("mdv-render-btn").addEventListener("click", async () => {
+    errorEl.hidden = true;
+    previewWrap.hidden = true;
+    if (!source.value.trim()) return;
+    try {
+      const marked = await loadMarked();
+      const DOMPurify = await loadDompurify();
+      preview.innerHTML = DOMPurify.sanitize(marked.parse(source.value));
+      previewWrap.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "미리보기 렌더링에 실패했습니다: " + e.message;
+    }
+  });
+}
+
+/* ---------- 텍스트 비교 ---------- */
+function diffLines(a, b) {
+  const linesA = a.split("\n"), linesB = b.split("\n");
+  const n = linesA.length, m = linesB.length;
+  const dp = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+  for (let i = n - 1; i >= 0; i--) {
+    for (let j = m - 1; j >= 0; j--) {
+      dp[i][j] = linesA[i] === linesB[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+    }
+  }
+  const result = [];
+  let i = 0, j = 0;
+  while (i < n && j < m) {
+    if (linesA[i] === linesB[j]) { result.push({ type: "same", text: linesA[i] }); i++; j++; }
+    else if (dp[i + 1][j] >= dp[i][j + 1]) { result.push({ type: "removed", text: linesA[i] }); i++; }
+    else { result.push({ type: "added", text: linesB[j] }); j++; }
+  }
+  while (i < n) { result.push({ type: "removed", text: linesA[i] }); i++; }
+  while (j < m) { result.push({ type: "added", text: linesB[j] }); j++; }
+  return result;
+}
+
+function initTextCompare() {
+  document.getElementById("tc-compare-btn").addEventListener("click", () => {
+    const diff = diffLines(document.getElementById("tc-input-a").value, document.getElementById("tc-input-b").value);
+    const container = document.getElementById("tc-result");
+    container.innerHTML = "";
+    let added = 0, removed = 0;
+    diff.forEach((d) => {
+      const div = document.createElement("div");
+      div.style.whiteSpace = "pre-wrap";
+      div.style.padding = "2px 8px";
+      div.style.fontFamily = "monospace";
+      div.style.fontSize = "13px";
+      if (d.type === "added") { div.style.background = "rgba(44,158,68,0.18)"; div.textContent = "+ " + d.text; added++; }
+      else if (d.type === "removed") { div.style.background = "rgba(216,49,79,0.18)"; div.textContent = "- " + d.text; removed++; }
+      else { div.style.color = "var(--text-muted)"; div.textContent = "  " + d.text; }
+      container.appendChild(div);
+    });
+    document.getElementById("tc-stat").textContent = `추가 ${added}줄 · 삭제 ${removed}줄`;
+    document.getElementById("tc-result-wrap").hidden = false;
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
@@ -2552,6 +3008,14 @@ function init() {
   initPhotoDateStamp();
   initSvgTrim();
   initHeicViewer();
+  initTts();
+  initExcelMerge();
+  initYamlJsonToml();
+  initXmlParser();
+  initJsonXml();
+  initEpubToTxt();
+  initMdViewer();
+  initTextCompare();
 }
 
 document.addEventListener("DOMContentLoaded", init);
