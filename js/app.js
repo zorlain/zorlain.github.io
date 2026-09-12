@@ -3773,6 +3773,680 @@ function initVideoToGif() {
   });
 }
 
+/* ---------- 특수문자 모음 ---------- */
+const SYMBOL_LIST = ['★','☆','♥','♡','♪','♬','※','§','¶','†','‡','∞','℃','℉','©','®','™','€','£','¥','₩','°','±','×','÷','≠','≒','∴','→','←','↑','↓','↔','⇒','∙','◆','◇','■','□','▲','▽','●','○','☎','✓','✔','✗','①','②','③'];
+function initEmojiSymbols() {
+  const grid = document.getElementById("sym-grid");
+  const copiedMsg = document.getElementById("sym-copied");
+  SYMBOL_LIST.forEach((sym) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "secondary-btn";
+    btn.textContent = sym;
+    btn.addEventListener("click", async () => {
+      if (await copyText(sym)) {
+        copiedMsg.hidden = false;
+        copiedMsg.textContent = `'${sym}' 복사됨`;
+        setTimeout(() => { copiedMsg.hidden = true; }, 1200);
+      }
+    });
+    grid.appendChild(btn);
+  });
+}
+
+/* ---------- 영문주소 변환 (Revised Romanization 간이 구현) ---------- */
+const RR_CHO = ['g','kk','n','d','tt','r','m','b','pp','s','ss','','j','jj','ch','k','t','p','h'];
+const RR_JUNG = ['a','ae','ya','yae','eo','e','yeo','ye','o','wa','wae','oe','yo','u','wo','we','wi','yu','eu','ui','i'];
+const RR_JONG = ['','k','k','k','n','n','n','t','l','k','m','l','l','l','p','l','m','p','p','t','t','ng','t','t','k','t','p','t'];
+
+function romanizeHangul(str) {
+  let result = "";
+  for (const ch of str) {
+    const code = ch.charCodeAt(0);
+    if (code >= 0xac00 && code <= 0xd7a3) {
+      const offset = code - 0xac00;
+      result += RR_CHO[Math.floor(offset / (21 * 28))] + RR_JUNG[Math.floor((offset % (21 * 28)) / 28)] + RR_JONG[offset % 28];
+    } else {
+      result += ch;
+    }
+  }
+  return result;
+}
+
+function initAddrTranslate() {
+  document.getElementById("addr-convert-btn").addEventListener("click", () => {
+    const raw = document.getElementById("addr-input").value.trim();
+    if (!raw) return;
+    const tokens = raw.split(/\s+/);
+    const romanized = tokens.map((t) => {
+      if (/^[0-9-]+$/.test(t)) return t;
+      const r = romanizeHangul(t);
+      return r.charAt(0).toUpperCase() + r.slice(1);
+    });
+    document.getElementById("addr-output").value = romanized.reverse().join(", ") + ", Republic of Korea";
+  });
+}
+
+/* ---------- QR 코드 읽기 ---------- */
+function loadJsQrExt() { return loadExternalScript("https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js", () => window.jsQR); }
+function initQrReader() {
+  const input = document.getElementById("qrr-input");
+  const hint = document.getElementById("qrr-hint");
+  const errorEl = document.getElementById("qrr-error");
+  const output = document.getElementById("qrr-output");
+
+  document.getElementById("qrr-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    output.value = "";
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    try {
+      const jsQR = await loadJsQrExt();
+      const img = new Image();
+      const dataUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+      await new Promise((resolve, reject) => { img.onload = resolve; img.onerror = reject; img.src = dataUrl; });
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const result = jsQR(imageData.data, imageData.width, imageData.height);
+      if (result) {
+        output.value = result.data;
+      } else {
+        errorEl.hidden = false;
+        errorEl.textContent = "QR 코드를 인식하지 못했습니다. 더 선명한 이미지를 사용해주세요.";
+      }
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "처리 중 오류가 발생했습니다: " + e.message;
+    }
+  });
+
+  document.getElementById("qrr-copy-btn").addEventListener("click", async (e) => {
+    if (!output.value) return;
+    if (await copyText(output.value)) flashCopied(e.target, "결과 복사");
+  });
+}
+
+/* ---------- 도장·명판 만들기 (법인도장/사각직인/개인도장/사업자명판 공용) ---------- */
+function wrapTextToLines(text, maxCharsPerLine) {
+  if (text.length <= maxCharsPerLine) return [text];
+  const lines = [];
+  for (let i = 0; i < text.length; i += maxCharsPerLine) lines.push(text.slice(i, i + maxCharsPerLine));
+  return lines;
+}
+
+function drawStamp(canvas, { shape, text, color, width, height }) {
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, width, height);
+  const minSide = Math.min(width, height);
+  const pad = minSide * 0.08;
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = minSide * 0.035;
+
+  if (shape === "circle") {
+    ctx.beginPath();
+    ctx.arc(width / 2, height / 2, minSide / 2 - pad, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(width / 2, height / 2, minSide / 2 - pad * 2.4, 0, Math.PI * 2);
+    ctx.stroke();
+  } else {
+    ctx.strokeRect(pad, pad, width - pad * 2, height - pad * 2);
+  }
+
+  const lines = wrapTextToLines(text, shape === "circle" ? 5 : 8);
+  const fontSize = (shape === "circle" ? minSide * 0.15 : minSide * 0.22);
+  ctx.font = `bold ${fontSize}px "Malgun Gothic", "Nanum Gothic", sans-serif`;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  const lineHeight = fontSize * 1.3;
+  const startY = height / 2 - (lineHeight * (lines.length - 1)) / 2;
+  lines.forEach((line, i) => ctx.fillText(line, width / 2, startY + i * lineHeight));
+}
+
+function initStampMaker(prefix, shape, color, size) {
+  const canvas = document.getElementById(`${prefix}-canvas`);
+  const downloadLink = document.getElementById(`${prefix}-download`);
+  document.getElementById(`${prefix}-make-btn`).addEventListener("click", () => {
+    const text = document.getElementById(`${prefix}-text`).value.trim();
+    if (!text) return;
+    drawStamp(canvas, { shape, text, color, width: size[0], height: size[1] });
+    downloadLink.href = canvas.toDataURL("image/png");
+    downloadLink.hidden = false;
+  });
+}
+
+/* ---------- 폰·태블릿 / 상영관 크기 비교 (공용) ---------- */
+const DEVICE_SIZES = {
+  "아이폰13": [71.5, 146.7], "아이폰14": [71.5, 146.7], "아이폰14프로": [71.5, 147.5],
+  "아이폰15": [71.6, 147.6], "아이폰15프로": [76.7, 146.6], "아이폰15프로맥스": [76.7, 159.9],
+  "갤럭시s22": [70.6, 146.0], "갤럭시s23": [70.9, 146.3], "갤럭시s24": [70.6, 147.0], "갤럭시s24울트라": [79.0, 162.3],
+  "아이패드미니": [134.8, 195.4], "아이패드": [178.5, 247.6], "아이패드프로11": [178.5, 247.6], "아이패드프로13": [214.9, 280.6],
+  "갤럭시탭s9": [185.4, 254.3],
+};
+const CINEMA_SIZES = {
+  "일반관": [12, 6], "아이맥스": [22, 16], "돌비시네마": [18, 9.4], "스크린x": [31, 9], "4dx": [14, 7],
+};
+
+function findByName(dataset, query) {
+  const key = query.replace(/\s+/g, "").toLowerCase();
+  if (!key) return null;
+  for (const [name, size] of Object.entries(dataset)) {
+    if (name.includes(key) || key.includes(name)) return { name, size };
+  }
+  return null;
+}
+
+function drawSizeComparison(canvas, itemA, itemB, unit) {
+  const maxDim = Math.max(itemA.size[0], itemA.size[1], itemB.size[0], itemB.size[1]);
+  const scale = 240 / maxDim;
+  canvas.width = 420;
+  canvas.height = Math.max(itemA.size[1], itemB.size[1]) * scale + 50;
+  const ctx = canvas.getContext("2d");
+  const cardElevated = getComputedStyle(document.documentElement).getPropertyValue("--card-elevated").trim() || "#222";
+  ctx.fillStyle = cardElevated;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  function drawItem(item, x, color) {
+    const w = item.size[0] * scale, h = item.size[1] * scale;
+    ctx.fillStyle = color;
+    ctx.fillRect(x, canvas.height - h - 30, w, h);
+    ctx.fillStyle = "#fff";
+    ctx.font = "12px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText(item.name, x + w / 2, canvas.height - 14);
+    ctx.fillText(`${item.size[0]}×${item.size[1]}${unit}`, x + w / 2, canvas.height + 2 > canvas.height ? canvas.height - 2 : canvas.height - 2);
+  }
+  drawItem(itemA, 40, "#ffb020");
+  drawItem(itemB, 40 + itemA.size[0] * scale + 50, "#4f8ff0");
+}
+
+function initSizeCompare(prefix, dataset, unit, notFoundMsg) {
+  document.getElementById(`${prefix}-compare-btn`).addEventListener("click", () => {
+    const errorEl = document.getElementById(`${prefix}-error`);
+    errorEl.hidden = true;
+    const a = findByName(dataset, document.getElementById(`${prefix}-a`).value);
+    const b = findByName(dataset, document.getElementById(`${prefix}-b`).value);
+    if (!a || !b) {
+      errorEl.hidden = false;
+      errorEl.textContent = notFoundMsg;
+      return;
+    }
+    drawSizeComparison(document.getElementById(`${prefix}-canvas`), a, b, unit);
+  });
+}
+
+/* ---------- 한글 뷰어(HWP) - 형식 확인 및 안내 ---------- */
+function initHwpViewer() {
+  const input = document.getElementById("hwp-input");
+  const hint = document.getElementById("hwp-hint");
+  const errorEl = document.getElementById("hwp-error");
+  const resultEl = document.getElementById("hwp-result");
+
+  document.getElementById("hwp-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    const buf = await file.slice(0, 8).arrayBuffer();
+    const bytes = new Uint8Array(buf);
+    const oleSignature = [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1];
+    const isOle = oleSignature.every((b, i) => bytes[i] === b);
+    document.getElementById("hwp-format-value").textContent = isOle ? "HWP (OLE 문서)" : "형식을 확인할 수 없음";
+    document.getElementById("hwp-size-value").textContent = formatBytes(file.size);
+    resultEl.hidden = false;
+    if (!isOle) {
+      errorEl.hidden = false;
+      errorEl.textContent = "올바른 HWP 파일 시그니처를 찾을 수 없습니다. HWPX(신형식) 파일이거나 다른 형식일 수 있습니다.";
+    }
+  });
+}
+
+/* ---------- 증명사진 만들기 ---------- */
+function initIdPhoto() {
+  const input = document.getElementById("idp-input");
+  const hint = document.getElementById("idp-hint");
+  const errorEl = document.getElementById("idp-error");
+  const canvas = document.getElementById("idp-canvas");
+  const downloadLink = document.getElementById("idp-download");
+  initSegmented("idp-size");
+  let loadedImg = null;
+
+  const SIZES = { "3x4": [3, 4], "3.5x4.5": [3.5, 4.5], "5x5": [5, 5] };
+  const cmToPx = (cm) => Math.round((cm / 2.54) * 300);
+
+  document.getElementById("idp-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => { loadedImg = img; };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("idp-apply-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    downloadLink.hidden = true;
+    if (!loadedImg) {
+      errorEl.hidden = false;
+      errorEl.textContent = "사진을 먼저 선택해주세요.";
+      return;
+    }
+    const [wCm, hCm] = SIZES[getSegmentedValue("idp-size")];
+    const w = cmToPx(wCm), h = cmToPx(hCm);
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d");
+    const scale = Math.max(w / loadedImg.naturalWidth, h / loadedImg.naturalHeight);
+    const sw = w / scale, sh = h / scale;
+    const sx = (loadedImg.naturalWidth - sw) / 2, sy = (loadedImg.naturalHeight - sh) / 2;
+    ctx.drawImage(loadedImg, sx, sy, sw, sh, 0, 0, w, h);
+    downloadLink.href = canvas.toDataURL("image/jpeg", 0.92);
+    downloadLink.hidden = false;
+  });
+}
+
+/* ---------- 도장 누끼 따기 ---------- */
+function initStampCutout() {
+  const input = document.getElementById("scut-input");
+  const hint = document.getElementById("scut-hint");
+  const errorEl = document.getElementById("scut-error");
+  const canvas = document.getElementById("scut-canvas");
+  const downloadLink = document.getElementById("scut-download");
+  const thresholdInput = document.getElementById("scut-threshold");
+  const thresholdLabel = document.getElementById("scut-threshold-label");
+  let loadedImg = null;
+
+  thresholdInput.addEventListener("input", () => {
+    const v = Number(thresholdInput.value);
+    thresholdLabel.textContent = v <= 195 ? "약하게" : v >= 225 ? "강하게" : "보통";
+    if (loadedImg) render();
+  });
+
+  function render() {
+    canvas.width = loadedImg.naturalWidth;
+    canvas.height = loadedImg.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(loadedImg, 0, 0);
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const d = imageData.data;
+    const threshold = Number(thresholdInput.value);
+    for (let i = 0; i < d.length; i += 4) {
+      if (d[i] > threshold && d[i + 1] > threshold && d[i + 2] > threshold) d[i + 3] = 0;
+    }
+    ctx.putImageData(imageData, 0, 0);
+    downloadLink.href = canvas.toDataURL("image/png");
+    downloadLink.hidden = false;
+  }
+
+  document.getElementById("scut-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => { loadedImg = img; };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("scut-apply-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    if (!loadedImg) {
+      errorEl.hidden = false;
+      errorEl.textContent = "도장 이미지를 먼저 선택해주세요.";
+      return;
+    }
+    render();
+  });
+}
+
+/* ---------- 코드 찾기 (국가번호) ---------- */
+const COUNTRY_CODES = [
+  { name: "대한민국", code: "+82" }, { name: "미국", code: "+1" }, { name: "캐나다", code: "+1" },
+  { name: "일본", code: "+81" }, { name: "중국", code: "+86" }, { name: "영국", code: "+44" },
+  { name: "독일", code: "+49" }, { name: "프랑스", code: "+33" }, { name: "이탈리아", code: "+39" },
+  { name: "스페인", code: "+34" }, { name: "호주", code: "+61" }, { name: "베트남", code: "+84" },
+  { name: "태국", code: "+66" }, { name: "필리핀", code: "+63" }, { name: "인도", code: "+91" },
+  { name: "러시아", code: "+7" }, { name: "브라질", code: "+55" }, { name: "멕시코", code: "+52" },
+  { name: "싱가포르", code: "+65" }, { name: "말레이시아", code: "+60" }, { name: "인도네시아", code: "+62" },
+  { name: "홍콩", code: "+852" }, { name: "대만", code: "+886" }, { name: "네덜란드", code: "+31" },
+  { name: "스위스", code: "+41" }, { name: "스웨덴", code: "+46" }, { name: "뉴질랜드", code: "+64" },
+  { name: "터키", code: "+90" }, { name: "아랍에미리트", code: "+971" }, { name: "이집트", code: "+20" },
+];
+
+function initCodeFinder() {
+  document.getElementById("cdf-search-btn").addEventListener("click", () => {
+    const q = document.getElementById("cdf-input").value.trim();
+    const match = COUNTRY_CODES.find((c) => c.name.includes(q) || q.includes(c.name));
+    document.getElementById("cdf-output").value = match ? `${match.name} 국가번호: ${match.code}` : "검색 결과가 없습니다.";
+  });
+}
+
+/* ---------- 코드 악보 만들기 ---------- */
+function generateChordSheet(lyrics) {
+  return lyrics.split("\n").map((line) => {
+    let chordLine = "", lyricLine = "", i = 0;
+    while (i < line.length) {
+      if (line[i] === "[") {
+        const end = line.indexOf("]", i);
+        if (end === -1) { lyricLine += line[i]; i++; continue; }
+        const chord = line.slice(i + 1, end);
+        while (chordLine.length < lyricLine.length) chordLine += " ";
+        chordLine += chord;
+        i = end + 1;
+      } else {
+        lyricLine += line[i];
+        i++;
+      }
+    }
+    return chordLine.trimEnd() ? chordLine + "\n" + lyricLine : lyricLine;
+  }).join("\n\n");
+}
+
+function initChordSheet() {
+  document.getElementById("cds-make-btn").addEventListener("click", () => {
+    document.getElementById("cds-output").value = generateChordSheet(document.getElementById("cds-input").value);
+  });
+}
+
+/* ---------- 습관 만들기 (localStorage) ---------- */
+function initHabitTracker() {
+  const KEY = "toolbox-habits";
+  function load() { try { return JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { return []; } }
+  function save(list) { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {} }
+
+  function render() {
+    const list = load();
+    const container = document.getElementById("ht-list");
+    container.innerHTML = "";
+    if (list.length === 0) {
+      container.innerHTML = '<p class="wip-note" style="margin:0;">추가된 습관이 없습니다.</p>';
+      return;
+    }
+    const today = new Date().toISOString().slice(0, 10);
+    list.forEach((h, idx) => {
+      const row = document.createElement("div");
+      row.className = "result-stat";
+      row.style.cssText = "display:flex; justify-content:space-between; align-items:center; text-align:left;";
+      const checked = h.done && h.done[today];
+      const label = document.createElement("span");
+      label.textContent = h.name;
+      const btnGroup = document.createElement("div");
+      btnGroup.style.cssText = "display:flex; gap:6px;";
+      const checkBtn = document.createElement("button");
+      checkBtn.className = "secondary-btn";
+      checkBtn.textContent = checked ? "완료 ✓" : "체크";
+      checkBtn.addEventListener("click", () => {
+        h.done = h.done || {};
+        h.done[today] = !h.done[today];
+        save(list);
+        render();
+      });
+      const delBtn = document.createElement("button");
+      delBtn.className = "secondary-btn";
+      delBtn.textContent = "삭제";
+      delBtn.addEventListener("click", () => {
+        list.splice(idx, 1);
+        save(list);
+        render();
+      });
+      btnGroup.appendChild(checkBtn);
+      btnGroup.appendChild(delBtn);
+      row.appendChild(label);
+      row.appendChild(btnGroup);
+      container.appendChild(row);
+    });
+  }
+
+  document.getElementById("ht-add-btn").addEventListener("click", () => {
+    const input = document.getElementById("ht-input");
+    if (!input.value.trim()) return;
+    const list = load();
+    list.push({ name: input.value.trim(), done: {} });
+    save(list);
+    input.value = "";
+    render();
+  });
+
+  render();
+}
+
+/* ---------- 달력 출력 ---------- */
+function generateCalendarHtml(year, month) {
+  const firstDay = new Date(year, month - 1, 1).getDay();
+  const daysInMonth = new Date(year, month, 0).getDate();
+  let html = `<h3 style="text-align:center; margin: 0 0 12px;">${year}년 ${month}월</h3>`;
+  html += '<table style="width:100%; border-collapse:collapse; text-align:center;">';
+  html += "<tr>" + ["일", "월", "화", "수", "목", "금", "토"].map((d) => `<th style="padding:6px; color:var(--text-muted); font-size:12px; font-weight:600;">${d}</th>`).join("") + "</tr>";
+  let day = 1;
+  for (let row = 0; row < 6 && day <= daysInMonth; row++) {
+    html += "<tr>";
+    for (let col = 0; col < 7; col++) {
+      if ((row === 0 && col < firstDay) || day > daysInMonth) html += "<td></td>";
+      else { html += `<td style="padding:10px; border-radius:8px; font-size:13px;">${day}</td>`; day++; }
+    }
+    html += "</tr>";
+  }
+  return html + "</table>";
+}
+
+function initCalendarPrint() {
+  const preview = document.getElementById("cal-preview");
+  document.getElementById("cal-make-btn").addEventListener("click", () => {
+    const year = parseInt(document.getElementById("cal-year").value, 10) || new Date().getFullYear();
+    const month = Math.min(12, Math.max(1, parseInt(document.getElementById("cal-month").value, 10) || 1));
+    preview.innerHTML = generateCalendarHtml(year, month);
+  });
+  document.getElementById("cal-print-btn").addEventListener("click", () => {
+    if (!preview.innerHTML) return;
+    const win = window.open("", "_blank");
+    win.document.write(`<html><head><title>달력</title></head><body>${preview.innerHTML}</body></html>`);
+    win.document.close();
+    win.print();
+  });
+}
+
+/* ---------- 온라인 메트로놈 ---------- */
+function initMetronome() {
+  let audioCtx = null;
+  let intervalId = null;
+  let playing = false;
+  const bpmInput = document.getElementById("met-bpm");
+  const bpmLabel = document.getElementById("met-bpm-label");
+  const beatEl = document.getElementById("met-beat");
+  const btn = document.getElementById("met-start-btn");
+
+  bpmInput.addEventListener("input", () => { bpmLabel.textContent = `${bpmInput.value} BPM`; });
+
+  function playClick() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.frequency.value = 1000;
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+    osc.connect(gain).connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.05);
+    beatEl.textContent = "●";
+    setTimeout(() => { beatEl.textContent = "○"; }, 100);
+  }
+
+  btn.addEventListener("click", () => {
+    if (playing) {
+      clearInterval(intervalId);
+      playing = false;
+      btn.textContent = "시작하기";
+      return;
+    }
+    const bpm = Math.min(240, Math.max(20, Number(bpmInput.value) || 120));
+    playClick();
+    intervalId = setInterval(playClick, 60000 / bpm);
+    playing = true;
+    btn.textContent = "정지하기";
+  });
+}
+
+/* ---------- 기타 튜너 (자기상관 기반 피치 감지) ---------- */
+const GUITAR_STRINGS = [["E2", 82.41], ["A2", 110.0], ["D3", 146.83], ["G3", 196.0], ["B3", 246.94], ["E4", 329.63]];
+
+function autoCorrelatePitch(buf, sampleRate) {
+  const SIZE = buf.length;
+  let rms = 0;
+  for (let i = 0; i < SIZE; i++) rms += buf[i] * buf[i];
+  rms = Math.sqrt(rms / SIZE);
+  if (rms < 0.01) return -1;
+
+  let r1 = 0, r2 = SIZE - 1;
+  const thres = 0.2;
+  for (let i = 0; i < SIZE / 2; i++) { if (Math.abs(buf[i]) < thres) { r1 = i; break; } }
+  for (let i = 1; i < SIZE / 2; i++) { if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; } }
+  const trimmed = buf.slice(r1, r2);
+  const n = trimmed.length;
+
+  const c = new Array(n).fill(0);
+  for (let i = 0; i < n; i++) for (let j = 0; j < n - i; j++) c[i] += trimmed[j] * trimmed[j + i];
+
+  let d = 0;
+  while (d < n - 1 && c[d] > c[d + 1]) d++;
+  let maxval = -1, maxpos = -1;
+  for (let i = d; i < n; i++) { if (c[i] > maxval) { maxval = c[i]; maxpos = i; } }
+  let T0 = maxpos;
+  if (T0 > 0 && T0 < n - 1) {
+    const x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+    const a = (x1 + x3 - 2 * x2) / 2, b = (x3 - x1) / 2;
+    if (a) T0 = T0 - b / (2 * a);
+  }
+  return T0 > 0 ? sampleRate / T0 : -1;
+}
+
+function closestGuitarString(freq) {
+  let best = null, bestDiff = Infinity;
+  for (const [name, f] of GUITAR_STRINGS) {
+    const diff = Math.abs(freq - f);
+    if (diff < bestDiff) { bestDiff = diff; best = { name, f }; }
+  }
+  return { name: best.name, cents: 1200 * Math.log2(freq / best.f) };
+}
+
+function initGuitarTuner() {
+  let audioCtx, analyser, dataArray, source, rafId, stream;
+  let running = false;
+  const noteEl = document.getElementById("gt-note-value");
+  const errorEl = document.getElementById("gt-error");
+  const btn = document.getElementById("gt-start-btn");
+
+  function update() {
+    analyser.getFloatTimeDomainData(dataArray);
+    const freq = autoCorrelatePitch(dataArray, audioCtx.sampleRate);
+    if (freq !== -1 && freq > 60 && freq < 500) {
+      const { name, cents } = closestGuitarString(freq);
+      noteEl.textContent = `${name} (${freq.toFixed(1)}Hz, ${cents > 0 ? "+" : ""}${cents.toFixed(0)}cent)`;
+    }
+    rafId = requestAnimationFrame(update);
+  }
+
+  btn.addEventListener("click", async () => {
+    errorEl.hidden = true;
+    if (running) {
+      cancelAnimationFrame(rafId);
+      if (stream) stream.getTracks().forEach((t) => t.stop());
+      running = false;
+      btn.textContent = "마이크로 튜닝 시작";
+      return;
+    }
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 2048;
+      dataArray = new Float32Array(analyser.fftSize);
+      source = audioCtx.createMediaStreamSource(stream);
+      source.connect(analyser);
+      running = true;
+      btn.textContent = "중지하기";
+      update();
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "마이크 접근이 거부되었거나 사용할 수 없습니다.";
+    }
+  });
+}
+
+/* ---------- 압축 풀기(ZIP) ---------- */
+function initArchiveExtract() {
+  const input = document.getElementById("arc-input");
+  const hint = document.getElementById("arc-hint");
+  const errorEl = document.getElementById("arc-error");
+  const loadingEl = document.getElementById("arc-loading");
+  const listEl = document.getElementById("arc-list");
+
+  document.getElementById("arc-select-btn").addEventListener("click", () => input.click());
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    listEl.innerHTML = "";
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+
+    if (!/\.zip$/i.test(file.name)) {
+      errorEl.hidden = false;
+      errorEl.textContent = "ZIP 파일만 지원합니다. RAR·7Z·EGG는 지원하지 않습니다.";
+      return;
+    }
+    loadingEl.hidden = false;
+    try {
+      const JSZip = await loadJsZipLib();
+      const zip = await JSZip.loadAsync(file);
+      const entries = Object.values(zip.files).filter((e) => !e.dir);
+      if (entries.length === 0) {
+        errorEl.hidden = false;
+        errorEl.textContent = "압축 파일 안에 내용이 없습니다.";
+        return;
+      }
+      for (const entry of entries) {
+        const blob = await entry.async("blob");
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = entry.name.split("/").pop();
+        a.textContent = `${entry.name} (${formatBytes(blob.size)})`;
+        a.className = "secondary-btn";
+        a.style.cssText = "display:block; margin-bottom:6px; text-decoration:none;";
+        listEl.appendChild(a);
+      }
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "압축을 푸는 중 오류가 발생했습니다: " + e.message;
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
@@ -3850,6 +4524,25 @@ function init() {
   initPdfCompare();
   initImgToPdf();
   initVideoToGif();
+  initEmojiSymbols();
+  initAddrTranslate();
+  initQrReader();
+  initStampMaker("cst", "circle", "#c81e3a", [220, 220]);
+  initStampMaker("sqs", "rect", "#c81e3a", [220, 220]);
+  initStampMaker("sti", "circle", "#c81e3a", [180, 180]);
+  initStampMaker("bnp", "rect", "#8a6d1f", [280, 140]);
+  initSizeCompare("dsc", DEVICE_SIZES, "mm", "지원하지 않는 기기명입니다. 지원 목록을 확인해주세요.");
+  initSizeCompare("csc", CINEMA_SIZES, "m", "지원하지 않는 상영관명입니다. 지원 목록을 확인해주세요.");
+  initHwpViewer();
+  initIdPhoto();
+  initStampCutout();
+  initCodeFinder();
+  initChordSheet();
+  initHabitTracker();
+  initCalendarPrint();
+  initMetronome();
+  initGuitarTuner();
+  initArchiveExtract();
 }
 
 document.addEventListener("DOMContentLoaded", init);

@@ -2334,343 +2334,359 @@
   <section class="tab-panel" data-tab-panel="emoji-symbols" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>특수문자 모음</h2>
       <p class="card-desc-short">자주 쓰는 특수문자와 기호를 클릭 한 번으로 복사합니다.</p>
-      <div class="tool-btn-grid" style="grid-template-columns: repeat(6, 1fr); opacity: .6;">
-        <button type="button" class="secondary-btn" disabled>★</button>
-        <button type="button" class="secondary-btn" disabled>§</button>
-        <button type="button" class="secondary-btn" disabled>☆</button>
-        <button type="button" class="secondary-btn" disabled>♪</button>
-        <button type="button" class="secondary-btn" disabled>※</button>
-        <button type="button" class="secondary-btn" disabled>✓</button>
-      </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="tool-btn-grid" id="sym-grid" style="grid-template-columns: repeat(6, 1fr);"></div>
+      <p class="calc-error-msg" id="sym-copied" hidden style="color: var(--positive);"></p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="addr-translate" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>영문주소 변환</h2>
-      <p class="card-desc-short">한글 주소를 영문 주소로 자동 변환합니다.</p>
+      <p class="card-desc-short">한글 주소를 로마자로 기계적으로 표기 변환합니다. (간이 변환기 — 공식 도로명주소 영문표기는 도로명주소 안내시스템을 이용하세요)</p>
       <div class="field-group">
-        <label>한글 주소</label>
-        <div class="field-input-wrap"><input type="text" disabled placeholder="예: 서울특별시 강남구 테헤란로 123" /></div>
+        <label for="addr-input">한글 주소</label>
+        <div class="field-input-wrap"><input type="text" id="addr-input" placeholder="예: 서울특별시 강남구 테헤란로 123" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>변환하기</button>
+      <button class="calc-btn" id="addr-convert-btn">변환하기</button>
       <div class="field-group" style="margin-top: 20px;">
-        <label>영문 주소</label>
-        <div class="field-input-wrap"><input type="text" disabled readonly placeholder="변환 결과가 여기에 표시됩니다" /></div>
+        <label for="addr-output">영문 주소</label>
+        <div class="field-input-wrap"><input type="text" id="addr-output" readonly placeholder="변환 결과가 여기에 표시됩니다" /></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="qr-reader" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>QR 코드 읽기</h2>
       <p class="card-desc-short">QR 코드 이미지를 업로드하면 담긴 내용을 바로 읽어줍니다.</p>
-      <div class="wip-dropzone">
+      <div class="wip-dropzone" id="qrr-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>QR 코드 이미지를 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="qrr-hint">QR 코드 이미지를 선택해주세요</p>
+        <input type="file" id="qrr-input" accept="image/*" style="display: none;" />
+        <button type="button" class="secondary-btn" id="qrr-select-btn">파일 선택</button>
       </div>
+      <p class="calc-error-msg" id="qrr-error" hidden></p>
       <div class="field-group" style="margin-top: 20px;">
-        <label>인식된 내용</label>
-        <div class="field-input-wrap"><input type="text" disabled readonly placeholder="인식된 내용이 여기에 표시됩니다" /></div>
+        <label for="qrr-output">인식된 내용</label>
+        <div class="field-input-wrap"><input type="text" id="qrr-output" readonly placeholder="인식된 내용이 여기에 표시됩니다" /></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn secondary-btn" id="qrr-copy-btn">결과 복사</button>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="corp-stamp" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>법인 도장 만들기</h2>
-      <p class="card-desc-short">법인 인감 스타일의 도장 이미지를 만들어줍니다.</p>
+      <p class="card-desc-short">법인 인감 스타일의 원형 도장 이미지를 만들어줍니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="회사명을 입력하세요" /></div>
+        <div class="field-input-wrap"><input type="text" id="cst-text" placeholder="회사명을 입력하세요" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>도장 만들기</button>
-      <div class="wip-dropzone" style="margin-top: 20px;">
-        <p>미리보기가 여기에 표시됩니다</p>
+      <button class="calc-btn" id="cst-make-btn">도장 만들기</button>
+      <div style="display:flex; justify-content:center; margin-top: 20px;">
+        <canvas id="cst-canvas" style="max-width:100%;"></canvas>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <a class="calc-btn secondary-btn" id="cst-download" style="text-align:center; text-decoration:none; display:block;" download="stamp.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="device-size-compare" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>폰·태블릿 크기 비교</h2>
-      <p class="card-desc-short">여러 스마트폰과 태블릿의 실제 크기를 나란히 비교합니다.</p>
-      <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="비교할 기기명을 입력하세요 (예: 아이폰15, 갤럭시탭)" /></div>
+      <p class="card-desc-short">스마트폰·태블릿 두 기종의 실제 크기를 비율에 맞춰 나란히 비교합니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="dsc-a">기기 A</label>
+          <div class="field-input-wrap"><input type="text" id="dsc-a" placeholder="예: 아이폰15" value="아이폰15" /></div>
+        </div>
+        <div class="field-group">
+          <label for="dsc-b">기기 B</label>
+          <div class="field-input-wrap"><input type="text" id="dsc-b" placeholder="예: 갤럭시탭" value="갤럭시S24울트라" /></div>
+        </div>
       </div>
-      <button type="button" class="calc-btn" disabled>비교하기</button>
-      <div class="wip-dropzone" style="margin-top: 20px;">
-        <p>비교 결과가 여기에 표시됩니다</p>
+      <button class="calc-btn" id="dsc-compare-btn">비교하기</button>
+      <p class="calc-error-msg" id="dsc-error" hidden></p>
+      <div style="display:flex; justify-content:center; margin-top: 20px; overflow-x:auto;">
+        <canvas id="dsc-canvas" style="max-width:100%;"></canvas>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="wip-note">지원 기기 목록: 아이폰13~15 시리즈, 갤럭시S22~S24 시리즈, 아이패드, 아이패드미니/프로, 갤럭시탭S9 (실측값 근사치)</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="hwp-viewer" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>한글 뷰어(HWP)</h2>
-      <p class="card-desc-short">한글(HWP) 문서를 설치 없이 바로 열어봅니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">HWP 파일 형식을 확인하고 기본 정보를 보여줍니다. (HWP는 복잡한 독점 포맷이라 브라우저에서 본문 전체를 렌더링하는 것은 지원하지 않습니다 — 정확한 내용 확인은 한글 프로그램이나 한컴오피스 뷰어를 이용해주세요)</p>
+      <div class="wip-dropzone" id="hwp-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>HWP 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="hwp-hint">HWP 파일을 선택해주세요</p>
+        <input type="file" id="hwp-input" accept=".hwp" style="display: none;" />
+        <button type="button" class="secondary-btn" id="hwp-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="hwp-error" hidden></p>
+      <div class="tool-btn-grid" id="hwp-result" hidden>
+        <div class="result-stat"><div class="result-stat-label">파일 형식</div><div class="result-stat-value" id="hwp-format-value">-</div></div>
+        <div class="result-stat"><div class="result-stat-label">파일 크기</div><div class="result-stat-value" id="hwp-size-value">-</div></div>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="id-photo" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>증명사진 만들기</h2>
-      <p class="card-desc-short">사진을 업로드하면 규격에 맞는 증명사진으로 만들어줍니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">사진을 업로드하면 규격에 맞게 중앙 기준으로 잘라 증명사진으로 만들어줍니다.</p>
+      <div class="wip-dropzone" id="idp-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>사진을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="idp-hint">사진을 선택해주세요</p>
+        <input type="file" id="idp-input" accept="image/*" style="display: none;" />
+        <button type="button" class="secondary-btn" id="idp-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-group" style="margin-top: 16px;">
+        <label>규격</label>
+        <div class="segmented" id="idp-size">
+          <button type="button" class="active" data-value="3x4">3×4cm (증명사진)</button>
+          <button type="button" data-value="3.5x4.5">3.5×4.5cm (여권)</button>
+          <button type="button" data-value="5x5">5×5cm</button>
+        </div>
+      </div>
+      <button class="calc-btn" id="idp-apply-btn">만들기</button>
+      <p class="calc-error-msg" id="idp-error" hidden></p>
+      <div style="display:flex; justify-content:center; margin-top: 16px;">
+        <canvas id="idp-canvas" style="max-width:100%; max-height:320px;"></canvas>
+      </div>
+      <a class="calc-btn" id="idp-download" style="text-align:center; text-decoration:none; display:block;" download="id-photo.jpg" hidden>다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="cinema-size-compare" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>아이맥스·돌비시네마 크기 비교</h2>
-      <p class="card-desc-short">상영관별 스크린 크기를 한눈에 비교합니다.</p>
-      <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="비교할 상영관명을 입력하세요" /></div>
+      <p class="card-desc-short">상영관 두 종류의 스크린 크기를 비율에 맞춰 비교합니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="csc-a">상영관 A</label>
+          <div class="field-input-wrap"><input type="text" id="csc-a" placeholder="예: 일반관" value="일반관" /></div>
+        </div>
+        <div class="field-group">
+          <label for="csc-b">상영관 B</label>
+          <div class="field-input-wrap"><input type="text" id="csc-b" placeholder="예: 아이맥스" value="아이맥스" /></div>
+        </div>
       </div>
-      <button type="button" class="calc-btn" disabled>비교하기</button>
-      <div class="wip-dropzone" style="margin-top: 20px;">
-        <p>비교 결과가 여기에 표시됩니다</p>
+      <button class="calc-btn" id="csc-compare-btn">비교하기</button>
+      <p class="calc-error-msg" id="csc-error" hidden></p>
+      <div style="display:flex; justify-content:center; margin-top: 20px; overflow-x:auto;">
+        <canvas id="csc-canvas" style="max-width:100%;"></canvas>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="wip-note">지원 상영관: 일반관, 아이맥스, 돌비시네마, 스크린X, 4DX (대표적인 스크린 크기 근사치)</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="square-stamp" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>사각직인 만들기</h2>
       <p class="card-desc-short">회사, 부서명이 들어간 사각 직인을 만들어줍니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="직인에 들어갈 문구를 입력하세요" /></div>
+        <div class="field-input-wrap"><input type="text" id="sqs-text" placeholder="직인에 들어갈 문구를 입력하세요" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>직인 만들기</button>
-      <div class="wip-dropzone" style="margin-top: 20px;">
-        <p>미리보기가 여기에 표시됩니다</p>
+      <button class="calc-btn" id="sqs-make-btn">직인 만들기</button>
+      <div style="display:flex; justify-content:center; margin-top: 20px;">
+        <canvas id="sqs-canvas" style="max-width:100%;"></canvas>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <a class="calc-btn secondary-btn" id="sqs-download" style="text-align:center; text-decoration:none; display:block;" download="square-stamp.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="stamp-cutout" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>도장 누끼 따기</h2>
-      <p class="card-desc-short">도장 이미지의 배경을 투명하게 제거합니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">흰 배경에 찍힌 도장 이미지에서 흰 배경을 투명하게 제거합니다.</p>
+      <div class="wip-dropzone" id="scut-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>도장 이미지를 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="scut-hint">도장 이미지를 선택해주세요</p>
+        <input type="file" id="scut-input" accept="image/*" style="display: none;" />
+        <button type="button" class="secondary-btn" id="scut-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-group" style="margin-top: 16px;">
+        <label for="scut-threshold">배경 제거 강도: <span id="scut-threshold-label">보통</span></label>
+        <input type="range" id="scut-threshold" min="180" max="240" step="5" value="210" class="range-input" />
+      </div>
+      <button class="calc-btn" id="scut-apply-btn">배경 제거하기</button>
+      <p class="calc-error-msg" id="scut-error" hidden></p>
+      <div style="display:flex; justify-content:center; margin-top:16px; background: repeating-conic-gradient(#888 0% 25%, #bbb 0% 50%) 50% / 16px 16px; border-radius: 12px;">
+        <canvas id="scut-canvas" style="max-width:100%; max-height:320px;"></canvas>
+      </div>
+      <a class="calc-btn" id="scut-download" style="text-align:center; text-decoration:none; display:block;" download="stamp-cutout.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="stamp-image" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>도장 이미지 만들기</h2>
-      <p class="card-desc-short">이름을 입력하면 다양한 스타일의 도장 이미지를 만들어줍니다.</p>
+      <p class="card-desc-short">이름을 입력하면 개인 인감 스타일의 도장 이미지를 만들어줍니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="이름을 입력하세요" /></div>
+        <div class="field-input-wrap"><input type="text" id="sti-text" placeholder="이름을 입력하세요" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>도장 만들기</button>
-      <div class="wip-dropzone" style="margin-top: 20px;">
-        <p>미리보기가 여기에 표시됩니다</p>
+      <button class="calc-btn" id="sti-make-btn">도장 만들기</button>
+      <div style="display:flex; justify-content:center; margin-top: 20px;">
+        <canvas id="sti-canvas" style="max-width:100%;"></canvas>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <a class="calc-btn secondary-btn" id="sti-download" style="text-align:center; text-decoration:none; display:block;" download="name-stamp.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="biz-nameplate" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>사업자 명판 만들기</h2>
-      <p class="card-desc-short">사업자등록증 정보를 담은 명판 이미지를 만들어줍니다.</p>
+      <p class="card-desc-short">상호명을 담은 명판 이미지를 만들어줍니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="상호명을 입력하세요" /></div>
+        <div class="field-input-wrap"><input type="text" id="bnp-text" placeholder="상호명을 입력하세요" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>명판 만들기</button>
-      <div class="wip-dropzone" style="margin-top: 20px;">
-        <p>미리보기가 여기에 표시됩니다</p>
+      <button class="calc-btn" id="bnp-make-btn">명판 만들기</button>
+      <div style="display:flex; justify-content:center; margin-top: 20px;">
+        <canvas id="bnp-canvas" style="max-width:100%;"></canvas>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <a class="calc-btn secondary-btn" id="bnp-download" style="text-align:center; text-decoration:none; display:block;" download="nameplate.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="code-finder" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>코드 찾기</h2>
-      <p class="card-desc-short">우편번호, 국가번호 등 각종 코드를 검색합니다.</p>
+      <p class="card-desc-short">국가별 국제전화 코드를 검색합니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="코드명 또는 키워드를 입력하세요" /></div>
+        <div class="field-input-wrap"><input type="text" id="cdf-input" placeholder="나라 이름을 입력하세요 (예: 일본, 미국)" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>검색하기</button>
+      <button class="calc-btn" id="cdf-search-btn">검색하기</button>
       <div class="field-group" style="margin-top: 20px;">
-        <div class="field-input-wrap"><input type="text" disabled readonly placeholder="검색 결과가 여기에 표시됩니다" /></div>
+        <div class="field-input-wrap"><input type="text" id="cdf-output" readonly placeholder="검색 결과가 여기에 표시됩니다" /></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="chord-sheet" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>코드 악보 만들기</h2>
-      <p class="card-desc-short">가사에 맞춰 기타 코드 악보를 손쉽게 만듭니다.</p>
+      <p class="card-desc-short">가사에 [코드] 형식으로 표시하면 코드를 가사 위에 정렬해 악보로 만듭니다.</p>
       <div class="field-row">
         <div class="field-group">
-          <label>가사 입력</label>
-          <div class="field-input-wrap"><textarea rows="8" disabled placeholder="가사를 입력하세요"></textarea></div>
+          <label for="cds-input">가사 입력</label>
+          <div class="field-input-wrap"><textarea id="cds-input" rows="8" placeholder="예: [C]Twinkle [G]twinkle [C]little [F]star">[C]Twinkle [G]twinkle [C]little [F]star
+[C]How I [G]wonder [C]what you [G]are</textarea></div>
         </div>
         <div class="field-group">
-          <label>코드 악보</label>
-          <div class="field-input-wrap"><textarea rows="8" disabled readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
+          <label for="cds-output">코드 악보</label>
+          <div class="field-input-wrap"><textarea id="cds-output" rows="8" readonly style="font-family: monospace; white-space: pre;"></textarea></div>
         </div>
       </div>
-      <button type="button" class="calc-btn" disabled>악보 만들기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn" id="cds-make-btn">악보 만들기</button>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="habit-tracker" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>습관 만들기</h2>
-      <p class="card-desc-short">매일의 습관을 기록하고 체크하는 습관 트래커입니다.</p>
+      <p class="card-desc-short">매일의 습관을 기록하고 체크하는 습관 트래커입니다. (이 브라우저에만 저장됩니다)</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="습관 이름을 입력하세요" /></div>
+        <div class="field-input-wrap"><input type="text" id="ht-input" placeholder="습관 이름을 입력하세요" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>습관 추가하기</button>
-      <div class="result-stat" style="opacity:.6; margin-top:20px;">
-        <div class="result-stat-label">오늘의 습관</div>
-        <div class="result-stat-value">추가된 습관이 없습니다</div>
-      </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn" id="ht-add-btn">습관 추가하기</button>
+      <div id="ht-list" style="margin-top: 20px; display: flex; flex-direction: column; gap: 8px;"></div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="calendar-print" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>달력 출력</h2>
       <p class="card-desc-short">원하는 연도와 월의 달력을 만들어 인쇄합니다.</p>
       <div class="field-row">
         <div class="field-group">
-          <label>연도</label>
-          <div class="field-input-wrap"><input type="text" disabled placeholder="2026" /></div>
+          <label for="cal-year">연도</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="cal-year" placeholder="2026" value="2026" /></div>
         </div>
         <div class="field-group">
-          <label>월</label>
-          <div class="field-input-wrap"><input type="text" disabled placeholder="9" /></div>
+          <label for="cal-month">월</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="cal-month" placeholder="9" value="9" /></div>
         </div>
       </div>
-      <button type="button" class="calc-btn" disabled>달력 만들기</button>
-      <div class="result-stat highlight" style="opacity:.6; margin-top:20px;">
-        <div class="result-stat-label">미리보기</div>
-        <div class="result-stat-value">준비 중</div>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="cal-make-btn">달력 만들기</button>
+        <button type="button" class="secondary-btn" id="cal-print-btn">인쇄하기</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div id="cal-preview" style="margin-top: 20px; background: var(--card-elevated); border-radius: 12px; padding: 16px;"></div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="metronome" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>온라인 메트로놈</h2>
       <p class="card-desc-short">박자 연습을 위한 온라인 메트로놈입니다.</p>
       <div class="field-group">
-        <label>템포 (BPM)</label>
-        <div class="field-input-wrap"><input type="text" disabled placeholder="120" /></div>
+        <label for="met-bpm">템포: <span id="met-bpm-label">120 BPM</span></label>
+        <input type="range" id="met-bpm" min="40" max="240" step="1" value="120" class="range-input" />
       </div>
-      <div class="result-stat highlight" style="opacity:.6;">
+      <div class="result-stat highlight">
         <div class="result-stat-label">박자</div>
-        <div class="result-stat-value">●</div>
+        <div class="result-stat-value" id="met-beat" style="font-size: 32px;">○</div>
       </div>
-      <button type="button" class="calc-btn" disabled>시작하기</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn" id="met-start-btn">시작하기</button>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="guitar-tuner" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>기타 튜너</h2>
-      <p class="card-desc-short">마이크로 소리를 감지해 기타 음정을 맞춰줍니다.</p>
-      <div class="result-stat highlight" style="opacity:.6;">
+      <p class="card-desc-short">마이크로 소리를 감지해 기타 음정을 맞춰줍니다. (마이크 권한이 필요합니다)</p>
+      <div class="result-stat highlight">
         <div class="result-stat-label">감지된 음</div>
-        <div class="result-stat-value">-</div>
+        <div class="result-stat-value" id="gt-note-value">-</div>
       </div>
-      <button type="button" class="calc-btn" disabled>마이크로 튜닝 시작</button>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <button class="calc-btn" id="gt-start-btn">마이크로 튜닝 시작</button>
+      <p class="calc-error-msg" id="gt-error" hidden></p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="archive-extract" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
-      <h2>압축 풀기(ZIP·RAR·7Z·EGG)</h2>
-      <p class="card-desc-short">ZIP, RAR, 7Z, EGG 압축 파일을 브라우저에서 바로 풉니다.</p>
-      <div class="wip-dropzone">
+      <h2>압축 풀기(ZIP)</h2>
+      <p class="card-desc-short">ZIP 압축 파일을 브라우저에서 바로 풀어 개별 파일로 다운로드합니다. (RAR·7Z·EGG는 브라우저에서 처리할 라이브러리가 없어 지원하지 않습니다)</p>
+      <div class="wip-dropzone" id="arc-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>압축 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="arc-hint">ZIP 파일을 선택해주세요</p>
+        <input type="file" id="arc-input" accept=".zip" style="display: none;" />
+        <button type="button" class="secondary-btn" id="arc-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="arc-error" hidden></p>
+      <p class="wip-note" id="arc-loading" hidden>압축을 푸는 중입니다...</p>
+      <div id="arc-list" style="margin-top: 16px;"></div>
     </div>
   </section>
 
