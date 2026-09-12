@@ -512,6 +512,228 @@ function initFreelanceTax() {
   });
 }
 
+/* ---------- 퇴직금 계산기 ---------- */
+function initSeverance() {
+  document.getElementById("sv-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("sv-error");
+    const resultEl = document.getElementById("sv-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const startStr = document.getElementById("sv-start").value;
+    const endStr = document.getElementById("sv-end").value;
+    const wage3 = Number(document.getElementById("sv-wage3").value);
+
+    if (!startStr || !endStr || !wage3) {
+      errorEl.hidden = false;
+      errorEl.textContent = "입사일, 퇴사일, 최근 3개월 총 급여를 모두 입력해주세요.";
+      return;
+    }
+
+    const start = new Date(startStr);
+    const end = new Date(endStr);
+    if (end <= start) {
+      errorEl.hidden = false;
+      errorEl.textContent = "퇴사일은 입사일보다 이후여야 합니다.";
+      return;
+    }
+
+    const msPerDay = 1000 * 60 * 60 * 24;
+    const daysEmployed = Math.round((end - start) / msPerDay);
+
+    if (daysEmployed < 365) {
+      errorEl.hidden = false;
+      errorEl.textContent = "계속근로기간이 1년 미만이면 퇴직금 지급 대상이 아닙니다.";
+      return;
+    }
+
+    const p3Start = new Date(end);
+    p3Start.setMonth(p3Start.getMonth() - 3);
+    const p3Days = Math.round((end - p3Start) / msPerDay);
+    const dailyWage = wage3 / p3Days;
+    const severance = dailyWage * 30 * (daysEmployed / 365);
+
+    document.getElementById("sv-days-value").textContent = `${daysEmployed.toLocaleString()}일`;
+    document.getElementById("sv-daily-value").textContent = formatWon(dailyWage);
+    document.getElementById("sv-total-value").textContent = formatWon(severance);
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- 실업급여 계산기 ---------- */
+function initUnemployment() {
+  document.getElementById("ub-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("ub-error");
+    const resultEl = document.getElementById("ub-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const wage = Number(document.getElementById("ub-wage").value);
+    const months = Number(document.getElementById("ub-months").value);
+    const senior = document.getElementById("ub-senior").checked;
+
+    if (!wage || !months) {
+      errorEl.hidden = false;
+      errorEl.textContent = "월평균임금과 가입기간을 입력해주세요.";
+      return;
+    }
+    if (months < 6) {
+      errorEl.hidden = false;
+      errorEl.textContent = "고용보험 가입기간이 180일(약 6개월) 미만이면 수급 대상이 아닙니다.";
+      return;
+    }
+
+    const dailyWage = wage / 30;
+    const UPPER = 66000;
+    const LOWER = 63104;
+    let dailyBenefit = Math.min(Math.max(dailyWage * 0.6, LOWER), UPPER);
+
+    let days;
+    if (months < 36) days = senior ? 180 : 150;
+    else if (months < 60) days = senior ? 210 : 180;
+    else if (months < 120) days = senior ? 240 : 210;
+    else days = senior ? 270 : 240;
+    if (months < 12) days = 120;
+
+    const total = dailyBenefit * days;
+
+    document.getElementById("ub-daily-value").textContent = formatWon(dailyBenefit);
+    document.getElementById("ub-days-value").textContent = `${days}일`;
+    document.getElementById("ub-total-value").textContent = formatWon(total);
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- 전월세 전환 계산기 ---------- */
+function initJeonse() {
+  initSegmented("jc-mode");
+
+  const modeWrap = document.getElementById("jc-mode");
+  const monthlyField = document.querySelector("[data-jc-monthly-field]");
+  modeWrap.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    monthlyField.hidden = btn.dataset.value !== "to-jeonse";
+    document.getElementById("jc-result").hidden = true;
+  });
+
+  document.getElementById("jc-calc-btn").addEventListener("click", () => {
+    const mode = getSegmentedValue("jc-mode");
+    const errorEl = document.getElementById("jc-error");
+    const resultEl = document.getElementById("jc-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const jeonse = Number(document.getElementById("jc-jeonse").value);
+    const deposit = Number(document.getElementById("jc-deposit").value);
+    const rate = Number(document.getElementById("jc-rate").value);
+
+    if (!jeonse || deposit < 0 || isNaN(deposit) || !rate) {
+      errorEl.hidden = false;
+      errorEl.textContent = "전세보증금, 월세 보증금, 전환율을 정확히 입력해주세요.";
+      return;
+    }
+    if (deposit > jeonse) {
+      errorEl.hidden = false;
+      errorEl.textContent = "월세 보증금은 전세보증금보다 작아야 합니다.";
+      return;
+    }
+
+    if (mode === "to-monthly") {
+      const monthly = ((jeonse - deposit) * (rate / 100)) / 12;
+      document.getElementById("jc-result-label").textContent = "환산 월세";
+      document.getElementById("jc-result-value").textContent = formatWon(monthly);
+    } else {
+      const monthly = Number(document.getElementById("jc-monthly").value);
+      if (!monthly) {
+        errorEl.hidden = false;
+        errorEl.textContent = "월세 금액을 입력해주세요.";
+        return;
+      }
+      const convertedJeonse = deposit + (monthly * 12) / (rate / 100);
+      document.getElementById("jc-result-label").textContent = "환산 전세보증금";
+      document.getElementById("jc-result-value").textContent = formatWon(convertedJeonse);
+    }
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- 적금·예금 계산기 ---------- */
+function initSavings() {
+  initSegmented("sc-mode");
+
+  const modeWrap = document.getElementById("sc-mode");
+  const amountLabel = document.getElementById("sc-amount-label");
+  modeWrap.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    amountLabel.textContent = btn.dataset.value === "installment" ? "월 납입액 (원)" : "예치 금액 (원)";
+    document.getElementById("sc-result").hidden = true;
+  });
+
+  document.getElementById("sc-calc-btn").addEventListener("click", () => {
+    const mode = getSegmentedValue("sc-mode");
+    const errorEl = document.getElementById("sc-error");
+    const resultEl = document.getElementById("sc-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const amount = Number(document.getElementById("sc-amount").value);
+    const annualRate = Number(document.getElementById("sc-rate").value);
+    const months = Number(document.getElementById("sc-months").value);
+
+    if (!amount || !months || annualRate < 0 || isNaN(annualRate)) {
+      errorEl.hidden = false;
+      errorEl.textContent = "금액, 이자율, 기간을 정확히 입력해주세요.";
+      return;
+    }
+
+    let principal, interest;
+    if (mode === "installment") {
+      principal = amount * months;
+      interest = amount * ((months * (months + 1)) / 2) * (annualRate / 100 / 12);
+    } else {
+      principal = amount;
+      interest = amount * (annualRate / 100) * (months / 12);
+    }
+    const afterTaxInterest = interest * (1 - 0.154);
+    const total = principal + afterTaxInterest;
+
+    document.getElementById("sc-principal-value").textContent = formatWon(principal);
+    document.getElementById("sc-interest-value").textContent = formatWon(afterTaxInterest);
+    document.getElementById("sc-total-value").textContent = formatWon(total);
+    resultEl.hidden = false;
+  });
+}
+
+/* ---------- 애드센스 현실 계산기 ---------- */
+function initAdsense() {
+  document.getElementById("ad-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("ad-error");
+    const resultEl = document.getElementById("ad-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+
+    const visitors = Number(document.getElementById("ad-visitors").value);
+    const ctr = Number(document.getElementById("ad-ctr").value);
+    const cpc = Number(document.getElementById("ad-cpc").value);
+
+    if (!visitors || !ctr || !cpc) {
+      errorEl.hidden = false;
+      errorEl.textContent = "방문자 수, CTR, CPC를 모두 입력해주세요.";
+      return;
+    }
+
+    const dailyClicks = visitors * (ctr / 100);
+    const dailyRevenue = dailyClicks * cpc;
+    const monthlyRevenue = dailyRevenue * 30;
+
+    document.getElementById("ad-daily-value").textContent = formatWon(dailyRevenue);
+    document.getElementById("ad-monthly-value").textContent = formatWon(monthlyRevenue);
+    resultEl.hidden = false;
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
@@ -526,6 +748,11 @@ function init() {
   initVat();
   initWeeklyPay();
   initFreelanceTax();
+  initSeverance();
+  initUnemployment();
+  initJeonse();
+  initSavings();
+  initAdsense();
 }
 
 document.addEventListener("DOMContentLoaded", init);

@@ -1396,90 +1396,196 @@
   <section class="tab-panel" data-tab-panel="severance-pay" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>퇴직금 계산기</h2>
-      <p class="card-desc-short">근속기간과 평균임금으로 예상 퇴직금을 계산합니다.</p>
+      <p class="card-desc-short">근속기간과 최근 3개월 급여로 예상 퇴직금을 계산합니다. (근로기준법 평균임금 기준)</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="sv-start">입사일</label>
+          <div class="field-input-wrap"><input type="date" id="sv-start" /></div>
+        </div>
+        <div class="field-group">
+          <label for="sv-end">퇴사일</label>
+          <div class="field-input-wrap"><input type="date" id="sv-end" /></div>
+        </div>
+      </div>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="입사일, 퇴사일, 평균임금을 입력하세요" /></div>
+        <label for="sv-wage3">최근 3개월 총 급여 (세전, 원)</label>
+        <div class="field-input-wrap"><input type="text" inputmode="numeric" id="sv-wage3" placeholder="예: 12000000" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>계산하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
-        <div class="result-stat-label">예상 퇴직금</div>
-        <div class="result-stat-value">준비 중</div>
+      <button class="calc-btn" id="sv-calc-btn">계산하기</button>
+      <p class="calc-error-msg" id="sv-error" hidden></p>
+      <div class="tool-btn-grid" id="sv-result" hidden>
+        <div class="result-stat">
+          <div class="result-stat-label">재직일수</div>
+          <div class="result-stat-value" id="sv-days-value">-</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-label">1일 평균임금</div>
+          <div class="result-stat-value" id="sv-daily-value">-</div>
+        </div>
+        <div class="result-stat highlight" style="grid-column: 1 / -1;">
+          <div class="result-stat-label">예상 퇴직금</div>
+          <div class="result-stat-value" id="sv-total-value">-</div>
+        </div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="unemployment-benefit" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>실업급여 계산기</h2>
-      <p class="card-desc-short">이직 전 평균임금으로 예상 실업급여를 계산합니다.</p>
+      <p class="card-desc-short">이직 전 평균임금과 근속기간으로 예상 구직급여를 계산합니다. 실제 지급액은 고용센터 심사 기준에 따라 달라질 수 있습니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="ub-wage">이직 전 월평균임금 (세전, 원)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="ub-wage" placeholder="예: 2800000" /></div>
+        </div>
+        <div class="field-group">
+          <label for="ub-months">고용보험 가입기간 (개월)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="ub-months" placeholder="예: 36" /></div>
+        </div>
+      </div>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="이직 전 평균임금과 고용기간을 입력하세요" /></div>
+        <label class="checkbox-label"><input type="checkbox" id="ub-senior" /> 만 50세 이상 또는 장애인</label>
       </div>
-      <button type="button" class="calc-btn" disabled>계산하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
-        <div class="result-stat-label">예상 실업급여</div>
-        <div class="result-stat-value">준비 중</div>
+      <button class="calc-btn" id="ub-calc-btn">계산하기</button>
+      <p class="calc-error-msg" id="ub-error" hidden></p>
+      <div class="tool-btn-grid" id="ub-result" hidden>
+        <div class="result-stat">
+          <div class="result-stat-label">1일 구직급여액</div>
+          <div class="result-stat-value" id="ub-daily-value">-</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-label">소정급여일수</div>
+          <div class="result-stat-value" id="ub-days-value">-</div>
+        </div>
+        <div class="result-stat highlight" style="grid-column: 1 / -1;">
+          <div class="result-stat-label">예상 총 실업급여</div>
+          <div class="result-stat-value" id="ub-total-value">-</div>
+        </div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="jeonse-conversion" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>전월세 전환 계산기</h2>
-      <p class="card-desc-short">전세보증금과 월세를 서로 전환해 계산합니다.</p>
+      <p class="card-desc-short">전세보증금과 월세를 전월세전환율 기준으로 서로 계산합니다.</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="전세보증금 또는 월세 정보를 입력하세요" /></div>
+        <label>계산 방향</label>
+        <div class="segmented" id="jc-mode">
+          <button type="button" class="active" data-value="to-monthly">전세 → 월세</button>
+          <button type="button" data-value="to-jeonse">월세 → 전세</button>
+        </div>
       </div>
-      <button type="button" class="calc-btn" disabled>계산하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
-        <div class="result-stat-label">전환 결과</div>
-        <div class="result-stat-value">준비 중</div>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="jc-jeonse">전세보증금 (원)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="jc-jeonse" placeholder="예: 300000000" /></div>
+        </div>
+        <div class="field-group">
+          <label for="jc-deposit">월세 보증금 (원)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="jc-deposit" placeholder="예: 50000000" /></div>
+        </div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-row">
+        <div class="field-group" data-jc-monthly-field hidden>
+          <label for="jc-monthly">월세 (원)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="jc-monthly" placeholder="예: 800000" /></div>
+        </div>
+        <div class="field-group">
+          <label for="jc-rate">전월세전환율 (연 %)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="decimal" id="jc-rate" placeholder="예: 5.5" value="5.5" /></div>
+        </div>
+      </div>
+      <button class="calc-btn" id="jc-calc-btn">계산하기</button>
+      <p class="calc-error-msg" id="jc-error" hidden></p>
+      <div class="result-stat highlight" id="jc-result" hidden>
+        <div class="result-stat-label" id="jc-result-label">환산 월세</div>
+        <div class="result-stat-value" id="jc-result-value">-</div>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="savings-calc" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>적금·예금 계산기</h2>
-      <p class="card-desc-short">매달 납입액과 이자율로 만기 수령액을 계산합니다.</p>
+      <p class="card-desc-short">단리 기준으로 만기 수령액을 계산합니다. (이자소득세 15.4% 적용)</p>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="월 납입액, 이자율, 기간을 입력하세요" /></div>
+        <label>상품 종류</label>
+        <div class="segmented" id="sc-mode">
+          <button type="button" class="active" data-value="installment">적금 (매달 납입)</button>
+          <button type="button" data-value="deposit">예금 (목돈 거치)</button>
+        </div>
       </div>
-      <button type="button" class="calc-btn" disabled>계산하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
-        <div class="result-stat-label">만기 수령액</div>
-        <div class="result-stat-value">준비 중</div>
+      <div class="field-group">
+        <label for="sc-amount" id="sc-amount-label">월 납입액 (원)</label>
+        <div class="field-input-wrap"><input type="text" inputmode="numeric" id="sc-amount" placeholder="예: 500000" /></div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="sc-rate">연 이자율 (%)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="decimal" id="sc-rate" placeholder="예: 3.5" /></div>
+        </div>
+        <div class="field-group">
+          <label for="sc-months">기간 (개월)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="sc-months" placeholder="예: 12" /></div>
+        </div>
+      </div>
+      <button class="calc-btn" id="sc-calc-btn">계산하기</button>
+      <p class="calc-error-msg" id="sc-error" hidden></p>
+      <div class="tool-btn-grid" id="sc-result" hidden>
+        <div class="result-stat">
+          <div class="result-stat-label">원금 합계</div>
+          <div class="result-stat-value" id="sc-principal-value">-</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-label">세후 이자</div>
+          <div class="result-stat-value" id="sc-interest-value">-</div>
+        </div>
+        <div class="result-stat highlight" style="grid-column: 1 / -1;">
+          <div class="result-stat-label">만기 수령액</div>
+          <div class="result-stat-value" id="sc-total-value">-</div>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="adsense-reality" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>애드센스 현실 계산기</h2>
-      <p class="card-desc-short">예상 애드센스 수익을 현실적인 수치로 계산해봅니다.</p>
+      <p class="card-desc-short">일 방문자 수·CTR·CPC를 바탕으로 현실적인 애드센스 예상 수익을 계산합니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="ad-visitors">일 평균 방문자 수(페이지뷰)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="ad-visitors" placeholder="예: 1000" /></div>
+        </div>
+        <div class="field-group">
+          <label for="ad-ctr">CTR - 클릭률 (%)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="decimal" id="ad-ctr" placeholder="예: 1.5" value="1.5" /></div>
+        </div>
+      </div>
       <div class="field-group">
-        <div class="field-input-wrap"><input type="text" disabled placeholder="일 방문자 수와 예상 CPC를 입력하세요" /></div>
+        <label for="ad-cpc">CPC - 클릭당 단가 (원)</label>
+        <div class="field-input-wrap"><input type="text" inputmode="numeric" id="ad-cpc" placeholder="예: 150" value="150" /></div>
       </div>
-      <button type="button" class="calc-btn" disabled>계산하기</button>
-      <div class="result-stat highlight" style="opacity:.6;">
-        <div class="result-stat-label">예상 수익</div>
-        <div class="result-stat-value">준비 중</div>
+      <button class="calc-btn" id="ad-calc-btn">계산하기</button>
+      <p class="calc-error-msg" id="ad-error" hidden></p>
+      <div class="tool-btn-grid" id="ad-result" hidden>
+        <div class="result-stat">
+          <div class="result-stat-label">일 예상 수익</div>
+          <div class="result-stat-value" id="ad-daily-value">-</div>
+        </div>
+        <div class="result-stat highlight">
+          <div class="result-stat-label">월 예상 수익</div>
+          <div class="result-stat-value" id="ad-monthly-value">-</div>
+        </div>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="wip-note">실제 수익은 광고 단가, 계절, 콘텐츠 주제에 따라 크게 달라질 수 있는 참고용 추정치입니다.</p>
     </div>
   </section>
 
