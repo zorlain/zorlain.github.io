@@ -2151,6 +2151,352 @@ function initCpsTest() {
   });
 }
 
+/* ---------- 이미지 형식 변환기 (Image to JPG/PNG/WebP 공용) ---------- */
+function initImageFormatConverter(prefix, mimeType, ext) {
+  const input = document.getElementById(`${prefix}-input`);
+  const hint = document.getElementById(`${prefix}-hint`);
+  const errorEl = document.getElementById(`${prefix}-error`);
+  const previewWrap = document.getElementById(`${prefix}-preview-wrap`);
+  const preview = document.getElementById(`${prefix}-preview`);
+  const downloadLink = document.getElementById(`${prefix}-download`);
+
+  document.getElementById(`${prefix}-select-btn`).addEventListener("click", () => input.click());
+
+  input.addEventListener("change", () => {
+    errorEl.hidden = true;
+    previewWrap.hidden = true;
+    downloadLink.hidden = true;
+    const file = input.files[0];
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      errorEl.hidden = false;
+      errorEl.textContent = "이미지 파일만 업로드할 수 있습니다.";
+      return;
+    }
+    hint.textContent = file.name;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.naturalWidth;
+        canvas.height = img.naturalHeight;
+        const ctx = canvas.getContext("2d");
+        if (mimeType === "image/jpeg") {
+          ctx.fillStyle = "#fff";
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        ctx.drawImage(img, 0, 0);
+        const dataUrl = canvas.toDataURL(mimeType, 0.92);
+        preview.src = dataUrl;
+        previewWrap.hidden = false;
+        downloadLink.href = dataUrl;
+        downloadLink.download = file.name.replace(/\.[^.]+$/, "") + "." + ext;
+        downloadLink.hidden = false;
+      };
+      img.onerror = () => {
+        errorEl.hidden = false;
+        errorEl.textContent = "이미지를 불러올 수 없습니다.";
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ---------- 사진 합치기 ---------- */
+function initImageMerge() {
+  const input = document.getElementById("merge-input");
+  const hint = document.getElementById("merge-hint");
+  const errorEl = document.getElementById("merge-error");
+  const previewWrap = document.getElementById("merge-preview-wrap");
+  const preview = document.getElementById("merge-preview");
+  const downloadLink = document.getElementById("merge-download");
+  initSegmented("merge-direction");
+
+  document.getElementById("merge-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    previewWrap.hidden = true;
+    downloadLink.hidden = true;
+    const files = Array.from(input.files);
+    if (files.length < 2) {
+      errorEl.hidden = false;
+      errorEl.textContent = "사진을 2장 이상 선택해주세요.";
+      return;
+    }
+    hint.textContent = `${files.length}장 선택됨`;
+
+    const loadImg = (file) => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = reject;
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    try {
+      const imgs = await Promise.all(files.map(loadImg));
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+      if (getSegmentedValue("merge-direction") === "vertical") {
+        const width = Math.max(...imgs.map((i) => i.naturalWidth));
+        canvas.width = width;
+        canvas.height = imgs.reduce((sum, i) => sum + i.naturalHeight * (width / i.naturalWidth), 0);
+        let y = 0;
+        imgs.forEach((img) => {
+          const h = img.naturalHeight * (width / img.naturalWidth);
+          ctx.drawImage(img, 0, y, width, h);
+          y += h;
+        });
+      } else {
+        const height = Math.max(...imgs.map((i) => i.naturalHeight));
+        canvas.height = height;
+        canvas.width = imgs.reduce((sum, i) => sum + i.naturalWidth * (height / i.naturalHeight), 0);
+        let x = 0;
+        imgs.forEach((img) => {
+          const w = img.naturalWidth * (height / img.naturalHeight);
+          ctx.drawImage(img, x, 0, w, height);
+          x += w;
+        });
+      }
+      const dataUrl = canvas.toDataURL("image/png");
+      preview.src = dataUrl;
+      previewWrap.hidden = false;
+      downloadLink.href = dataUrl;
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "이미지를 불러오는 중 오류가 발생했습니다.";
+    }
+  });
+}
+
+/* ---------- 이미지 Base64 변환 ---------- */
+function initImageBase64() {
+  const input = document.getElementById("ib64-input");
+  const hint = document.getElementById("ib64-hint");
+  const output = document.getElementById("ib64-output");
+  const previewWrap = document.getElementById("ib64-preview-wrap");
+  const preview = document.getElementById("ib64-preview");
+
+  document.getElementById("ib64-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      output.value = e.target.result;
+      preview.src = e.target.result;
+      previewWrap.hidden = false;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("ib64-copy-btn").addEventListener("click", async (e) => {
+    if (!output.value) return;
+    if (await copyText(output.value)) flashCopied(e.target, "Base64 복사");
+  });
+
+  document.getElementById("ib64-restore-btn").addEventListener("click", () => {
+    const val = output.value.trim();
+    if (!val) return;
+    preview.src = val.startsWith("data:") ? val : `data:image/png;base64,${val}`;
+    previewWrap.hidden = false;
+  });
+}
+
+/* ---------- 사진 날짜 표시 ---------- */
+function initPhotoDateStamp() {
+  const input = document.getElementById("pds-input");
+  const hint = document.getElementById("pds-hint");
+  const dateInput = document.getElementById("pds-date");
+  const errorEl = document.getElementById("pds-error");
+  const previewWrap = document.getElementById("pds-preview-wrap");
+  const canvas = document.getElementById("pds-canvas");
+  const downloadLink = document.getElementById("pds-download");
+  let loadedImg = null;
+
+  const today = new Date();
+  dateInput.value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+
+  document.getElementById("pds-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", () => {
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => { loadedImg = img; };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById("pds-apply-btn").addEventListener("click", () => {
+    errorEl.hidden = true;
+    if (!loadedImg) {
+      errorEl.hidden = false;
+      errorEl.textContent = "사진을 먼저 선택해주세요.";
+      return;
+    }
+    canvas.width = loadedImg.naturalWidth;
+    canvas.height = loadedImg.naturalHeight;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(loadedImg, 0, 0);
+
+    const dateVal = dateInput.value ? new Date(dateInput.value) : new Date();
+    const text = `${dateVal.getFullYear()}. ${dateVal.getMonth() + 1}. ${dateVal.getDate()}`;
+    const fontSize = Math.round(canvas.width * 0.045);
+    ctx.font = `bold ${fontSize}px "Courier New", monospace`;
+    ctx.textAlign = "right";
+    ctx.textBaseline = "bottom";
+    const pad = fontSize * 0.6;
+    ctx.shadowColor = "rgba(255,140,0,0.7)";
+    ctx.shadowBlur = fontSize * 0.3;
+    ctx.fillStyle = "#ff9100";
+    ctx.fillText(text, canvas.width - pad, canvas.height - pad);
+    ctx.shadowBlur = 0;
+
+    previewWrap.hidden = false;
+    downloadLink.href = canvas.toDataURL("image/jpeg", 0.92);
+    downloadLink.hidden = false;
+  });
+}
+
+/* ---------- SVG 여백 제거 ---------- */
+function initSvgTrim() {
+  const input = document.getElementById("svgtrim-input");
+  const hint = document.getElementById("svgtrim-hint");
+  const errorEl = document.getElementById("svgtrim-error");
+  const previewWrap = document.getElementById("svgtrim-preview-wrap");
+  const preview = document.getElementById("svgtrim-preview");
+  const downloadLink = document.getElementById("svgtrim-download");
+
+  document.getElementById("svgtrim-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", () => {
+    errorEl.hidden = true;
+    previewWrap.hidden = true;
+    downloadLink.hidden = true;
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const doc = new DOMParser().parseFromString(e.target.result, "image/svg+xml");
+      const svgEl = doc.documentElement;
+      if (svgEl.tagName !== "svg" || doc.getElementsByTagName("parsererror").length) {
+        errorEl.hidden = false;
+        errorEl.textContent = "올바른 SVG 파일이 아닙니다.";
+        return;
+      }
+
+      const measureEl = svgEl.cloneNode(true);
+      measureEl.style.position = "absolute";
+      measureEl.style.left = "-99999px";
+      measureEl.style.top = "0";
+      document.body.appendChild(measureEl);
+
+      let bbox;
+      try {
+        bbox = measureEl.getBBox();
+      } catch (err) {
+        bbox = null;
+      }
+      document.body.removeChild(measureEl);
+
+      if (!bbox || bbox.width === 0 || bbox.height === 0) {
+        errorEl.hidden = false;
+        errorEl.textContent = "SVG 안에서 그려진 도형을 찾지 못했습니다.";
+        return;
+      }
+
+      svgEl.setAttribute("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
+      svgEl.removeAttribute("width");
+      svgEl.removeAttribute("height");
+
+      const svgString = new XMLSerializer().serializeToString(svgEl);
+
+      preview.innerHTML = "";
+      const previewSvg = svgEl.cloneNode(true);
+      previewSvg.style.maxWidth = "200px";
+      previewSvg.style.maxHeight = "200px";
+      previewSvg.setAttribute("width", "200");
+      previewSvg.setAttribute("height", "200");
+      preview.appendChild(previewSvg);
+
+      document.getElementById("svgtrim-size-value").textContent = `${Math.round(bbox.width)} × ${Math.round(bbox.height)}`;
+      previewWrap.hidden = false;
+
+      downloadLink.href = URL.createObjectURL(new Blob([svgString], { type: "image/svg+xml" }));
+      downloadLink.hidden = false;
+    };
+    reader.readAsText(file);
+  });
+}
+
+/* ---------- HEIC 뷰어 (heic2any CDN 지연 로딩) ---------- */
+let heic2anyLoadPromise = null;
+function loadHeic2Any() {
+  if (heic2anyLoadPromise) return heic2anyLoadPromise;
+  heic2anyLoadPromise = new Promise((resolve, reject) => {
+    if (window.heic2any) return resolve(window.heic2any);
+    const script = document.createElement("script");
+    script.src = "https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js";
+    script.onload = () => resolve(window.heic2any);
+    script.onerror = () => reject(new Error("변환 라이브러리를 불러오지 못했습니다."));
+    document.head.appendChild(script);
+  });
+  return heic2anyLoadPromise;
+}
+
+function initHeicViewer() {
+  const input = document.getElementById("heic-input");
+  const hint = document.getElementById("heic-hint");
+  const errorEl = document.getElementById("heic-error");
+  const loadingEl = document.getElementById("heic-loading");
+  const previewWrap = document.getElementById("heic-preview-wrap");
+  const preview = document.getElementById("heic-preview");
+  const downloadLink = document.getElementById("heic-download");
+
+  document.getElementById("heic-select-btn").addEventListener("click", () => input.click());
+
+  input.addEventListener("change", async () => {
+    errorEl.hidden = true;
+    previewWrap.hidden = true;
+    downloadLink.hidden = true;
+    const file = input.files[0];
+    if (!file) return;
+    hint.textContent = file.name;
+    loadingEl.hidden = false;
+    try {
+      const heic2any = await loadHeic2Any();
+      const resultBlob = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.9 });
+      const url = URL.createObjectURL(Array.isArray(resultBlob) ? resultBlob[0] : resultBlob);
+      preview.src = url;
+      previewWrap.hidden = false;
+      downloadLink.href = url;
+      downloadLink.hidden = false;
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "HEIC 변환에 실패했습니다. 올바른 HEIC 파일인지 확인해주세요.";
+    } finally {
+      loadingEl.hidden = true;
+    }
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
@@ -2198,6 +2544,14 @@ function init() {
   initTypingSpeedTest();
   initReactionSpeedTest();
   initCpsTest();
+  initImageFormatConverter("i2jpg", "image/jpeg", "jpg");
+  initImageFormatConverter("i2png", "image/png", "png");
+  initImageFormatConverter("i2webp", "image/webp", "webp");
+  initImageMerge();
+  initImageBase64();
+  initPhotoDateStamp();
+  initSvgTrim();
+  initHeicViewer();
 }
 
 document.addEventListener("DOMContentLoaded", init);

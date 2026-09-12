@@ -1743,136 +1743,191 @@
   <section class="tab-panel" data-tab-panel="img-to-jpg" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>Image to JPG</h2>
       <p class="card-desc-short">PNG, WebP 등 다양한 이미지를 JPG로 변환합니다.</p>
-      <div class="wip-dropzone">
+      <div class="wip-dropzone" id="i2jpg-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>이미지를 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="i2jpg-hint">이미지를 선택해주세요</p>
+        <input type="file" id="i2jpg-input" accept="image/*" style="display: none;" />
+        <button type="button" class="secondary-btn" id="i2jpg-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="i2jpg-error" hidden></p>
+      <div style="text-align:center; margin-top:16px;" id="i2jpg-preview-wrap" hidden>
+        <img id="i2jpg-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+      </div>
+      <a class="calc-btn" id="i2jpg-download" style="text-align:center; text-decoration:none; display:block;" download="converted.jpg" hidden>JPG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-merge" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>사진 합치기</h2>
-      <p class="card-desc-short">여러 장의 사진을 원하는 배치로 한 장에 합칩니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">여러 장의 사진을 세로 또는 가로로 이어 붙여 한 장으로 합칩니다.</p>
+      <div class="field-group">
+        <label>합치는 방향</label>
+        <div class="segmented" id="merge-direction">
+          <button type="button" class="active" data-value="vertical">세로로 합치기</button>
+          <button type="button" data-value="horizontal">가로로 합치기</button>
+        </div>
+      </div>
+      <div class="wip-dropzone" id="merge-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>합칠 사진들을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="merge-hint">사진을 2장 이상 선택해주세요</p>
+        <input type="file" id="merge-input" accept="image/*" multiple style="display: none;" />
+        <button type="button" class="secondary-btn" id="merge-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="merge-error" hidden></p>
+      <div style="text-align:center; margin-top:16px;" id="merge-preview-wrap" hidden>
+        <img id="merge-preview" style="max-width:100%; max-height:400px; border-radius:12px;" alt="합쳐진 이미지 미리보기" />
+      </div>
+      <a class="calc-btn" id="merge-download" style="text-align:center; text-decoration:none; display:block;" download="merged.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="heic-viewer" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>HEIC 뷰어</h2>
-      <p class="card-desc-short">아이폰 HEIC 사진을 바로 열어보고 변환합니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">아이폰 HEIC 사진을 브라우저에서 바로 열어보고 JPG로 변환합니다.</p>
+      <div class="wip-dropzone" id="heic-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>HEIC 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="heic-hint">HEIC 파일을 선택해주세요</p>
+        <input type="file" id="heic-input" accept=".heic,.heif,image/heic,image/heif" style="display: none;" />
+        <button type="button" class="secondary-btn" id="heic-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="heic-error" hidden></p>
+      <p class="wip-note" id="heic-loading" hidden>변환 중입니다. 파일 크기에 따라 몇 초 걸릴 수 있습니다...</p>
+      <div style="text-align:center; margin-top:16px;" id="heic-preview-wrap" hidden>
+        <img id="heic-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+      </div>
+      <a class="calc-btn" id="heic-download" style="text-align:center; text-decoration:none; display:block;" download="converted.jpg" hidden>JPG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="photo-date-stamp" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>사진 날짜 표시</h2>
-      <p class="card-desc-short">필름카메라 감성의 날짜 스탬프를 사진에 찍어줍니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">필름카메라 감성의 날짜 스탬프를 사진 오른쪽 아래에 찍어줍니다.</p>
+      <div class="wip-dropzone" id="pds-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>사진을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="pds-hint">사진을 선택해주세요</p>
+        <input type="file" id="pds-input" accept="image/*" style="display: none;" />
+        <button type="button" class="secondary-btn" id="pds-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-group" style="margin-top: 16px;">
+        <label for="pds-date">날짜</label>
+        <div class="field-input-wrap"><input type="date" id="pds-date" /></div>
+      </div>
+      <button class="calc-btn" id="pds-apply-btn">날짜 찍기</button>
+      <p class="calc-error-msg" id="pds-error" hidden></p>
+      <div style="text-align:center; margin-top:16px;" id="pds-preview-wrap" hidden>
+        <canvas id="pds-canvas" style="max-width:100%; max-height:400px; border-radius:12px;"></canvas>
+      </div>
+      <a class="calc-btn" id="pds-download" style="text-align:center; text-decoration:none; display:block;" download="photo-dated.jpg" hidden>사진 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-to-png" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>Image to PNG</h2>
       <p class="card-desc-short">JPG 등 다양한 이미지를 PNG로 변환합니다.</p>
-      <div class="wip-dropzone">
+      <div class="wip-dropzone" id="i2png-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>이미지를 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="i2png-hint">이미지를 선택해주세요</p>
+        <input type="file" id="i2png-input" accept="image/*" style="display: none;" />
+        <button type="button" class="secondary-btn" id="i2png-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="i2png-error" hidden></p>
+      <div style="text-align:center; margin-top:16px;" id="i2png-preview-wrap" hidden>
+        <img id="i2png-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+      </div>
+      <a class="calc-btn" id="i2png-download" style="text-align:center; text-decoration:none; display:block;" download="converted.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-to-webp" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>Image to WebP</h2>
       <p class="card-desc-short">이미지를 용량이 작은 WebP 형식으로 변환합니다.</p>
-      <div class="wip-dropzone">
+      <div class="wip-dropzone" id="i2webp-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>이미지를 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="i2webp-hint">이미지를 선택해주세요</p>
+        <input type="file" id="i2webp-input" accept="image/*" style="display: none;" />
+        <button type="button" class="secondary-btn" id="i2webp-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="i2webp-error" hidden></p>
+      <div style="text-align:center; margin-top:16px;" id="i2webp-preview-wrap" hidden>
+        <img id="i2webp-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+      </div>
+      <a class="calc-btn" id="i2webp-download" style="text-align:center; text-decoration:none; display:block;" download="converted.webp" hidden>WebP 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="svg-trim" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>SVG 여백 제거</h2>
-      <p class="card-desc-short">SVG 이미지의 불필요한 여백을 자동으로 잘라냅니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">SVG 이미지의 불필요한 여백을 실제 도형 크기에 맞게 자동으로 잘라냅니다.</p>
+      <div class="wip-dropzone" id="svgtrim-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>SVG 파일을 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="svgtrim-hint">SVG 파일을 선택해주세요</p>
+        <input type="file" id="svgtrim-input" accept=".svg,image/svg+xml" style="display: none;" />
+        <button type="button" class="secondary-btn" id="svgtrim-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <p class="calc-error-msg" id="svgtrim-error" hidden></p>
+      <div id="svgtrim-preview-wrap" hidden style="margin-top: 16px;">
+        <div style="background:#fff; border-radius:12px; padding:16px; text-align:center;" id="svgtrim-preview"></div>
+        <div class="result-stat" style="margin-top:12px;">
+          <div class="result-stat-label">잘라낸 결과 크기</div>
+          <div class="result-stat-value" id="svgtrim-size-value">-</div>
+        </div>
+      </div>
+      <a class="calc-btn" id="svgtrim-download" style="text-align:center; text-decoration:none; display:block;" download="trimmed.svg" hidden>SVG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-base64" hidden>
     <div class="card">
       <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <span class="wip-badge">준비 중</span>
       <h2>이미지 Base64 변환</h2>
-      <p class="card-desc-short">이미지를 Base64 문자열로 변환하거나 반대로 복원합니다.</p>
-      <div class="wip-dropzone">
+      <p class="card-desc-short">이미지를 Base64 문자열로 변환하거나, Base64 문자열을 다시 이미지로 복원합니다.</p>
+      <div class="wip-dropzone" id="ib64-dropzone">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
         </svg>
-        <p>이미지를 선택하거나 끌어다 놓으세요</p>
-        <button type="button" class="secondary-btn" disabled>파일 선택</button>
+        <p id="ib64-hint">이미지를 선택해주세요</p>
+        <input type="file" id="ib64-input" accept="image/*" style="display: none;" />
+        <button type="button" class="secondary-btn" id="ib64-select-btn">파일 선택</button>
       </div>
-      <p class="wip-note">이 기능은 곧 추가될 예정입니다.</p>
+      <div class="field-group" style="margin-top: 16px;">
+        <label for="ib64-output">Base64 (Data URL)</label>
+        <div class="field-input-wrap"><textarea id="ib64-output" rows="6" placeholder="여기에 Base64 문자열을 붙여넣어 이미지로 복원할 수도 있습니다"></textarea></div>
+      </div>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="ib64-copy-btn">Base64 복사</button>
+        <button type="button" class="secondary-btn" id="ib64-restore-btn">Base64 → 이미지로 보기</button>
+      </div>
+      <div style="text-align:center; margin-top:16px;" id="ib64-preview-wrap" hidden>
+        <img id="ib64-preview" style="max-width:100%; max-height:300px; border-radius:12px;" alt="이미지 미리보기" />
+      </div>
     </div>
   </section>
 
