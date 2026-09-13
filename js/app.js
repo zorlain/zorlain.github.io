@@ -4495,12 +4495,49 @@ function initCatNav() {
   updateActive();
 }
 
+function initDropzones() {
+  document.querySelectorAll(".wip-dropzone").forEach((zone) => {
+    const input = zone.querySelector('input[type="file"]');
+    if (!input) return;
+
+    ["dragenter", "dragover"].forEach((evt) => {
+      zone.addEventListener(evt, (e) => {
+        e.preventDefault();
+        zone.classList.add("drag-over");
+      });
+    });
+
+    zone.addEventListener("dragleave", (e) => {
+      if (!zone.contains(e.relatedTarget)) zone.classList.remove("drag-over");
+    });
+
+    zone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      zone.classList.remove("drag-over");
+      const files = e.dataTransfer && e.dataTransfer.files;
+      if (!files || !files.length) return;
+      const dt = new DataTransfer();
+      Array.from(files).forEach((f) => dt.items.add(f));
+      input.files = dt.files;
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  });
+
+  // 드롭존 밖에 파일을 놓으면 브라우저가 새 탭으로 열어버리는 것을 방지
+  ["dragover", "drop"].forEach((evt) => {
+    window.addEventListener(evt, (e) => {
+      if (!e.target.closest(".wip-dropzone")) e.preventDefault();
+    });
+  });
+}
+
 function init() {
   initThemeToggle();
   initMenu();
   initTabs();
   initSearch();
   initCatNav();
+  initDropzones();
   initJsonFormatter();
   initBase64();
   initLorem();

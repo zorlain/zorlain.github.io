@@ -1,45 +1,7 @@
 /* 다크 퍼스트 디지털 시계 스타일(clock-timer)과 통일한 앰버 액센트 디자인 시스템 +
-   itool.co.kr 느낌의 카드 그리드 허브 구성. */
+   itool.co.kr 느낌의 카드 그리드 허브 구성.
+   다크 테마를 기본값으로 두고(:root), 라이트 테마는 명시적 예외로 오버라이드한다. */
 :root {
-  --bg: #ffffff;
-  --card: #f7f7f8;
-  --card-elevated: #ececef;
-  --text: #0a0a0a;
-  --text-muted: rgba(10, 10, 10, 0.62);
-  --border: rgba(10, 10, 10, 0.12);
-  --accent: #d9770a;
-  --accent-hover: #c26a09;
-  --accent-soft: rgba(217, 119, 10, 0.12);
-  --accent-on: #ffffff;
-  --btn-primary-bg: #0a0a0a;
-  --btn-primary-text: #ffffff;
-  --btn-primary-pressed: #2e2e2e;
-  --hover-tint: rgba(10, 10, 10, 0.06);
-
-  --positive: #2c9e44;
-  --negative: #d8314f;
-
-  --stage-bg: #0a0908;
-  --led: #d9770a;
-  --led-dim: rgba(217, 119, 10, 0.18);
-
-  /* 카테고리별 구분색 (여러 도구 모음 사이트를 참고: 섹션 단위로만 색을 달리해
-     한 카드 안에서는 여전히 단색을 유지, 전체적으로는 과하지 않게 절제된 톤) */
-  --cat-calc: #3b6bc4;
-  --cat-calc-soft: rgba(59, 107, 196, 0.1);
-  --cat-text: #1f9c80;
-  --cat-text-soft: rgba(31, 156, 128, 0.1);
-  --cat-image: #c85c7c;
-  --cat-image-soft: rgba(200, 92, 124, 0.1);
-  --cat-pdf: #c14a33;
-  --cat-pdf-soft: rgba(193, 74, 51, 0.1);
-  --cat-util: #7c5cc9;
-  --cat-util-soft: rgba(124, 92, 201, 0.1);
-  --cat-dev: #3f8f4f;
-  --cat-dev-soft: rgba(63, 143, 79, 0.1);
-}
-
-:root[data-theme="dark"] {
   --bg: #14110e;
   --card: #1c1713;
   --card-elevated: #26201a;
@@ -55,10 +17,15 @@
   --btn-primary-pressed: #e09710;
   --hover-tint: rgba(255, 255, 255, 0.07);
 
+  --positive: #2c9e44;
+  --negative: #d8314f;
+
   --stage-bg: #0a0705;
   --led: #ffb020;
   --led-dim: rgba(255, 176, 32, 0.18);
 
+  /* 카테고리별 구분색 (여러 도구 모음 사이트를 참고: 섹션 단위로만 색을 달리해
+     한 카드 안에서는 여전히 단색을 유지, 전체적으로는 과하지 않게 절제된 톤) */
   --cat-calc: #8fb3e8;
   --cat-calc-soft: rgba(143, 179, 232, 0.14);
   --cat-text: #6fc9b0;
@@ -71,6 +38,40 @@
   --cat-util-soft: rgba(182, 160, 224, 0.14);
   --cat-dev: #8bc98a;
   --cat-dev-soft: rgba(139, 201, 138, 0.14);
+}
+
+:root[data-theme="light"] {
+  --bg: #ffffff;
+  --card: #f7f7f8;
+  --card-elevated: #ececef;
+  --text: #0a0a0a;
+  --text-muted: rgba(10, 10, 10, 0.62);
+  --border: rgba(10, 10, 10, 0.12);
+  --accent: #d9770a;
+  --accent-hover: #c26a09;
+  --accent-soft: rgba(217, 119, 10, 0.12);
+  --accent-on: #ffffff;
+  --btn-primary-bg: #0a0a0a;
+  --btn-primary-text: #ffffff;
+  --btn-primary-pressed: #2e2e2e;
+  --hover-tint: rgba(10, 10, 10, 0.06);
+
+  --stage-bg: #0a0908;
+  --led: #d9770a;
+  --led-dim: rgba(217, 119, 10, 0.18);
+
+  --cat-calc: #3b6bc4;
+  --cat-calc-soft: rgba(59, 107, 196, 0.1);
+  --cat-text: #1f9c80;
+  --cat-text-soft: rgba(31, 156, 128, 0.1);
+  --cat-image: #c85c7c;
+  --cat-image-soft: rgba(200, 92, 124, 0.1);
+  --cat-pdf: #c14a33;
+  --cat-pdf-soft: rgba(193, 74, 51, 0.1);
+  --cat-util: #7c5cc9;
+  --cat-util-soft: rgba(124, 92, 201, 0.1);
+  --cat-dev: #3f8f4f;
+  --cat-dev-soft: rgba(63, 143, 79, 0.1);
 }
 
 * {
@@ -474,24 +475,50 @@ body {
   margin-bottom: 14px;
 }
 
+/* 파일 드롭존 (FreeConvert/iLoveIMG류 사이트의 큰 드래그앤드롭 영역을 참고:
+   아이콘을 원형 배지로 강조하고, 드래그 중엔 액센트로 하이라이트) */
 .wip-dropzone {
   border: 1.5px dashed var(--border);
   border-radius: 16px;
-  padding: 36px 20px;
+  padding: 40px 20px;
   text-align: center;
   color: var(--text-muted);
   margin-bottom: 8px;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.wip-dropzone.drag-over {
+  border-color: var(--accent);
+  border-style: solid;
+  background: var(--accent-soft);
 }
 
 .wip-dropzone svg {
-  width: 30px;
-  height: 30px;
-  margin-bottom: 12px;
+  width: 22px;
+  height: 22px;
+  margin-bottom: 14px;
+  display: inline-block;
+  padding: 12px;
+  border-radius: 9999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  box-sizing: content-box;
 }
 
 .wip-dropzone p {
   font-size: 14px;
   margin: 0 0 16px;
+}
+
+.wip-dropzone .secondary-btn {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-color: transparent;
+  padding: 12px 28px;
+}
+
+.wip-dropzone .secondary-btn:hover {
+  background: var(--btn-primary-pressed);
 }
 
 .wip-dropzone:has(button:last-child):has(p:only-child) p {
@@ -665,6 +692,7 @@ body {
 
 .secondary-btn:hover {
   background: var(--hover-tint);
+  border-color: var(--accent);
 }
 
 .secondary-btn:active {
