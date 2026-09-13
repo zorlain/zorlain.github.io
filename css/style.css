@@ -296,34 +296,6 @@ body {
   outline: none;
 }
 
-/* 신뢰 배지 + 규모 안내 (iTool의 "회원가입 없이 무제한 무료" 배지 +
-   TinyWow/OmniCalculator의 숫자 신뢰 요소를 우리 톤에 맞게 절제해서 결합) */
-.tool-hub-badges {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin: 18px 0 0;
-}
-
-.tool-hub-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  border-radius: 9999px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  color: var(--text-muted);
-  font-size: 12.5px;
-  font-weight: 600;
-}
-
-.tool-hub-badge strong {
-  color: var(--accent);
-  font-weight: 700;
-}
-
 /* 카테고리 바로가기 필 (iLoveIMG의 필 필터 + OmniCalculator의 카테고리 목록을
    참고한 스티키 내비게이션 — 롱 페이지에서 원하는 섹션으로 바로 이동) */
 .cat-nav {
