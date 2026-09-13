@@ -95,13 +95,30 @@ body {
   outline-offset: 2px;
 }
 
-/* ---------- 상단 바 (다른 도구 사이트와 동일한 프레임) ---------- */
+/* ---------- 상단 바 (다른 도구 사이트와 동일한 프레임) ----------
+   스크롤을 아무리 내려도 뒤로가기 버튼에 항상 접근할 수 있도록 상단바 자체를
+   스티키로 고정한다. --topbar-h는 카테고리 내비(.cat-nav)가 그 바로 아래에
+   붙도록 맞추는 기준값. */
+:root {
+  --topbar-h: 72px;
+}
+
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
   border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--bg);
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .brand {
@@ -119,6 +136,7 @@ body {
   position: relative;
 }
 
+.topbar-back,
 .theme-toggle,
 .menu-toggle {
   display: inline-flex;
@@ -136,14 +154,24 @@ body {
   transition: background 0.15s, transform 0.1s;
 }
 
+.topbar-back svg,
 .theme-toggle svg {
   width: 18px;
   height: 18px;
 }
 
+.topbar-back:hover,
 .theme-toggle:hover,
 .menu-toggle:hover {
   background: var(--hover-tint);
+}
+
+.topbar-back:active {
+  transform: scale(0.94);
+}
+
+.topbar-back[hidden] {
+  display: none;
 }
 
 .theme-toggle:active,
@@ -300,7 +328,7 @@ body {
    참고한 스티키 내비게이션 — 롱 페이지에서 원하는 섹션으로 바로 이동) */
 .cat-nav {
   position: sticky;
-  top: 0;
+  top: var(--topbar-h);
   z-index: 20;
   display: flex;
   gap: 8px;
@@ -793,6 +821,10 @@ body {
 
 /* 모바일 */
 @media (max-width: 640px) {
+  :root {
+    --topbar-h: 68px;
+  }
+
   .topbar {
     padding: 14px 16px;
   }

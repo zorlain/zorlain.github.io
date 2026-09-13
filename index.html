@@ -50,7 +50,14 @@
 </head>
 <body>
 <header class="topbar">
-  <div class="brand"><span>toolbox</span></div>
+  <div class="topbar-left">
+    <button type="button" class="topbar-back" id="topbar-back" aria-label="전체 도구로 돌아가기" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 6 L9 12 L15 18" />
+      </svg>
+    </button>
+    <div class="brand"><span>toolbox</span></div>
+  </div>
   <div class="topbar-actions">
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크/라이트 모드 전환"></button>
     <div class="menu" id="menu">

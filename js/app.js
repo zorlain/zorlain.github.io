@@ -72,6 +72,11 @@ function showTool(target) {
     panel.hidden = panel.dataset.tabPanel !== target;
   });
   window.scrollTo(0, 0);
+  const topbarBack = document.getElementById("topbar-back");
+  if (topbarBack) topbarBack.hidden = false;
+  if (!history.state || history.state.tool !== target) {
+    history.pushState({ tool: target }, "", "#" + target);
+  }
 }
 
 function showHub() {
@@ -79,6 +84,8 @@ function showHub() {
   document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
     panel.hidden = true;
   });
+  const topbarBack = document.getElementById("topbar-back");
+  if (topbarBack) topbarBack.hidden = true;
   window.dispatchEvent(new Event("scroll"));
 }
 
@@ -89,8 +96,23 @@ function initTabs() {
     showTool(card.dataset.tab);
   });
 
+  // 뒤로가기는 항상 history.back()으로 위임해 브라우저/모바일 뒤로가기
+  // 버튼과 동작을 일치시킨다 (popstate 리스너가 실제 화면 전환을 담당).
   document.getElementById("tabs").addEventListener("click", (e) => {
-    if (e.target.closest("[data-back]")) showHub();
+    if (e.target.closest("[data-back]")) history.back();
+  });
+
+  const topbarBack = document.getElementById("topbar-back");
+  if (topbarBack) {
+    topbarBack.addEventListener("click", () => history.back());
+  }
+
+  window.addEventListener("popstate", (e) => {
+    if (e.state && e.state.tool) {
+      showTool(e.state.tool);
+    } else {
+      showHub();
+    }
   });
 }
 
@@ -4451,17 +4473,21 @@ function initArchiveExtract() {
 function initCatNav() {
   const nav = document.getElementById("cat-nav");
   if (!nav) return;
+  const topbar = document.querySelector(".topbar");
   const buttons = Array.from(nav.querySelectorAll(".cat-nav-btn"));
   const sections = buttons
     .map((btn) => ({ btn, el: document.getElementById(btn.dataset.catTarget) }))
     .filter((s) => s.el);
 
+  // 상단바도 스티키라 카테고리 내비 위쪽에 항상 걸쳐 있으므로, 스크롤 이동/
+  // 활성 구간 계산 모두 상단바 높이까지 함께 보정해야 한다.
+  const stickyOffset = () => (topbar ? topbar.getBoundingClientRect().height : 0) + nav.getBoundingClientRect().height;
+
   buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
       const target = document.getElementById(btn.dataset.catTarget);
       if (!target) return;
-      const navHeight = nav.getBoundingClientRect().height;
-      const top = target.getBoundingClientRect().top + window.scrollY - navHeight - 12;
+      const top = target.getBoundingClientRect().top + window.scrollY - stickyOffset() - 12;
       window.scrollTo({ top, behavior: "smooth" });
     });
   });
@@ -4471,7 +4497,7 @@ function initCatNav() {
   let ticking = false;
   function updateActive() {
     ticking = false;
-    const line = nav.getBoundingClientRect().height + 24;
+    const line = stickyOffset() + 24;
     let current = sections[0];
     for (const s of sections) {
       if (s.el.getBoundingClientRect().top - line <= 0) {
