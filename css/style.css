@@ -518,15 +518,6 @@ body {
   margin-right: auto;
 }
 
-.card h2 {
-  font-size: 20px;
-  font-weight: 500;
-  margin: 0 0 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 /* 입력 폼 */
 .field-group {
   margin-bottom: 20px;
@@ -756,11 +747,6 @@ body {
     border-radius: 20px;
     margin-bottom: 16px;
   }
-  .card h2 {
-    font-size: 17px;
-    margin: 0 0 12px;
-  }
-
   .field-row {
     grid-template-columns: 1fr;
     gap: 0;

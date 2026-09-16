@@ -63,8 +63,8 @@ function showTool(target) {
   window.scrollTo(0, 0);
   const topbarBack = document.getElementById("topbar-back");
   if (topbarBack) topbarBack.hidden = false;
-  const panel = document.querySelector(`[data-tab-panel="${target}"]`);
-  const heading = panel && panel.querySelector(".card h2");
+  const card = document.querySelector(`.tool-card[data-tab="${target}"]`);
+  const heading = card && card.querySelector(".tool-card-title");
   const brandSpan = document.querySelector(".brand span");
   if (heading && brandSpan) brandSpan.textContent = heading.textContent;
   if (!history.state || history.state.tool !== target) {
