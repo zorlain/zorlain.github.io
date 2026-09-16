@@ -1097,23 +1097,14 @@
   <!-- JSON 포맷터 -->
   <section class="tab-panel" data-tab-panel="json" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">JSON 포맷터</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>JSON 포맷터</h2>
         <div class="field-group">
           <label for="json-input">입력</label>
           <div class="field-input-wrap">
             <textarea id="json-input" rows="12" placeholder='{"name":"홍길동","age":30}'></textarea>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="json-error" hidden></p>
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="json-format-btn">보기 좋게 정렬</button>
@@ -1126,29 +1117,19 @@
           </div>
         </div>
         <button class="calc-btn" id="json-copy-btn">결과 복사</button>
-      </div>
     </div>
   </section>
 
   <!-- Base64 인코더/디코더 -->
   <section class="tab-panel" data-tab-panel="base64" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">Base64 인코더·디코더</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>Base64 인코더·디코더</h2>
         <div class="field-group">
           <div class="field-input-wrap">
             <textarea id="base64-input" rows="6" placeholder="여기에 텍스트를 입력하세요"></textarea>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="base64-encode-btn">인코딩 →</button>
           <button type="button" class="secondary-btn" id="base64-decode-btn">← 디코딩</button>
@@ -1161,18 +1142,14 @@
           </div>
         </div>
         <button class="calc-btn" id="base64-copy-btn">결과 복사</button>
-      </div>
     </div>
   </section>
 
   <!-- 더미 텍스트 생성기 -->
   <section class="tab-panel" data-tab-panel="lorem" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">더미 텍스트 생성기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>옵션 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>더미 텍스트 생성기</h2>
         <div class="field-group">
           <label>언어</label>
           <div class="segmented" id="lorem-lang">
@@ -1190,12 +1167,6 @@
             <input type="range" id="lorem-length" min="2" max="12" step="1" value="5" class="range-input" />
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="lorem-generate-btn">생성하기</button>
         <div class="field-group" style="margin-top: 20px;">
           <div class="field-input-wrap">
@@ -1203,18 +1174,14 @@
           </div>
         </div>
         <button class="calc-btn secondary-btn" id="lorem-copy-btn">결과 복사</button>
-      </div>
     </div>
   </section>
 
   <!-- 퍼센트 계산기 -->
   <section class="tab-panel" data-tab-panel="percent" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">퍼센트 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>퍼센트 계산기</h2>
         <div class="field-group">
           <label>계산 방식</label>
           <div class="segmented" id="percent-mode">
@@ -1262,30 +1229,20 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="percent-calc-btn">계산하기</button>
         <p class="calc-error-msg" id="percent-error" hidden></p>
         <div class="result-stat highlight" id="percent-result" hidden>
           <div class="result-stat-label" id="percent-result-label">결과</div>
           <div class="result-stat-value" id="percent-result-value">-</div>
         </div>
-      </div>
     </div>
   </section>
 
   <!-- 대출이자 계산기 -->
   <section class="tab-panel" data-tab-panel="loan" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">대출이자 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>대출이자 계산기</h2>
         <div class="field-row">
           <div class="field-group">
             <label for="loan-principal">대출 원금 (만원)</label>
@@ -1308,12 +1265,6 @@
             <button type="button" data-value="maturity">만기일시</button>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="loan-calc-btn">계산하기</button>
         <p class="calc-error-msg" id="loan-error" hidden></p>
         <div class="tool-btn-grid" id="loan-result" hidden>
@@ -1326,18 +1277,14 @@
             <div class="result-stat-value" id="loan-interest-value">-</div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
   <!-- 만나이 계산기 -->
   <section class="tab-panel" data-tab-panel="age" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">만나이 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>만나이 계산기</h2>
         <div class="field-group">
           <label for="age-birth">생년월일</label>
           <div class="field-input-wrap"><input type="date" id="age-birth" /></div>
@@ -1346,12 +1293,6 @@
           <label for="age-base">기준일 (비워두면 오늘)</label>
           <div class="field-input-wrap"><input type="date" id="age-base" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="age-calc-btn">계산하기</button>
         <p class="calc-error-msg" id="age-error" hidden></p>
         <div class="tool-btn-grid" id="age-result" hidden>
@@ -1364,18 +1305,14 @@
             <div class="result-stat-value" id="age-year-value">-</div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
   <!-- 부가세 계산기 -->
   <section class="tab-panel" data-tab-panel="vat" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">부가세 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>부가세 계산기</h2>
         <div class="field-group">
           <label>입력 기준</label>
           <div class="segmented" id="vat-mode">
@@ -1387,12 +1324,6 @@
           <label for="vat-amount">금액 (원)</label>
           <div class="field-input-wrap"><input type="text" inputmode="numeric" id="vat-amount" placeholder="예: 100000" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="vat-calc-btn">계산하기</button>
         <div class="tool-btn-grid" id="vat-result" hidden>
           <div class="result-stat">
@@ -1408,18 +1339,14 @@
             <div class="result-stat-value" id="vat-total-value">-</div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
   <!-- 주휴수당 계산기 -->
   <section class="tab-panel" data-tab-panel="weekly-pay" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">주휴수당 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>주휴수당 계산기</h2>
         <p class="card-desc-short">1주 15시간 이상 근무하고 소정 근로일에 결근하지 않은 경우 지급됩니다. (근로기준법 기준, 주 40시간 초과분은 40시간으로 계산)</p>
         <div class="field-row">
           <div class="field-group">
@@ -1431,30 +1358,20 @@
             <div class="field-input-wrap"><input type="text" inputmode="decimal" id="wp-hours" placeholder="예: 40" /></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="wp-calc-btn">계산하기</button>
         <p class="calc-error-msg" id="wp-error" hidden></p>
         <div class="result-stat highlight" id="wp-result" hidden>
           <div class="result-stat-label">주휴수당 (1주 기준)</div>
           <div class="result-stat-value" id="wp-value">-</div>
         </div>
-      </div>
     </div>
   </section>
 
   <!-- 3.3% 계산기 -->
   <section class="tab-panel" data-tab-panel="freelance-tax" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">3.3% 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>3.3% 계산기</h2>
         <div class="field-group">
           <label>입력 기준</label>
           <div class="segmented" id="ft-mode">
@@ -1466,12 +1383,6 @@
           <label for="ft-amount">금액 (원)</label>
           <div class="field-input-wrap"><input type="text" inputmode="numeric" id="ft-amount" placeholder="예: 1000000" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="ft-calc-btn">계산하기</button>
         <div class="tool-btn-grid" id="ft-result" hidden>
           <div class="result-stat">
@@ -1483,18 +1394,14 @@
             <div class="result-stat-value" id="ft-other-value">-</div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
   <!-- 새 계산기 5종 (틀만 우선 제공, 기능은 차차 추가 예정) -->
   <section class="tab-panel" data-tab-panel="severance-pay" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">퇴직금 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>퇴직금 계산기</h2>
         <p class="card-desc-short">근속기간과 최근 3개월 급여로 예상 퇴직금을 계산합니다. (근로기준법 평균임금 기준)</p>
         <div class="field-row">
           <div class="field-group">
@@ -1510,12 +1417,6 @@
           <label for="sv-wage3">최근 3개월 총 급여 (세전, 원)</label>
           <div class="field-input-wrap"><input type="text" inputmode="numeric" id="sv-wage3" placeholder="예: 12000000" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="sv-calc-btn">계산하기</button>
         <p class="calc-error-msg" id="sv-error" hidden></p>
         <div class="tool-btn-grid" id="sv-result" hidden>
@@ -1532,17 +1433,13 @@
             <div class="result-stat-value" id="sv-total-value">-</div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="unemployment-benefit" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">실업급여 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>실업급여 계산기</h2>
         <p class="card-desc-short">이직 전 평균임금과 근속기간으로 예상 구직급여를 계산합니다. 실제 지급액은 고용센터 심사 기준에 따라 달라질 수 있습니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -1557,12 +1454,6 @@
         <div class="field-group">
           <label class="checkbox-label"><input type="checkbox" id="ub-senior" /> 만 50세 이상 또는 장애인</label>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="ub-calc-btn">계산하기</button>
         <p class="calc-error-msg" id="ub-error" hidden></p>
         <div class="tool-btn-grid" id="ub-result" hidden>
@@ -1579,17 +1470,13 @@
             <div class="result-stat-value" id="ub-total-value">-</div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="jeonse-conversion" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">전월세 전환 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>전월세 전환 계산기</h2>
         <p class="card-desc-short">전세보증금과 월세를 전월세전환율 기준으로 서로 계산합니다.</p>
         <div class="field-group">
           <label>계산 방향</label>
@@ -1618,29 +1505,19 @@
             <div class="field-input-wrap"><input type="text" inputmode="decimal" id="jc-rate" placeholder="예: 5.5" value="5.5" /></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="jc-calc-btn">계산하기</button>
         <p class="calc-error-msg" id="jc-error" hidden></p>
         <div class="result-stat highlight" id="jc-result" hidden>
           <div class="result-stat-label" id="jc-result-label">환산 월세</div>
           <div class="result-stat-value" id="jc-result-value">-</div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="savings-calc" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">적금·예금 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>적금·예금 계산기</h2>
         <p class="card-desc-short">단리 기준으로 만기 수령액을 계산합니다. (이자소득세 15.4% 적용)</p>
         <div class="field-group">
           <label>상품 종류</label>
@@ -1663,12 +1540,6 @@
             <div class="field-input-wrap"><input type="text" inputmode="numeric" id="sc-months" placeholder="예: 12" /></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="sc-calc-btn">계산하기</button>
         <p class="calc-error-msg" id="sc-error" hidden></p>
         <div class="tool-btn-grid" id="sc-result" hidden>
@@ -1685,17 +1556,13 @@
             <div class="result-stat-value" id="sc-total-value">-</div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="adsense-reality" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">애드센스 현실 계산기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>정보 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>애드센스 현실 계산기</h2>
         <p class="card-desc-short">일 방문자 수·CTR·CPC를 바탕으로 현실적인 애드센스 예상 수익을 계산합니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -1711,12 +1578,6 @@
           <label for="ad-cpc">CPC - 클릭당 단가 (원)</label>
           <div class="field-input-wrap"><input type="text" inputmode="numeric" id="ad-cpc" placeholder="예: 150" value="150" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="ad-calc-btn">계산하기</button>
         <p class="calc-error-msg" id="ad-error" hidden></p>
         <div class="tool-btn-grid" id="ad-result" hidden>
@@ -1730,18 +1591,14 @@
           </div>
         </div>
         <p class="wip-note">실제 수익은 광고 단가, 계절, 콘텐츠 주제에 따라 크게 달라질 수 있는 참고용 추정치입니다.</p>
-      </div>
     </div>
   </section>
 
   <!-- 텍스트 신규 8종 -->
   <section class="tab-panel" data-tab-panel="tts" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">텍스트 읽어주기(TTS)</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>텍스트 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>텍스트 읽어주기(TTS)</h2>
         <p class="card-desc-short">입력한 텍스트를 브라우저 내장 음성으로 읽어줍니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><textarea id="tts-input" rows="6" placeholder="읽어줄 텍스트를 입력하세요"></textarea></div>
@@ -1756,28 +1613,18 @@
             <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1" class="range-input" />
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>재생</div>
-      <div class="card">
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="tts-play-btn">읽어주기</button>
           <button type="button" class="secondary-btn" id="tts-stop-btn">정지</button>
         </div>
         <p class="calc-error-msg" id="tts-error" hidden></p>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="excel-merge" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">엑셀 파일 합치기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>엑셀 파일 합치기</h2>
         <p class="card-desc-short">여러 개의 엑셀 파일을 각각 시트로 담아 하나의 파일로 합칩니다.</p>
         <div class="wip-dropzone" id="xlm-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1787,26 +1634,16 @@
           <input type="file" id="xlm-input" accept=".xlsx,.xls,.csv" multiple style="display: none;" />
           <button type="button" class="secondary-btn" id="xlm-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="xlm-error" hidden></p>
         <p class="wip-note" id="xlm-loading" hidden>합치는 중입니다...</p>
         <a class="calc-btn" id="xlm-download" style="text-align:center; text-decoration:none;" download="merged.xlsx" hidden>합쳐진 엑셀 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="yaml-json-toml" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">YAML↔JSON↔TOML 변환기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>YAML↔JSON↔TOML 변환기</h2>
         <p class="card-desc-short">YAML, JSON, TOML 형식을 서로 자유롭게 변환합니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -1830,68 +1667,42 @@
           <label for="yjt-input">입력</label>
           <div class="field-input-wrap"><textarea id="yjt-input" rows="8" placeholder="여기에 내용을 입력하세요"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="yjt-convert-btn">변환하기</button>
         <p class="calc-error-msg" id="yjt-error" hidden></p>
         <div class="field-group" style="margin-top: 20px;">
           <label for="yjt-output">결과</label>
           <div class="field-input-wrap"><textarea id="yjt-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="xml-parser" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">XML 파서·포맷터</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>XML 파서·포맷터</h2>
         <p class="card-desc-short">XML 문서를 보기 좋게 정렬하고 구조를 확인합니다.</p>
         <div class="field-group">
           <label for="xml-input">입력</label>
           <div class="field-input-wrap"><textarea id="xml-input" rows="8" placeholder="XML을 입력하세요"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="xml-format-btn">정렬하기</button>
         <p class="calc-error-msg" id="xml-error" hidden></p>
         <div class="field-group" style="margin-top: 20px;">
           <label for="xml-output">결과</label>
           <div class="field-input-wrap"><textarea id="xml-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="json-xml" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">JSON↔XML 변환기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>JSON↔XML 변환기</h2>
         <p class="card-desc-short">JSON과 XML 형식을 서로 변환합니다.</p>
         <div class="field-group">
           <label for="jx-input">입력</label>
           <div class="field-input-wrap"><textarea id="jx-input" rows="8" placeholder="JSON 또는 XML을 입력하세요"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="jx-to-xml-btn">JSON → XML</button>
           <button type="button" class="secondary-btn" id="jx-to-json-btn">XML → JSON</button>
@@ -1901,17 +1712,13 @@
           <label for="jx-output">결과</label>
           <div class="field-input-wrap"><textarea id="jx-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="epub-txt" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">EPUB→TXT 변환</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>EPUB→TXT 변환</h2>
         <p class="card-desc-short">EPUB 전자책 파일 안의 텍스트를 순서대로 추출해 TXT로 변환합니다.</p>
         <div class="wip-dropzone" id="epub-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1921,12 +1728,6 @@
           <input type="file" id="epub-input" accept=".epub" style="display: none;" />
           <button type="button" class="secondary-btn" id="epub-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="epub-error" hidden></p>
         <p class="wip-note" id="epub-loading" hidden>텍스트를 추출하는 중입니다...</p>
         <div class="field-group" id="epub-result-group" hidden>
@@ -1934,17 +1735,13 @@
           <div class="field-input-wrap"><textarea id="epub-output" rows="10" readonly></textarea></div>
         </div>
         <a class="calc-btn" id="epub-download" style="text-align:center; text-decoration:none;" download="book.txt" hidden>TXT 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="md-viewer" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">MD 파일 뷰어</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>MD 파일 뷰어</h2>
         <p class="card-desc-short">마크다운(.md) 파일이나 텍스트를 미리보기 화면으로 바로 확인합니다.</p>
         <div class="wip-dropzone" id="mdv-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1959,29 +1756,19 @@
           <div class="field-input-wrap"><textarea id="mdv-source" rows="6" placeholder="# 제목
 마크다운 텍스트를 입력하세요"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="mdv-render-btn">미리보기</button>
         <p class="calc-error-msg" id="mdv-error" hidden></p>
         <div class="field-group" id="mdv-preview-wrap" hidden style="margin-top: 20px;">
           <label>미리보기</label>
           <div id="mdv-preview" style="background: var(--card-elevated); border-radius: 12px; padding: 20px; line-height: 1.7; overflow-x: auto;"></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="text-compare" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">텍스트 비교</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>텍스트 비교</h2>
         <p class="card-desc-short">두 텍스트를 줄 단위로 비교해 추가·삭제된 부분을 보여줍니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -1993,29 +1780,19 @@
             <div class="field-input-wrap"><textarea id="tc-input-b" rows="8" placeholder="두 번째 텍스트를 입력하세요"></textarea></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="tc-compare-btn">비교하기</button>
         <div class="field-group" id="tc-result-wrap" hidden style="margin-top: 20px;">
           <label id="tc-stat">-</label>
           <div id="tc-result" style="background: var(--card-elevated); border-radius: 12px; padding: 12px; max-height: 400px; overflow-y: auto;"></div>
         </div>
-      </div>
     </div>
   </section>
 
   <!-- 이미지 신규 9종 -->
   <section class="tab-panel" data-tab-panel="img-to-jpg" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">Image to JPG</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>Image to JPG</h2>
         <p class="card-desc-short">PNG, WebP 등 다양한 이미지를 JPG로 변환합니다.</p>
         <div class="wip-dropzone" id="i2jpg-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2025,28 +1802,18 @@
           <input type="file" id="i2jpg-input" accept="image/*" style="display: none;" />
           <button type="button" class="secondary-btn" id="i2jpg-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="i2jpg-error" hidden></p>
         <div style="text-align:center;" id="i2jpg-preview-wrap" hidden>
           <img id="i2jpg-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
         </div>
         <a class="calc-btn" id="i2jpg-download" style="text-align:center; text-decoration:none;" download="converted.jpg" hidden>JPG 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-merge" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">사진 합치기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>사진 합치기</h2>
         <p class="card-desc-short">여러 장의 사진을 세로 또는 가로로 이어 붙여 한 장으로 합칩니다.</p>
         <div class="field-group">
           <label>합치는 방향</label>
@@ -2063,28 +1830,18 @@
           <input type="file" id="merge-input" accept="image/*" multiple style="display: none;" />
           <button type="button" class="secondary-btn" id="merge-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="merge-error" hidden></p>
         <div style="text-align:center;" id="merge-preview-wrap" hidden>
           <img id="merge-preview" style="max-width:100%; max-height:400px; border-radius:12px;" alt="합쳐진 이미지 미리보기" />
         </div>
         <a class="calc-btn" id="merge-download" style="text-align:center; text-decoration:none;" download="merged.png" hidden>PNG 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="heic-viewer" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">HEIC 뷰어</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>HEIC 뷰어</h2>
         <p class="card-desc-short">아이폰 HEIC 사진을 브라우저에서 바로 열어보고 JPG로 변환합니다.</p>
         <div class="wip-dropzone" id="heic-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2094,29 +1851,19 @@
           <input type="file" id="heic-input" accept=".heic,.heif,image/heic,image/heif" style="display: none;" />
           <button type="button" class="secondary-btn" id="heic-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="heic-error" hidden></p>
         <p class="wip-note" id="heic-loading" hidden>변환 중입니다. 파일 크기에 따라 몇 초 걸릴 수 있습니다...</p>
         <div style="text-align:center;" id="heic-preview-wrap" hidden>
           <img id="heic-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
         </div>
         <a class="calc-btn" id="heic-download" style="text-align:center; text-decoration:none;" download="converted.jpg" hidden>JPG 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="photo-date-stamp" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">사진 날짜 표시</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일·날짜 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>사진 날짜 표시</h2>
         <p class="card-desc-short">필름카메라 감성의 날짜 스탬프를 사진 오른쪽 아래에 찍어줍니다.</p>
         <div class="wip-dropzone" id="pds-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2130,29 +1877,19 @@
           <label for="pds-date">날짜</label>
           <div class="field-input-wrap"><input type="date" id="pds-date" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="pds-apply-btn">날짜 찍기</button>
         <p class="calc-error-msg" id="pds-error" hidden></p>
         <div style="text-align:center; margin-top:16px;" id="pds-preview-wrap" hidden>
           <canvas id="pds-canvas" style="max-width:100%; max-height:400px; border-radius:12px;"></canvas>
         </div>
         <a class="calc-btn" id="pds-download" style="text-align:center; text-decoration:none;" download="photo-dated.jpg" hidden>사진 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-to-png" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">Image to PNG</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>Image to PNG</h2>
         <p class="card-desc-short">JPG 등 다양한 이미지를 PNG로 변환합니다.</p>
         <div class="wip-dropzone" id="i2png-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2162,28 +1899,18 @@
           <input type="file" id="i2png-input" accept="image/*" style="display: none;" />
           <button type="button" class="secondary-btn" id="i2png-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="i2png-error" hidden></p>
         <div style="text-align:center;" id="i2png-preview-wrap" hidden>
           <img id="i2png-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
         </div>
         <a class="calc-btn" id="i2png-download" style="text-align:center; text-decoration:none;" download="converted.png" hidden>PNG 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-to-webp" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">Image to WebP</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>Image to WebP</h2>
         <p class="card-desc-short">이미지를 용량이 작은 WebP 형식으로 변환합니다.</p>
         <div class="wip-dropzone" id="i2webp-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2193,28 +1920,18 @@
           <input type="file" id="i2webp-input" accept="image/*" style="display: none;" />
           <button type="button" class="secondary-btn" id="i2webp-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="i2webp-error" hidden></p>
         <div style="text-align:center;" id="i2webp-preview-wrap" hidden>
           <img id="i2webp-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
         </div>
         <a class="calc-btn" id="i2webp-download" style="text-align:center; text-decoration:none;" download="converted.webp" hidden>WebP 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="svg-trim" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">SVG 여백 제거</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>SVG 여백 제거</h2>
         <p class="card-desc-short">SVG 이미지의 불필요한 여백을 실제 도형 크기에 맞게 자동으로 잘라냅니다.</p>
         <div class="wip-dropzone" id="svgtrim-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2224,12 +1941,6 @@
           <input type="file" id="svgtrim-input" accept=".svg,image/svg+xml" style="display: none;" />
           <button type="button" class="secondary-btn" id="svgtrim-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="svgtrim-error" hidden></p>
         <div id="svgtrim-preview-wrap" hidden>
           <div style="background:#fff; border-radius:12px; padding:16px; text-align:center;" id="svgtrim-preview"></div>
@@ -2239,17 +1950,13 @@
           </div>
         </div>
         <a class="calc-btn" id="svgtrim-download" style="text-align:center; text-decoration:none;" download="trimmed.svg" hidden>SVG 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-base64" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">이미지 Base64 변환</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>이미지 Base64 변환</h2>
         <p class="card-desc-short">이미지를 Base64 문자열로 변환하거나, Base64 문자열을 다시 이미지로 복원합니다.</p>
         <div class="wip-dropzone" id="ib64-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2263,12 +1970,6 @@
           <label for="ib64-output">Base64 (Data URL)</label>
           <div class="field-input-wrap"><textarea id="ib64-output" rows="6" placeholder="여기에 Base64 문자열을 붙여넣어 이미지로 복원할 수도 있습니다"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="ib64-copy-btn">Base64 복사</button>
           <button type="button" class="secondary-btn" id="ib64-restore-btn">Base64 → 이미지로 보기</button>
@@ -2276,17 +1977,13 @@
         <div style="text-align:center; margin-top:16px;" id="ib64-preview-wrap" hidden>
           <img id="ib64-preview" style="max-width:100%; max-height:300px; border-radius:12px;" alt="이미지 미리보기" />
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="video-to-gif" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">동영상 GIF 변환</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일·옵션 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>동영상 GIF 변환</h2>
         <p class="card-desc-short">짧은 동영상 구간을 브라우저에서 바로 움직이는 GIF 이미지로 변환합니다.</p>
         <div class="wip-dropzone" id="vtg-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2317,12 +2014,6 @@
             <div class="field-input-wrap"><input type="text" inputmode="numeric" id="vtg-width" value="320" /></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="vtg-convert-btn">GIF로 변환하기</button>
         <p class="calc-error-msg" id="vtg-error" hidden></p>
         <p class="wip-note" id="vtg-progress" hidden>변환 중입니다...</p>
@@ -2330,18 +2021,14 @@
           <img id="vtg-result" style="max-width:100%; border-radius:12px;" alt="변환된 GIF" />
         </div>
         <a class="calc-btn" id="vtg-download" style="text-align:center; text-decoration:none;" download="animated.gif" hidden>GIF 다운로드</a>
-      </div>
     </div>
   </section>
 
   <!-- PDF 신규 13종 -->
   <section class="tab-panel" data-tab-panel="pdf-merge" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF 합치기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF 합치기</h2>
         <p class="card-desc-short">여러 개의 PDF 파일을 선택한 순서대로 하나로 합칩니다.</p>
         <div class="wip-dropzone" id="pm-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2351,26 +2038,16 @@
           <input type="file" id="pm-input" accept=".pdf,application/pdf" multiple style="display: none;" />
           <button type="button" class="secondary-btn" id="pm-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="pm-error" hidden></p>
         <p class="wip-note" id="pm-loading" hidden>합치는 중입니다...</p>
         <a class="calc-btn" id="pm-download" style="text-align:center; text-decoration:none;" download="merged.pdf" hidden>합쳐진 PDF 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-compress" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF 용량 줄이기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일·옵션 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF 용량 줄이기</h2>
         <p class="card-desc-short">각 페이지를 이미지로 다시 그려 용량을 줄입니다. 스캔·사진 위주 PDF에 효과적입니다.</p>
         <div class="wip-dropzone" id="pcps-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2384,12 +2061,6 @@
           <label for="pcps-quality">압축 품질: <span id="pcps-quality-label">보통</span></label>
           <input type="range" id="pcps-quality" min="1" max="3" step="1" value="2" class="range-input" />
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="pcps-run-btn">압축하기</button>
         <p class="calc-error-msg" id="pcps-error" hidden></p>
         <p class="wip-note" id="pcps-loading" hidden>압축하는 중입니다. 페이지 수에 따라 시간이 걸릴 수 있습니다...</p>
@@ -2399,17 +2070,13 @@
         </div>
         <a class="calc-btn" id="pcps-download" style="text-align:center; text-decoration:none;" download="compressed.pdf" hidden>압축된 PDF 다운로드</a>
         <p class="wip-note" id="pcps-warn" hidden>텍스트 위주 PDF는 이미지로 다시 그리면 오히려 용량이 늘어날 수 있습니다. 스캔·사진 위주 PDF에서 더 효과적입니다.</p>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-to-jpg" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF to JPG</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF to JPG</h2>
         <p class="card-desc-short">PDF 페이지를 JPG 이미지 파일로 변환합니다.</p>
         <div class="wip-dropzone" id="p2j-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2419,27 +2086,17 @@
           <input type="file" id="p2j-input" accept=".pdf,application/pdf" style="display: none;" />
           <button type="button" class="secondary-btn" id="p2j-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="p2j-error" hidden></p>
         <p class="wip-note" id="p2j-loading" hidden>변환하는 중입니다...</p>
         <div id="p2j-preview" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
         <a class="calc-btn" id="p2j-download" style="text-align:center; text-decoration:none;" download="pages.zip" hidden>JPG 전체 다운로드 (ZIP)</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-delete-page" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF 페이지 삭제</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일·페이지 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF 페이지 삭제</h2>
         <p class="card-desc-short">PDF에서 원하지 않는 페이지만 골라 삭제합니다.</p>
         <div class="wip-dropzone" id="pdp-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2453,26 +2110,16 @@
           <label for="pdp-pages">삭제할 페이지 번호 (예: 1,3,5-7)</label>
           <div class="field-input-wrap"><input type="text" id="pdp-pages" placeholder="예: 1,3,5-7" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="pdp-run-btn">삭제하기</button>
         <p class="calc-error-msg" id="pdp-error" hidden></p>
         <a class="calc-btn" id="pdp-download" style="text-align:center; text-decoration:none;" download="deleted.pdf" hidden>결과 PDF 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-split" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF 나누기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일·옵션 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF 나누기</h2>
         <p class="card-desc-short">하나의 PDF 파일을 지정한 페이지 단위로 여러 파일로 분할합니다.</p>
         <div class="wip-dropzone" id="psp-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2486,27 +2133,17 @@
           <label for="psp-chunk">파일당 페이지 수</label>
           <div class="field-input-wrap"><input type="text" inputmode="numeric" id="psp-chunk" value="1" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="psp-run-btn">나누기</button>
         <p class="calc-error-msg" id="psp-error" hidden></p>
         <p class="wip-note" id="psp-loading" hidden>나누는 중입니다...</p>
         <a class="calc-btn" id="psp-download" style="text-align:center; text-decoration:none;" download="split.zip" hidden>나눠진 파일 다운로드 (ZIP)</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-sign" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF 간편 편집(서명)</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일·서명 정보</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF 간편 편집(서명)</h2>
         <p class="card-desc-short">PDF 문서 원하는 위치에 서명·도장 텍스트를 바로 추가합니다.</p>
         <div class="wip-dropzone" id="psg-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2535,26 +2172,16 @@
             <button type="button" data-value="bottom-right">우하단</button>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="psg-run-btn">서명 추가하기</button>
         <p class="calc-error-msg" id="psg-error" hidden></p>
         <a class="calc-btn" id="psg-download" style="text-align:center; text-decoration:none;" download="signed.pdf" hidden>서명된 PDF 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-to-png" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF to PNG</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF to PNG</h2>
         <p class="card-desc-short">PDF 페이지를 PNG 이미지 파일로 변환합니다.</p>
         <div class="wip-dropzone" id="p2p-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2564,27 +2191,17 @@
           <input type="file" id="p2p-input" accept=".pdf,application/pdf" style="display: none;" />
           <button type="button" class="secondary-btn" id="p2p-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="p2p-error" hidden></p>
         <p class="wip-note" id="p2p-loading" hidden>변환하는 중입니다...</p>
         <div id="p2p-preview" style="display:flex; flex-wrap:wrap; gap:10px;"></div>
         <a class="calc-btn" id="p2p-download" style="text-align:center; text-decoration:none;" download="pages.zip" hidden>PNG 전체 다운로드 (ZIP)</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-half-split" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF 페이지 반으로 나누기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF 페이지 반으로 나누기</h2>
         <p class="card-desc-short">가로로 긴 PDF 페이지를 좌우 절반으로 나눠 저장합니다.</p>
         <div class="wip-dropzone" id="phs-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2594,26 +2211,16 @@
           <input type="file" id="phs-input" accept=".pdf,application/pdf" style="display: none;" />
           <button type="button" class="secondary-btn" id="phs-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="phs-run-btn">반으로 나누기</button>
         <p class="calc-error-msg" id="phs-error" hidden></p>
         <a class="calc-btn" id="phs-download" style="text-align:center; text-decoration:none;" download="half-split.pdf" hidden>결과 PDF 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-2up" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF 페이지 2장씩 합치기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF 페이지 2장씩 합치기</h2>
         <p class="card-desc-short">PDF 페이지 두 장을 한 장으로 모아서 인쇄용으로 만듭니다.</p>
         <div class="wip-dropzone" id="p2u-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2623,26 +2230,16 @@
           <input type="file" id="p2u-input" accept=".pdf,application/pdf" style="display: none;" />
           <button type="button" class="secondary-btn" id="p2u-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="p2u-run-btn">2장씩 합치기</button>
         <p class="calc-error-msg" id="p2u-error" hidden></p>
         <a class="calc-btn" id="p2u-download" style="text-align:center; text-decoration:none;" download="2up.pdf" hidden>결과 PDF 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-crop" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF 여백 자르기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일·옵션 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF 여백 자르기</h2>
         <p class="card-desc-short">PDF 페이지 가장자리 여백을 비율만큼 잘라냅니다.</p>
         <div class="wip-dropzone" id="pcr-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2656,26 +2253,16 @@
           <label for="pcr-margin">자를 여백 비율: <span id="pcr-margin-label">10%</span></label>
           <input type="range" id="pcr-margin" min="1" max="30" step="1" value="10" class="range-input" />
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="pcr-run-btn">여백 자르기</button>
         <p class="calc-error-msg" id="pcr-error" hidden></p>
         <a class="calc-btn" id="pcr-download" style="text-align:center; text-decoration:none;" download="cropped.pdf" hidden>결과 PDF 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-extract-text" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF 텍스트 추출</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF 텍스트 추출</h2>
         <p class="card-desc-short">PDF 안의 텍스트만 그대로 뽑아내어 복사합니다.</p>
         <div class="wip-dropzone" id="pet-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2685,12 +2272,6 @@
           <input type="file" id="pet-input" accept=".pdf,application/pdf" style="display: none;" />
           <button type="button" class="secondary-btn" id="pet-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="pet-error" hidden></p>
         <p class="wip-note" id="pet-loading" hidden>텍스트를 추출하는 중입니다...</p>
         <div class="field-group" id="pet-result-group" hidden>
@@ -2701,17 +2282,13 @@
           <button type="button" class="secondary-btn" id="pet-copy-btn">결과 복사</button>
           <a class="secondary-btn calc-btn" id="pet-download" style="text-align:center; text-decoration:none;" download="extracted.txt" hidden>TXT 다운로드</a>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="pdf-compare" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">PDF 비교</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>PDF 비교</h2>
         <p class="card-desc-short">두 PDF 문서의 텍스트를 줄 단위로 비교해 차이점을 보여줍니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -2723,12 +2300,6 @@
             <div class="field-input-wrap"><input type="file" id="pcm-input-b" accept=".pdf,application/pdf" /></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="pcm-run-btn">비교하기</button>
         <p class="calc-error-msg" id="pcm-error" hidden></p>
         <p class="wip-note" id="pcm-loading" hidden>비교하는 중입니다...</p>
@@ -2736,17 +2307,13 @@
           <label id="pcm-stat">-</label>
           <div id="pcm-result" style="background: var(--card-elevated); border-radius: 12px; padding: 12px; max-height: 400px; overflow-y: auto;"></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-to-pdf" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">이미지→PDF 변환</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>이미지→PDF 변환</h2>
         <p class="card-desc-short">여러 장의 이미지를 선택한 순서대로 한 페이지씩 담은 PDF 문서로 만듭니다.</p>
         <div class="wip-dropzone" id="i2p-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2756,67 +2323,44 @@
           <input type="file" id="i2p-input" accept="image/*" multiple style="display: none;" />
           <button type="button" class="secondary-btn" id="i2p-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="i2p-error" hidden></p>
         <p class="wip-note" id="i2p-loading" hidden>PDF를 만드는 중입니다...</p>
         <a class="calc-btn" id="i2p-download" style="text-align:center; text-decoration:none;" download="images.pdf" hidden>PDF 다운로드</a>
-      </div>
     </div>
   </section>
 
   <!-- 유틸리티 신규 19종 -->
   <section class="tab-panel" data-tab-panel="emoji-symbols" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">특수문자 모음</h2>
-
-    <div class="step-block">
-      <div class="card">
-        <p class="card-desc-short">자주 쓰는 특수문자와 기호를 클릭 한 번으로 복사합니다.</p>
-        <div class="tool-btn-grid" id="sym-grid" style="grid-template-columns: repeat(6, 1fr);"></div>
-        <p class="calc-error-msg" id="sym-copied" hidden style="color: var(--positive);"></p>
-      </div>
+    <div class="card">
+      <h2>특수문자 모음</h2>
+      <p class="card-desc-short">자주 쓰는 특수문자와 기호를 클릭 한 번으로 복사합니다.</p>
+      <div class="tool-btn-grid" id="sym-grid" style="grid-template-columns: repeat(6, 1fr);"></div>
+      <p class="calc-error-msg" id="sym-copied" hidden style="color: var(--positive);"></p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="addr-translate" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">영문주소 변환</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>영문주소 변환</h2>
         <p class="card-desc-short">한글 주소를 로마자로 기계적으로 표기 변환합니다. (간이 변환기 — 공식 도로명주소 영문표기는 도로명주소 안내시스템을 이용하세요)</p>
         <div class="field-group">
           <label for="addr-input">한글 주소</label>
           <div class="field-input-wrap"><input type="text" id="addr-input" placeholder="예: 서울특별시 강남구 테헤란로 123" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="addr-convert-btn">변환하기</button>
         <div class="field-group" style="margin-top: 20px;">
           <label for="addr-output">영문 주소</label>
           <div class="field-input-wrap"><input type="text" id="addr-output" readonly placeholder="변환 결과가 여기에 표시됩니다" /></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="qr-reader" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">QR 코드 읽기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>QR 코드 읽기</h2>
         <p class="card-desc-short">QR 코드 이미지를 업로드하면 담긴 내용을 바로 읽어줍니다.</p>
         <div class="wip-dropzone" id="qrr-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2826,55 +2370,35 @@
           <input type="file" id="qrr-input" accept="image/*" style="display: none;" />
           <button type="button" class="secondary-btn" id="qrr-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="qrr-error" hidden></p>
         <div class="field-group">
           <label for="qrr-output">인식된 내용</label>
           <div class="field-input-wrap"><input type="text" id="qrr-output" readonly placeholder="인식된 내용이 여기에 표시됩니다" /></div>
         </div>
         <button class="calc-btn secondary-btn" id="qrr-copy-btn">결과 복사</button>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="corp-stamp" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">법인 도장 만들기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>법인 도장 만들기</h2>
         <p class="card-desc-short">법인 인감 스타일의 원형 도장 이미지를 만들어줍니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><input type="text" id="cst-text" placeholder="회사명을 입력하세요" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="cst-make-btn">도장 만들기</button>
         <div style="display:flex; justify-content:center; margin-top: 20px;">
           <canvas id="cst-canvas" style="max-width:100%;"></canvas>
         </div>
         <a class="calc-btn secondary-btn" id="cst-download" style="text-align:center; text-decoration:none;" download="stamp.png" hidden>PNG 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="device-size-compare" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">폰·태블릿 크기 비교</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>폰·태블릿 크기 비교</h2>
         <p class="card-desc-short">스마트폰·태블릿 두 기종의 실제 크기를 비율에 맞춰 나란히 비교합니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -2886,29 +2410,19 @@
             <div class="field-input-wrap"><input type="text" id="dsc-b" placeholder="예: 갤럭시탭" value="갤럭시S24울트라" /></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="dsc-compare-btn">비교하기</button>
         <p class="calc-error-msg" id="dsc-error" hidden></p>
         <div style="display:flex; justify-content:center; margin-top: 20px; overflow-x:auto;">
           <canvas id="dsc-canvas" style="max-width:100%;"></canvas>
         </div>
         <p class="wip-note">지원 기기 목록: 아이폰13~15 시리즈, 갤럭시S22~S24 시리즈, 아이패드, 아이패드미니/프로, 갤럭시탭S9 (실측값 근사치)</p>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="hwp-viewer" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">한글 뷰어(HWP)</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>한글 뷰어(HWP)</h2>
         <p class="card-desc-short">HWP 파일 형식을 확인하고 기본 정보를 보여줍니다. (HWP는 복잡한 독점 포맷이라 브라우저에서 본문 전체를 렌더링하는 것은 지원하지 않습니다 — 정확한 내용 확인은 한글 프로그램이나 한컴오피스 뷰어를 이용해주세요)</p>
         <div class="wip-dropzone" id="hwp-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2918,28 +2432,18 @@
           <input type="file" id="hwp-input" accept=".hwp" style="display: none;" />
           <button type="button" class="secondary-btn" id="hwp-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="hwp-error" hidden></p>
         <div class="tool-btn-grid" id="hwp-result" hidden>
           <div class="result-stat"><div class="result-stat-label">파일 형식</div><div class="result-stat-value" id="hwp-format-value">-</div></div>
           <div class="result-stat"><div class="result-stat-label">파일 크기</div><div class="result-stat-value" id="hwp-size-value">-</div></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="id-photo" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">증명사진 만들기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일·규격 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>증명사진 만들기</h2>
         <p class="card-desc-short">사진을 업로드하면 규격에 맞게 중앙 기준으로 잘라 증명사진으로 만들어줍니다.</p>
         <div class="wip-dropzone" id="idp-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2957,29 +2461,19 @@
             <button type="button" data-value="5x5">5×5cm</button>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="idp-apply-btn">만들기</button>
         <p class="calc-error-msg" id="idp-error" hidden></p>
         <div style="display:flex; justify-content:center; margin-top: 16px;">
           <canvas id="idp-canvas" style="max-width:100%; max-height:320px;"></canvas>
         </div>
         <a class="calc-btn" id="idp-download" style="text-align:center; text-decoration:none;" download="id-photo.jpg" hidden>다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="cinema-size-compare" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">아이맥스·돌비시네마 크기 비교</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>아이맥스·돌비시네마 크기 비교</h2>
         <p class="card-desc-short">상영관 두 종류의 스크린 크기를 비율에 맞춰 비교합니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -2991,55 +2485,35 @@
             <div class="field-input-wrap"><input type="text" id="csc-b" placeholder="예: 아이맥스" value="아이맥스" /></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="csc-compare-btn">비교하기</button>
         <p class="calc-error-msg" id="csc-error" hidden></p>
         <div style="display:flex; justify-content:center; margin-top: 20px; overflow-x:auto;">
           <canvas id="csc-canvas" style="max-width:100%;"></canvas>
         </div>
         <p class="wip-note">지원 상영관: 일반관, 아이맥스, 돌비시네마, 스크린X, 4DX (대표적인 스크린 크기 근사치)</p>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="square-stamp" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">사각직인 만들기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>사각직인 만들기</h2>
         <p class="card-desc-short">회사, 부서명이 들어간 사각 직인을 만들어줍니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><input type="text" id="sqs-text" placeholder="직인에 들어갈 문구를 입력하세요" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="sqs-make-btn">직인 만들기</button>
         <div style="display:flex; justify-content:center; margin-top: 20px;">
           <canvas id="sqs-canvas" style="max-width:100%;"></canvas>
         </div>
         <a class="calc-btn secondary-btn" id="sqs-download" style="text-align:center; text-decoration:none;" download="square-stamp.png" hidden>PNG 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="stamp-cutout" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">도장 누끼 따기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일·옵션 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>도장 누끼 따기</h2>
         <p class="card-desc-short">흰 배경에 찍힌 도장 이미지에서 흰 배경을 투명하게 제거합니다.</p>
         <div class="wip-dropzone" id="scut-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -3053,157 +2527,97 @@
           <label for="scut-threshold">배경 제거 강도: <span id="scut-threshold-label">보통</span></label>
           <input type="range" id="scut-threshold" min="180" max="240" step="5" value="210" class="range-input" />
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="scut-apply-btn">배경 제거하기</button>
         <p class="calc-error-msg" id="scut-error" hidden></p>
         <div style="display:flex; justify-content:center; margin-top:16px; background: repeating-conic-gradient(#888 0% 25%, #bbb 0% 50%) 50% / 16px 16px; border-radius: 12px;">
           <canvas id="scut-canvas" style="max-width:100%; max-height:320px;"></canvas>
         </div>
         <a class="calc-btn" id="scut-download" style="text-align:center; text-decoration:none;" download="stamp-cutout.png" hidden>PNG 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="stamp-image" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">도장 이미지 만들기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>도장 이미지 만들기</h2>
         <p class="card-desc-short">이름을 입력하면 개인 인감 스타일의 도장 이미지를 만들어줍니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><input type="text" id="sti-text" placeholder="이름을 입력하세요" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="sti-make-btn">도장 만들기</button>
         <div style="display:flex; justify-content:center; margin-top: 20px;">
           <canvas id="sti-canvas" style="max-width:100%;"></canvas>
         </div>
         <a class="calc-btn secondary-btn" id="sti-download" style="text-align:center; text-decoration:none;" download="name-stamp.png" hidden>PNG 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="biz-nameplate" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">사업자 명판 만들기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>사업자 명판 만들기</h2>
         <p class="card-desc-short">상호명을 담은 명판 이미지를 만들어줍니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><input type="text" id="bnp-text" placeholder="상호명을 입력하세요" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="bnp-make-btn">명판 만들기</button>
         <div style="display:flex; justify-content:center; margin-top: 20px;">
           <canvas id="bnp-canvas" style="max-width:100%;"></canvas>
         </div>
         <a class="calc-btn secondary-btn" id="bnp-download" style="text-align:center; text-decoration:none;" download="nameplate.png" hidden>PNG 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="code-finder" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">코드 찾기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>코드 찾기</h2>
         <p class="card-desc-short">국가별 국제전화 코드를 검색합니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><input type="text" id="cdf-input" placeholder="나라 이름을 입력하세요 (예: 일본, 미국)" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="cdf-search-btn">검색하기</button>
         <div class="field-group" style="margin-top: 20px;">
           <div class="field-input-wrap"><input type="text" id="cdf-output" readonly placeholder="검색 결과가 여기에 표시됩니다" /></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="chord-sheet" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">코드 악보 만들기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>가사 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>코드 악보 만들기</h2>
         <p class="card-desc-short">가사에 [코드] 형식으로 표시하면 코드를 가사 위에 정렬해 악보로 만듭니다.</p>
         <div class="field-group">
           <label for="cds-input">가사 입력</label>
           <div class="field-input-wrap"><textarea id="cds-input" rows="8" placeholder="예: [C]Twinkle [G]twinkle [C]little [F]star">[C]Twinkle [G]twinkle [C]little [F]star
 [C]How I [G]wonder [C]what you [G]are</textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="cds-make-btn">악보 만들기</button>
         <div class="field-group" style="margin-top: 20px;">
           <label for="cds-output">코드 악보</label>
           <div class="field-input-wrap"><textarea id="cds-output" rows="8" readonly style="font-family: monospace; white-space: pre;"></textarea></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="habit-tracker" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">습관 만들기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>습관 추가</div>
-      <div class="card">
+    <div class="card">
+      <h2>습관 만들기</h2>
         <p class="card-desc-short">매일의 습관을 기록하고 체크하는 습관 트래커입니다. (이 브라우저에만 저장됩니다)</p>
         <div class="field-group">
           <div class="field-input-wrap"><input type="text" id="ht-input" placeholder="습관 이름을 입력하세요" /></div>
         </div>
         <button class="calc-btn" id="ht-add-btn">습관 추가하기</button>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>목록</div>
-      <div class="card">
         <div id="ht-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="calendar-print" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">달력 출력</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>연도·월 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>달력 출력</h2>
         <p class="card-desc-short">원하는 연도와 월의 달력을 만들어 인쇄합니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -3215,27 +2629,18 @@
             <div class="field-input-wrap"><input type="text" inputmode="numeric" id="cal-month" placeholder="9" value="9" /></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="cal-make-btn">달력 만들기</button>
           <button type="button" class="secondary-btn" id="cal-print-btn">인쇄하기</button>
         </div>
         <div id="cal-preview" style="margin-top: 20px; background: var(--card-elevated); border-radius: 12px; padding: 16px;"></div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="metronome" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">온라인 메트로놈</h2>
-
-    <div class="step-block">
-      <div class="card">
+    <div class="card">
+      <h2>온라인 메트로놈</h2>
         <p class="card-desc-short">박자 연습을 위한 온라인 메트로놈입니다.</p>
         <div class="field-group">
           <label for="met-bpm">템포: <span id="met-bpm-label">120 BPM</span></label>
@@ -3246,16 +2651,13 @@
           <div class="result-stat-value" id="met-beat" style="font-size: 32px;">○</div>
         </div>
         <button class="calc-btn" id="met-start-btn">시작하기</button>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="guitar-tuner" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">기타 튜너</h2>
-
-    <div class="step-block">
-      <div class="card">
+    <div class="card">
+      <h2>기타 튜너</h2>
         <p class="card-desc-short">마이크로 소리를 감지해 기타 음정을 맞춰줍니다. (마이크 권한이 필요합니다)</p>
         <div class="result-stat highlight">
           <div class="result-stat-label">감지된 음</div>
@@ -3263,17 +2665,13 @@
         </div>
         <button class="calc-btn" id="gt-start-btn">마이크로 튜닝 시작</button>
         <p class="calc-error-msg" id="gt-error" hidden></p>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="archive-extract" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">압축 풀기(ZIP)</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>압축 풀기(ZIP)</h2>
         <p class="card-desc-short">ZIP 압축 파일을 브라우저에서 바로 풀어 개별 파일로 다운로드합니다. (RAR·7Z·EGG는 브라우저에서 처리할 라이브러리가 없어 지원하지 않습니다)</p>
         <div class="wip-dropzone" id="arc-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -3283,38 +2681,22 @@
           <input type="file" id="arc-input" accept=".zip" style="display: none;" />
           <button type="button" class="secondary-btn" id="arc-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="arc-error" hidden></p>
         <p class="wip-note" id="arc-loading" hidden>압축을 푸는 중입니다...</p>
         <div id="arc-list"></div>
-      </div>
     </div>
   </section>
 
   <!-- 유틸리티 추가 7종 -->
   <section class="tab-panel" data-tab-panel="hangul-typo-fix" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">한영타 변환기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>한영타 변환기</h2>
         <p class="card-desc-short">한/영 자판 상태를 착각하고 입력해 깨진 문자를 원래 의도한 글자로 바꿔줍니다. (2벌식 기준)</p>
         <div class="field-group">
           <label for="hgt-input">입력</label>
           <div class="field-input-wrap"><textarea id="hgt-input" rows="6" placeholder="예: dkssudgktpdy"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="hgt-to-korean-btn">영타 → 한글</button>
           <button type="button" class="secondary-btn" id="hgt-to-english-btn">한글 → 영타</button>
@@ -3324,16 +2706,13 @@
           <div class="field-input-wrap"><textarea id="hgt-output" rows="6" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
         <button class="calc-btn" id="hgt-copy-btn">결과 복사</button>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="ip-lookup" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">아이피 조회</h2>
-
-    <div class="step-block">
-      <div class="card">
+    <div class="card">
+      <h2>아이피 조회</h2>
         <p class="card-desc-short">현재 접속한 공인 IP 주소를 바로 확인합니다.</p>
         <button class="calc-btn" id="ip-lookup-btn">내 IP 조회하기</button>
         <p class="calc-error-msg" id="ip-error" hidden></p>
@@ -3341,27 +2720,17 @@
           <div class="result-stat-label">공인 IP 주소</div>
           <div class="result-stat-value" id="ip-value">-</div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="barcode-generator" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">바코드 생성기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>바코드 생성기</h2>
         <p class="card-desc-short">숫자·영문 대문자를 입력하면 Code 39 바코드 이미지를 생성합니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><input type="text" id="bar-input" placeholder="예: LOTTO2026" value="LOTTO2026" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="bar-generate-btn">생성하기</button>
         <p class="calc-error-msg" id="bar-error" hidden></p>
         <div style="overflow-x: auto; text-align: center; margin-top: 20px;">
@@ -3369,17 +2738,13 @@
         </div>
         <a class="calc-btn secondary-btn" id="bar-download" style="text-align:center; text-decoration:none;" download="barcode.png" hidden>PNG 다운로드</a>
         <p class="wip-note">지원 문자: 0-9, A-Z(자동 대문자 변환), 공백, - . $ / + %</p>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="smi-to-srt" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">SMI→SRT 자막 변환기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>SMI→SRT 자막 변환기</h2>
         <p class="card-desc-short">SMI(.smi) 자막 파일을 SRT 형식으로 변환합니다.</p>
         <div class="wip-dropzone" id="smi-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -3389,28 +2754,19 @@
           <input type="file" id="smi-input" accept=".smi,.sami,text/plain" style="display: none;" />
           <button type="button" class="secondary-btn" id="smi-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="smi-error" hidden></p>
         <div class="field-group" id="smi-result-group" hidden>
           <label>SRT 결과</label>
           <div class="field-input-wrap"><textarea id="smi-output" rows="10" readonly></textarea></div>
         </div>
         <a class="calc-btn secondary-btn" id="smi-download" style="text-align:center; text-decoration:none;" download="subtitle.srt" hidden>SRT 다운로드</a>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="typing-speed-test" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">타자 속도 테스트</h2>
-
-    <div class="step-block">
-      <div class="card">
+    <div class="card">
+      <h2>타자 속도 테스트</h2>
         <p class="card-desc-short">아래 문장을 최대한 빠르고 정확하게 입력해보세요.</p>
         <div class="field-group">
           <label>연습 문장</label>
@@ -3433,32 +2789,26 @@
             <div class="result-stat-value" id="tst-accuracy-value">-</div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="reaction-speed-test" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">반응속도 테스트</h2>
-
-    <div class="step-block">
-      <div class="card">
+    <div class="card">
+      <h2>반응속도 테스트</h2>
         <p class="card-desc-short">화면이 초록색으로 바뀌는 순간 최대한 빨리 클릭하세요.</p>
         <div id="rst-box" style="height:160px; border-radius:16px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:16px; cursor:pointer; background: var(--card-elevated); color: var(--text-muted); text-align:center; padding: 0 20px; transition: background 0.1s;">클릭해서 시작하세요</div>
         <div class="result-stat highlight" id="rst-result" hidden style="margin-top:20px;">
           <div class="result-stat-label">반응 속도</div>
           <div class="result-stat-value" id="rst-value">-</div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="cps-test" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">CPS 테스트</h2>
-
-    <div class="step-block">
-      <div class="card">
+    <div class="card">
+      <h2>CPS 테스트</h2>
         <p class="card-desc-short">아래 버튼을 5초 동안 최대한 많이 클릭하세요.</p>
         <div id="cps-box" style="height:160px; border-radius:16px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-weight:700; cursor:pointer; background: var(--accent); color: var(--accent-on); user-select:none;">
           <div style="font-size:32px;" id="cps-count">0</div>
@@ -3468,29 +2818,19 @@
           <div class="result-stat-label">CPS (초당 클릭 수)</div>
           <div class="result-stat-value" id="cps-value">-</div>
         </div>
-      </div>
     </div>
   </section>
 
   <!-- 개발자 도구 신규 21종 -->
   <section class="tab-panel" data-tab-panel="json-to-csv" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">JSON→CSV 변환기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>JSON→CSV 변환기</h2>
         <p class="card-desc-short">객체 배열 형태의 JSON을 CSV로, CSV를 다시 JSON으로 변환합니다.</p>
         <div class="field-group">
           <label for="j2c-input">입력</label>
           <div class="field-input-wrap"><textarea id="j2c-input" rows="8" placeholder='[{"name":"홍길동","age":30}]'></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="j2c-error" hidden></p>
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="j2c-to-csv-btn">JSON → CSV</button>
@@ -3501,55 +2841,35 @@
           <div class="field-input-wrap"><textarea id="j2c-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
         <button class="calc-btn" id="j2c-copy-btn">결과 복사</button>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="sql-formatter" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">SQL 포매터</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>SQL 포매터</h2>
         <p class="card-desc-short">한 줄로 붙어있는 SQL 쿼리를 주요 절 기준으로 줄바꿈·들여쓰기해 보기 좋게 정렬합니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><textarea id="sql-input" rows="6" placeholder="SELECT * FROM users WHERE age > 20 ORDER BY name"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="sql-format-btn">포맷하기</button>
         <div class="field-group" id="sql-output-group" hidden style="margin-top: 20px;">
           <label>결과</label>
           <div class="field-input-wrap"><textarea id="sql-output" rows="10" readonly></textarea></div>
         </div>
         <button class="calc-btn secondary-btn" id="sql-copy-btn">결과 복사</button>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="unix-timestamp" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">Unix 타임스탬프 변환기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>Unix 타임스탬프 변환기</h2>
         <p class="card-desc-short">Unix 타임스탬프(초/밀리초)와 날짜·시간을 서로 변환합니다.</p>
         <div class="field-group">
           <label for="uts-input">타임스탬프 또는 날짜</label>
           <div class="field-input-wrap"><input type="text" id="uts-input" placeholder="예: 1700000000 또는 2023-11-15 06:13:20" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="uts-now-btn">현재 시각 넣기</button>
           <button type="button" class="secondary-btn" id="uts-calc-btn">변환하기</button>
@@ -3563,17 +2883,13 @@
             <div class="result-stat-value" id="uts-local-value">-</div>
           </div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="base-converter" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">진법 변환기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>진법 변환기</h2>
         <p class="card-desc-short">숫자를 2진수, 8진수, 10진수, 16진수 사이에서 변환합니다.</p>
         <div class="field-group">
           <label>입력 진법</label>
@@ -3588,12 +2904,6 @@
           <label for="bc-input">숫자</label>
           <div class="field-input-wrap"><input type="text" id="bc-input" placeholder="예: 255" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="bc-calc-btn">변환하기</button>
         <p class="calc-error-msg" id="bc-error" hidden></p>
         <div class="tool-btn-grid" id="bc-result" hidden>
@@ -3602,17 +2912,13 @@
           <div class="result-stat"><div class="result-stat-label">10진수</div><div class="result-stat-value" id="bc-dec-value">-</div></div>
           <div class="result-stat"><div class="result-stat-label">16진수</div><div class="result-stat-value" id="bc-hex-value">-</div></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="regex-tester" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">정규식 테스터</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>정규식 테스터</h2>
         <p class="card-desc-short">정규표현식을 입력하고 매치 결과를 실시간으로 확인합니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -3628,12 +2934,6 @@
           <label for="rgx-text">테스트할 텍스트</label>
           <div class="field-input-wrap"><textarea id="rgx-text" rows="6" placeholder="테스트할 텍스트를 입력하세요"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="rgx-test-btn">테스트하기</button>
         <p class="calc-error-msg" id="rgx-error" hidden></p>
         <div class="result-stat highlight" id="rgx-count-stat" hidden>
@@ -3644,28 +2944,18 @@
           <label>매치된 문자열</label>
           <div class="field-input-wrap"><textarea id="rgx-output" rows="6" readonly></textarea></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="ascii-converter" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">ASCII 변환기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>ASCII 변환기</h2>
         <p class="card-desc-short">텍스트를 ASCII 코드로, 공백으로 구분된 ASCII 코드를 다시 텍스트로 변환합니다.</p>
         <div class="field-group">
           <label for="asc-input">입력</label>
           <div class="field-input-wrap"><textarea id="asc-input" rows="6" placeholder="텍스트 또는 65 66 67 형식의 코드를 입력하세요"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="asc-error" hidden></p>
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="asc-encode-btn">텍스트 → ASCII</button>
@@ -3676,17 +2966,13 @@
           <div class="field-input-wrap"><textarea id="asc-output" rows="6" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
         <button class="calc-btn" id="asc-copy-btn">결과 복사</button>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="code-minifier" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">코드 압축기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>코드 압축기</h2>
         <p class="card-desc-short">JS, CSS 코드의 주석과 불필요한 공백·줄바꿈을 제거해 압축합니다.</p>
         <div class="field-group">
           <label>언어</label>
@@ -3699,12 +2985,6 @@
           <label for="min-input">입력</label>
           <div class="field-input-wrap"><textarea id="min-input" rows="8" placeholder="JS 또는 CSS 코드를 입력하세요"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="min-run-btn">압축하기</button>
           <button type="button" class="secondary-btn" id="min-copy-btn">결과 복사</button>
@@ -3718,16 +2998,13 @@
           <div class="field-input-wrap"><textarea id="min-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
         <p class="wip-note" id="min-js-note" hidden>JS는 주석 제거와 각 줄 앞뒤 공백·빈 줄만 제거합니다. (세미콜론 없는 코드의 줄바꿈 결합은 오류 위험이 있어 생략)</p>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="keycode-checker" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">키보드 키코드 확인기</h2>
-
-    <div class="step-block">
-      <div class="card">
+    <div class="card">
+      <h2>키보드 키코드 확인기</h2>
         <p class="card-desc-short">키보드를 누르면 key, code, keyCode 값을 바로 보여줍니다.</p>
         <div class="wip-dropzone" id="kc-zone" tabindex="0">
           <p id="kc-hint">여기를 클릭하고 아무 키나 눌러보세요</p>
@@ -3737,83 +3014,53 @@
           <div class="result-stat"><div class="result-stat-label">code</div><div class="result-stat-value" id="kc-code-value">-</div></div>
           <div class="result-stat highlight" style="grid-column: 1 / -1;"><div class="result-stat-label">keyCode</div><div class="result-stat-value" id="kc-keycode-value">-</div></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="cron-generator" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">Cron 표현식 생성기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>Cron 표현식 생성기</h2>
         <p class="card-desc-short">5개 필드(분 시 일 월 요일) Cron 표현식을 해석해 다음 실행 시간을 확인합니다.</p>
         <div class="field-group">
           <label for="cron-input">Cron 표현식</label>
           <div class="field-input-wrap"><input type="text" id="cron-input" placeholder="예: */5 * * * *" value="*/5 * * * *" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="cron-calc-btn">해석하기</button>
         <p class="calc-error-msg" id="cron-error" hidden></p>
         <div class="field-group" id="cron-result-group" hidden style="margin-top: 20px;">
           <label>다음 실행 시간 5회</label>
           <div class="field-input-wrap"><textarea id="cron-result" rows="5" readonly></textarea></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="http-status" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">HTTP 상태코드 조회</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>HTTP 상태코드 조회</h2>
         <p class="card-desc-short">HTTP 상태 코드의 의미를 검색하고 쉽게 확인합니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><input type="text" inputmode="numeric" id="hs-input" placeholder="예: 404" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="hs-lookup-btn">조회하기</button>
         <p class="calc-error-msg" id="hs-error" hidden></p>
         <div class="result-stat highlight" id="hs-result" hidden>
           <div class="result-stat-label" id="hs-result-label">설명</div>
           <div class="result-stat-value" id="hs-result-value">-</div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="curl-converter" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">cURL 변환기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>cURL 변환기</h2>
         <p class="card-desc-short">curl 명령어를 JavaScript fetch 코드로 변환합니다.</p>
         <div class="field-group">
           <label for="curl-input">curl 명령어</label>
           <div class="field-input-wrap"><textarea id="curl-input" rows="8" placeholder="curl -X POST https://api.example.com/users -H &quot;Content-Type: application/json&quot; -d &quot;{'name':'홍길동'}&quot;"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="curl-error" hidden></p>
         <div class="tool-btn-grid">
           <button type="button" class="secondary-btn" id="curl-convert-btn">변환하기</button>
@@ -3823,70 +3070,47 @@
           <label for="curl-output">결과 (fetch)</label>
           <div class="field-input-wrap"><textarea id="curl-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="jwt-decoder" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">JWT 디코더</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>JWT 디코더</h2>
         <p class="card-desc-short">JSON Web Token을 헤더·페이로드로 분석합니다. (서명 검증은 하지 않습니다)</p>
         <div class="field-group">
           <div class="field-input-wrap"><textarea id="jwt-input" rows="5" placeholder="JWT 토큰을 입력하세요 (예: eyJhbGciOi...)"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="jwt-decode-btn">디코딩하기</button>
         <p class="calc-error-msg" id="jwt-error" hidden></p>
         <div class="field-group" id="jwt-result-group" hidden style="margin-top: 20px;">
           <label>디코딩 결과</label>
           <div class="field-input-wrap"><textarea id="jwt-output" rows="10" readonly></textarea></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="hash-generator" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">해시 생성기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>해시 생성기</h2>
         <p class="card-desc-short">텍스트의 MD5, SHA-1, SHA-256 해시 값을 즉시 생성합니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><textarea id="hg-input" rows="4" placeholder="해시로 변환할 텍스트를 입력하세요"></textarea></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="hg-generate-btn">해시 생성하기</button>
         <div class="tool-btn-grid" id="hg-result" style="grid-template-columns: 1fr;" hidden>
           <div class="result-stat"><div class="result-stat-label">MD5</div><div class="result-stat-value" id="hg-md5-value" style="font-size:14px; word-break:break-all;">-</div></div>
           <div class="result-stat"><div class="result-stat-label">SHA-1</div><div class="result-stat-value" id="hg-sha1-value" style="font-size:14px; word-break:break-all;">-</div></div>
           <div class="result-stat"><div class="result-stat-label">SHA-256</div><div class="result-stat-value" id="hg-sha256-value" style="font-size:14px; word-break:break-all;">-</div></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="uuid-generator" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">UUID 생성기</h2>
-
-    <div class="step-block">
-      <div class="card">
+    <div class="card">
+      <h2>UUID 생성기</h2>
         <p class="card-desc-short">클릭 한 번으로 v4 UUID를 생성하고 복사합니다.</p>
         <div class="result-stat highlight">
           <div class="result-stat-label">UUID</div>
@@ -3896,17 +3120,13 @@
           <button type="button" class="secondary-btn" id="uuid-generate-btn">생성하기</button>
           <button type="button" class="secondary-btn" id="uuid-copy-btn">복사하기</button>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="favicon-generator" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">파비콘 생성기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>파비콘 생성기</h2>
         <p class="card-desc-short">이미지를 업로드하면 16·32·48·180px 크기의 파비콘 PNG를 만들어줍니다.</p>
         <div class="wip-dropzone" id="fav-dropzone">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -3916,12 +3136,6 @@
           <input type="file" id="fav-input" accept="image/*" style="display: none;" />
           <button type="button" class="secondary-btn" id="fav-select-btn">파일 선택</button>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <p class="calc-error-msg" id="fav-error" hidden></p>
         <div class="tool-btn-grid" id="fav-result" hidden style="grid-template-columns: repeat(4, 1fr); align-items: end;">
           <div style="text-align:center;"><canvas id="fav-16" width="16" height="16" style="image-rendering: pixelated; border-radius:4px;"></canvas><div style="font-size:11.5px; color:var(--text-muted); margin-top:6px;">16×16</div></div>
@@ -3933,17 +3147,13 @@
           <a class="secondary-btn calc-btn" style="text-align:center; text-decoration:none;" id="fav-dl-32" download="favicon-32.png">32px 다운로드</a>
           <a class="secondary-btn calc-btn" style="text-align:center; text-decoration:none;" id="fav-dl-180" download="favicon-180.png">180px 다운로드</a>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="gitignore-generator" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">.gitignore 생성기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>항목 선택</div>
-      <div class="card">
+    <div class="card">
+      <h2>.gitignore 생성기</h2>
         <p class="card-desc-short">언어·프레임워크를 선택하면 알맞은 .gitignore 파일을 만들어줍니다.</p>
         <div class="field-group">
           <label>포함할 항목 (복수 선택 가능)</label>
@@ -3959,38 +3169,22 @@
             <label class="checkbox-label"><input type="checkbox" value="intellij" /> IntelliJ</label>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="gi-generate-btn">생성하기</button>
         <div class="field-group" style="margin-top: 20px;">
           <div class="field-input-wrap"><textarea id="gi-output" rows="10" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
         <button class="calc-btn secondary-btn" id="gi-copy-btn">결과 복사</button>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="color-converter" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">컬러 코드 변환기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>컬러 코드 변환기</h2>
         <p class="card-desc-short">HEX, RGB, HSL 색상 코드를 서로 변환합니다.</p>
         <div class="field-group">
           <div class="field-input-wrap"><input type="text" id="cc-input" placeholder="예: #ffb020, rgb(255,176,32), hsl(38,100%,56%)" /></div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="cc-convert-btn">변환하기</button>
         <p class="calc-error-msg" id="cc-error" hidden></p>
         <div id="cc-preview" class="wip-dropzone" style="margin-top: 20px; display: none;">
@@ -4001,17 +3195,13 @@
           <div class="result-stat"><div class="result-stat-label">RGB</div><div class="result-stat-value" id="cc-rgb-value">-</div></div>
           <div class="result-stat highlight" style="grid-column: 1 / -1;"><div class="result-stat-label">HSL</div><div class="result-stat-value" id="cc-hsl-value">-</div></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="css-gradient" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">CSS 그라디언트 생성기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>설정</div>
-      <div class="card">
+    <div class="card">
+      <h2>CSS 그라디언트 생성기</h2>
         <p class="card-desc-short">색상을 선택하면 CSS 그라디언트 코드를 실시간으로 만들어줍니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -4027,28 +3217,18 @@
           <label for="cg-angle">각도: <span id="cg-angle-label">135deg</span></label>
           <input type="range" id="cg-angle" min="0" max="360" step="1" value="135" class="range-input" />
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <div id="cg-preview" style="border-radius: 16px; height: 100px; margin-bottom: 16px;"></div>
         <div class="field-group">
           <div class="field-input-wrap"><textarea id="cg-output" rows="2" readonly></textarea></div>
         </div>
         <button class="calc-btn secondary-btn" id="cg-copy-btn">CSS 복사</button>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="css-box-shadow" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">CSS Box Shadow 생성기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>설정</div>
-      <div class="card">
+    <div class="card">
+      <h2>CSS Box Shadow 생성기</h2>
         <p class="card-desc-short">그림자 위치와 흐림 정도를 조절해 CSS 코드를 실시간으로 만듭니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -4083,12 +3263,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <div style="display:flex; justify-content:center; padding: 30px 0;">
           <div id="bs-preview" style="width: 120px; height: 120px; border-radius: 16px; background: var(--card-elevated);"></div>
         </div>
@@ -4096,17 +3270,13 @@
           <div class="field-input-wrap"><textarea id="bs-output" rows="2" readonly></textarea></div>
         </div>
         <button class="calc-btn secondary-btn" id="bs-copy-btn">CSS 복사</button>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="wcag-contrast" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">WCAG 색상 대비 검사기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>색상 입력</div>
-      <div class="card">
+    <div class="card">
+      <h2>WCAG 색상 대비 검사기</h2>
         <p class="card-desc-short">두 색상의 명도 대비를 계산해 웹 접근성 기준 충족 여부를 확인합니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -4118,12 +3288,6 @@
             <div class="field-input-wrap"><input type="text" id="wc-text" value="#000000" /></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <button class="calc-btn" id="wc-check-btn">검사하기</button>
         <p class="calc-error-msg" id="wc-error" hidden></p>
         <div id="wc-preview" style="border-radius: 14px; padding: 20px; text-align: center; font-weight: 700; margin-top: 16px;"></div>
@@ -4135,17 +3299,13 @@
           <div class="result-stat"><div class="result-stat-label">일반 텍스트 AA (4.5:1)</div><div class="result-stat-value" id="wc-aa-value">-</div></div>
           <div class="result-stat"><div class="result-stat-label">큰 텍스트 AA (3:1)</div><div class="result-stat-value" id="wc-aa-large-value">-</div></div>
         </div>
-      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="cubic-bezier" hidden>
     <button type="button" class="back-link" data-back>← 전체 도구</button>
-    <h2 class="tool-heading">cubic-bezier 이징 생성기</h2>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">1</span>설정</div>
-      <div class="card">
+    <div class="card">
+      <h2>cubic-bezier 이징 생성기</h2>
         <p class="card-desc-short">애니메이션 이징 곡선을 조절해 CSS cubic-bezier 값을 만듭니다.</p>
         <div class="field-row">
           <div class="field-group">
@@ -4167,12 +3327,6 @@
             <input type="range" id="cb-y2" min="-1" max="2" step="0.01" value="1" class="range-input" />
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="step-block">
-      <div class="step-label"><span class="step-num">2</span>결과</div>
-      <div class="card">
         <div style="display:flex; justify-content:center; padding: 10px 0 20px;">
           <svg id="cb-svg" width="180" height="180" viewBox="0 0 100 100">
             <line x1="0" y1="100" x2="100" y2="100" stroke="var(--border)" stroke-width="1" />
@@ -4186,7 +3340,6 @@
           <div class="field-input-wrap"><input type="text" id="cb-output" readonly /></div>
         </div>
         <button class="calc-btn secondary-btn" id="cb-copy-btn">값 복사</button>
-      </div>
     </div>
   </section>
 
