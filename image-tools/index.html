@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  (function () {
+    var saved = localStorage.getItem("theme");
+    var theme = saved === "light" || saved === "dark" ? saved : "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<title>무료 이미지 압축·리사이즈 - 사진 용량 줄이기, 크기 변경</title>
+<meta name="description" content="사진 파일 용량을 줄이고 크기를 조절합니다. 이미지를 서버에 올리지 않고 브라우저에서 바로 처리하므로 안전하고 빠릅니다." />
+<meta name="keywords" content="이미지압축,사진용량줄이기,이미지리사이즈,사진크기변경,JPG압축,PNG압축,웹P변환" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://zorlain.github.io/image-tools/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="무료 이미지 압축·리사이즈" />
+<meta property="og:description" content="사진 용량을 줄이고 크기를 조절합니다. 브라우저에서 바로 처리해 안전합니다." />
+<meta property="og:url" content="https://zorlain.github.io/image-tools/" />
+<meta property="og:locale" content="ko_KR" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="무료 이미지 압축·리사이즈" />
+<meta name="twitter:description" content="사진 용량을 줄이고 크기를 조절합니다." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "이미지 압축·리사이즈",
+  "url": "https://zorlain.github.io/image-tools/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "description": "사진 파일 용량을 줄이고 크기를 조절하는 무료 온라인 도구입니다. 브라우저에서 바로 처리합니다."
+}
+</script>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23000000'/%3E%3Ccircle cx='9' cy='9' r='2.2' fill='white'/%3E%3Cpath d='M4 18 L9.5 12 L13 15.5 L16.5 11 L20 18 Z' fill='white'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span>이미지 압축·리사이즈</span></div>
+  <div class="topbar-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크/라이트 모드 전환"></button>
+    <div class="menu" id="menu">
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기">☰</button>
+      <div class="menu-dropdown" id="menu-dropdown">
+        <div class="tool-list-group-label">다른 도구</div>
+        <a class="tool-list-item" href="https://zorlain.github.io/lotto-generator/">로또 번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/clock-timer/">타이머·스톱워치·시계</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/qr-generator/">QR코드 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/random-picker/">랜덤 추첨기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/password-generator/">비밀번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/text-tools/">텍스트 도구 모음</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/retirement-calculator/">은퇴자산계산기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/asset-allocation-calculator/">자산배분계산기</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- iloveimg.com 느낌: 카드 없이, 큰 버튼 하나가 중심인 담백한 시작 화면 -->
+  <section class="upload-hero" id="dropzone">
+    <h1>이미지 압축·리사이즈</h1>
+    <p class="upload-hero-desc">사진 용량을 줄이고 크기를 조절합니다. 파일은 서버로 전송되지 않고 브라우저에서만 처리됩니다.</p>
+    <label class="upload-hero-btn" for="file-input">이미지 선택</label>
+    <input type="file" id="file-input" accept="image/*" hidden />
+    <p class="upload-hero-hint" id="dropzone-text">또는 여기에 이미지를 끌어다 놓으세요</p>
+  </section>
+
+  <div class="workspace" id="workspace" hidden>
+
+    <div class="card">
+      <div class="preview-row" id="preview-row">
+        <img id="preview-img" alt="업로드한 이미지 미리보기" />
+        <div class="preview-meta" id="preview-meta"></div>
+      </div>
+      <label class="change-file-link" for="file-input">다른 이미지 선택</label>
+    </div>
+
+    <div class="card">
+      <h2>옵션</h2>
+      <div class="field-group">
+        <label for="opt-maxwidth">최대 가로 폭: <span id="opt-maxwidth-label">1280px</span></label>
+        <input type="range" id="opt-maxwidth" min="200" max="4000" step="20" value="1280" class="range-input" />
+      </div>
+      <div class="field-group">
+        <label for="opt-quality">화질: <span id="opt-quality-label">80%</span></label>
+        <input type="range" id="opt-quality" min="10" max="100" step="5" value="80" class="range-input" />
+      </div>
+      <div class="field-group">
+        <label>출력 형식</label>
+        <div class="segmented" id="opt-format">
+          <button type="button" class="active" data-value="image/jpeg">JPG</button>
+          <button type="button" data-value="image/webp">WebP</button>
+          <button type="button" data-value="image/png">PNG</button>
+        </div>
+      </div>
+      <button class="calc-btn" id="process-btn">변환하기</button>
+    </div>
+
+    <div class="card" id="result-card" hidden>
+      <h2>결과</h2>
+      <div class="result-compare">
+        <div class="result-stat">
+          <div class="result-stat-label">원본 용량</div>
+          <div class="result-stat-value" id="result-original-size">-</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-label">변환 후 용량</div>
+          <div class="result-stat-value positive" id="result-new-size">-</div>
+        </div>
+        <div class="result-stat highlight">
+          <div class="result-stat-label">절감률</div>
+          <div class="result-stat-value" id="result-reduction">-</div>
+        </div>
+      </div>
+      <div class="result-img-wrap">
+        <img id="result-img" class="result-img" alt="변환된 이미지 미리보기" />
+      </div>
+      <a class="qr-download-btn" id="result-download-btn" download="image.jpg">이미지 다운로드</a>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

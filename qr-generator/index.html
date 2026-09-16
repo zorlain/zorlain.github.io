@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  (function () {
+    var saved = localStorage.getItem("theme");
+    var theme = saved === "light" || saved === "dark" ? saved : "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<title>무료 QR코드 생성기 - URL, 와이파이, 연락처 QR코드 즉시 생성</title>
+<meta name="description" content="URL, 텍스트, 와이파이 접속정보, 연락처(vCard)를 QR코드로 무료로 바로 만듭니다. 회원가입·설치 없이 브라우저에서 즉시 생성하고 이미지로 저장하세요." />
+<meta name="keywords" content="QR코드생성기,QR코드만들기,와이파이QR코드,URLQR코드,연락처QR코드,무료QR코드" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://zorlain.github.io/qr-generator/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="무료 QR코드 생성기" />
+<meta property="og:description" content="URL, 와이파이, 연락처를 QR코드로 무료로 바로 만듭니다." />
+<meta property="og:url" content="https://zorlain.github.io/qr-generator/" />
+<meta property="og:locale" content="ko_KR" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="무료 QR코드 생성기" />
+<meta name="twitter:description" content="URL, 와이파이, 연락처를 QR코드로 무료로 바로 만듭니다." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "QR코드 생성기",
+  "url": "https://zorlain.github.io/qr-generator/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "description": "URL, 와이파이, 연락처를 QR코드로 브라우저에서 바로 만드는 무료 온라인 도구입니다."
+}
+</script>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23000000'/%3E%3Crect x='4' y='4' width='6' height='6' fill='white'/%3E%3Crect x='14' y='4' width='6' height='6' fill='white'/%3E%3Crect x='4' y='14' width='6' height='6' fill='white'/%3E%3Crect x='14' y='14' width='3' height='3' fill='white'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span>QR코드 생성기</span></div>
+  <div class="topbar-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크/라이트 모드 전환"></button>
+    <div class="menu" id="menu">
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기">☰</button>
+      <div class="menu-dropdown" id="menu-dropdown">
+        <div class="tool-list-group-label">다른 도구</div>
+        <a class="tool-list-item" href="https://zorlain.github.io/lotto-generator/">로또 번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/clock-timer/">타이머·스톱워치·시계</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/image-tools/">이미지 압축·리사이즈</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/random-picker/">랜덤 추첨기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/password-generator/">비밀번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/text-tools/">텍스트 도구 모음</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/retirement-calculator/">은퇴자산계산기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/asset-allocation-calculator/">자산배분계산기</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <div class="qr-workspace">
+    <div class="qr-form-col">
+
+      <div class="step-label"><span class="step-num">1</span>QR 코드 정보 입력</div>
+      <nav class="type-tabs" id="tabs">
+        <button class="type-tab tab-btn active" data-tab="text">텍스트·URL</button>
+        <button class="type-tab tab-btn" data-tab="wifi">와이파이</button>
+        <button class="type-tab tab-btn" data-tab="vcard">연락처</button>
+      </nav>
+
+      <!-- 탭 1: 텍스트/URL -->
+      <section class="tab-panel" data-tab-panel="text">
+        <div class="card">
+          <p class="card-desc-short">QR코드로 만들 주소나 텍스트를 입력하세요.</p>
+          <div class="field-group">
+            <label for="text-input">URL 또는 텍스트</label>
+            <div class="field-input-wrap">
+              <textarea id="text-input" rows="3" placeholder="https://example.com"></textarea>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 탭 2: 와이파이 -->
+      <section class="tab-panel" data-tab-panel="wifi" hidden>
+        <div class="card">
+          <p class="card-desc-short">스캔하면 바로 와이파이에 연결되는 QR코드를 만듭니다.</p>
+          <div class="field-group">
+            <label for="wifi-ssid">네트워크 이름 (SSID)</label>
+            <div class="field-input-wrap"><input type="text" id="wifi-ssid" placeholder="MyHomeWiFi" /></div>
+          </div>
+          <div class="field-group">
+            <label for="wifi-password">비밀번호</label>
+            <div class="field-input-wrap"><input type="text" id="wifi-password" placeholder="비밀번호" /></div>
+          </div>
+          <div class="field-group">
+            <label>보안 방식</label>
+            <div class="segmented" id="wifi-security">
+              <button type="button" class="active" data-value="WPA">WPA/WPA2</button>
+              <button type="button" data-value="WEP">WEP</button>
+              <button type="button" data-value="nopass">암호 없음</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 탭 3: 연락처 -->
+      <section class="tab-panel" data-tab-panel="vcard" hidden>
+        <div class="card">
+          <p class="card-desc-short">스캔하면 연락처로 바로 저장되는 QR코드를 만듭니다.</p>
+          <div class="field-group">
+            <label for="vcard-name">이름</label>
+            <div class="field-input-wrap"><input type="text" id="vcard-name" placeholder="홍길동" /></div>
+          </div>
+          <div class="field-group">
+            <label for="vcard-phone">전화번호</label>
+            <div class="field-input-wrap"><input type="text" id="vcard-phone" placeholder="010-1234-5678" /></div>
+          </div>
+          <div class="field-group">
+            <label for="vcard-email">이메일</label>
+            <div class="field-input-wrap"><input type="text" id="vcard-email" placeholder="example@email.com" /></div>
+          </div>
+          <div class="field-group">
+            <label for="vcard-org">소속(선택)</label>
+            <div class="field-input-wrap"><input type="text" id="vcard-org" placeholder="회사명" /></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="step-label"><span class="step-num">2</span>디자인 설정</div>
+      <div class="card">
+        <div class="field-row">
+          <div class="field-group">
+            <label for="qr-fg">전경색</label>
+            <div class="field-input-wrap"><input type="color" id="qr-fg" value="#0a0a0a" /></div>
+          </div>
+          <div class="field-group">
+            <label for="qr-bg">배경색</label>
+            <div class="field-input-wrap"><input type="color" id="qr-bg" value="#ffffff" /></div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="qr-size">크기: <span id="qr-size-label">320px</span></label>
+          <input type="range" id="qr-size" min="160" max="640" step="20" value="320" class="range-input" />
+        </div>
+      </div>
+
+    </div>
+
+    <div class="qr-preview-col">
+      <div class="qr-preview-sticky">
+        <div class="step-label"><span class="step-num">3</span>QR 다운로드</div>
+        <div class="qr-result" id="qr-result">
+          <p class="result-placeholder">정보를 입력하면 QR코드가 바로 만들어집니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,832 @@
+/* 디지털 시계/타이머 사이트 전용 다크 퍼스트 디자인.
+   기존 계산기 사이트 모음(로또·연금복권·대출·연봉·BMI·디데이 등)의 라이트 우선
+   "레볼루트" 톤과 달리, 이 사이트는 실물 디지털 시계/타이머 기기를 참고해
+   검정 스테이지 + 앰버(LED) 숫자를 기본 정체성으로 삼는다. data-theme="light"로
+   라이트 모드 전환 가능(초기값은 dark, HTML의 인라인 스크립트가 설정).
+   숫자 표시(.led)는 Google Fonts "Digital Numbers"를 사용한다. */
+:root {
+  --bg: #ffffff;
+  --surface: #f7f7f8;
+  --surface-elevated: #ececef;
+  --text: #0a0a0a;
+  --text-muted: rgba(10, 10, 10, 0.62);
+  --border: rgba(10, 10, 10, 0.12);
+  --accent: #d9770a;
+  --accent-soft: rgba(217, 119, 10, 0.12);
+  --accent-on: #ffffff;
+  --btn-primary-bg: #0a0a0a;
+  --btn-primary-text: #ffffff;
+  --btn-primary-pressed: #2e2e2e;
+  --hover-tint: rgba(10, 10, 10, 0.06);
+
+  --positive: #2c9e44;
+  --negative: #d8314f;
+
+  --stage-bg: #0a0908;
+  --led: #ffb020;
+  --led-dim: rgba(255, 176, 32, 0.18);
+}
+
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --surface: #131313;
+  --surface-elevated: #1d1d1d;
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.66);
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #ffb020;
+  --accent-soft: rgba(255, 176, 32, 0.14);
+  --accent-on: #17110a;
+  --btn-primary-bg: #ffb020;
+  --btn-primary-text: #17110a;
+  --btn-primary-pressed: #e09710;
+  --hover-tint: rgba(255, 255, 255, 0.07);
+
+  --stage-bg: #050505;
+  --led: #ffb020;
+  --led-dim: rgba(255, 176, 32, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, "Pretendard Variable", Pretendard, "Apple SD Gothic Neo",
+    "Malgun Gothic", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- 상단 바 ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.theme-toggle,
+.menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-toggle:hover,
+.menu-toggle:hover {
+  background: var(--hover-tint);
+}
+
+.theme-toggle:active,
+.menu-toggle:active {
+  transform: scale(0.94);
+}
+
+.menu {
+  position: relative;
+}
+
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--surface-elevated);
+  border-radius: 16px;
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+  z-index: 40;
+}
+
+.menu.open .menu-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tool-list-group-label {
+  padding: 6px 10px 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tool-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 10px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.tool-list-item:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* ---------- 레이아웃: 사이드바 + 본문 ---------- */
+.layout {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1760px;
+  margin: 0 auto;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 108px;
+  flex-shrink: 0;
+  padding: 20px 10px;
+  position: sticky;
+  top: 0;
+}
+
+.side-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 14px 6px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
+}
+
+.side-tab-icon {
+  display: inline-flex;
+}
+
+.side-tab-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.side-tab:hover {
+  background: var(--hover-tint);
+  color: var(--text);
+}
+
+.side-tab.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 20px 24px 80px;
+}
+
+/* ---------- 스테이지 (검정 디지털 표시부) ---------- */
+.stage {
+  position: relative;
+  background: var(--stage-bg);
+  border-radius: 24px;
+  padding: 44px 24px 36px;
+  text-align: center;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.stage-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.stage-tool-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.stage-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.led {
+  font-family: "Digital Numbers", "JetBrains Mono", "Roboto Mono", monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--led);
+  text-shadow: 0 0 24px var(--led-dim);
+}
+
+/* 설명 아이콘 + 툴팁 */
+.info-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  font-style: normal;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.info-btn:hover,
+.info-btn:focus-visible,
+.info-btn.open {
+  background: var(--accent);
+  color: var(--accent-on);
+}
+
+.info-tooltip {
+  position: absolute;
+  z-index: 30;
+  left: 50%;
+  top: calc(100% + 8px);
+  transform: translate(-50%, -4px);
+  width: 270px;
+  max-width: 78vw;
+  background: var(--surface-elevated);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: left;
+  white-space: normal;
+  border-radius: 12px;
+  padding: 13px 15px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+  pointer-events: none;
+}
+
+.info-btn:hover .info-tooltip,
+.info-btn:focus-visible .info-tooltip,
+.info-btn.open .info-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+}
+
+/* ---------- 본문 카드 ---------- */
+.panel-card {
+  background: var(--surface);
+  border-radius: 20px;
+  padding: 28px;
+}
+
+.panel-card-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin: 0 0 18px;
+}
+
+/* 입력 폼 */
+.field-group {
+  margin-bottom: 20px;
+}
+
+.field-group:last-child {
+  margin-bottom: 0;
+}
+
+.field-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.field-input-wrap input {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 600;
+  font-family: inherit;
+  text-align: center;
+}
+
+.field-input-wrap input:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.result-placeholder {
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.secondary-btn {
+  display: block;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.24px;
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.secondary-btn:hover {
+  background: var(--hover-tint);
+}
+
+.secondary-btn:active {
+  transform: scale(0.98);
+}
+
+.secondary-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.calc-btn {
+  display: block;
+  width: 100%;
+  padding: 18px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.24px;
+  color: var(--btn-primary-text);
+  background: var(--btn-primary-bg);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.calc-btn:active {
+  background: var(--btn-primary-pressed);
+  transform: scale(0.98);
+}
+
+.calc-btn.secondary-btn {
+  background: transparent;
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ---------- 타이머 ---------- */
+.timer-display-wrap {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  margin: 8px auto 0;
+}
+
+.timer-ring {
+  width: 100%;
+  height: 100%;
+}
+
+.timer-ring-bg,
+.timer-ring-progress {
+  fill: none;
+  stroke-width: 6;
+}
+
+.timer-ring-bg {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+
+.timer-ring-progress {
+  stroke: var(--led);
+  stroke-linecap: round;
+  stroke-dasharray: 565.48;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.2s linear, stroke 0.2s;
+}
+
+.timer-ring-progress.done {
+  stroke: var(--negative);
+}
+
+.timer-display {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
+  font-weight: 400;
+}
+
+.timer-display.done {
+  color: var(--negative);
+  animation: timer-flash 0.6s ease-in-out infinite;
+}
+
+@keyframes timer-flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.timer-presets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.preset-btn {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  padding: 12px 6px;
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.preset-btn:hover {
+  background: var(--hover-tint);
+}
+
+.preset-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-on);
+}
+
+.timer-custom-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.timer-custom-field {
+  margin-bottom: 0;
+}
+
+.timer-btn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.stopwatch-btn-row {
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 0;
+}
+
+/* ---------- 스톱워치 ---------- */
+.stopwatch-display {
+  font-size: 56px;
+  font-weight: 400;
+  padding: 16px 0 4px;
+}
+
+.lap-list {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.lap-item {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr;
+  gap: 10px;
+  align-items: center;
+  background: var(--surface-elevated);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.lap-item-index {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.lap-item-split {
+  font-weight: 700;
+  text-align: right;
+}
+
+.lap-item-total {
+  color: var(--text-muted);
+  text-align: right;
+}
+
+.lap-item.fastest .lap-item-split {
+  color: var(--positive);
+}
+
+.lap-item.slowest .lap-item-split {
+  color: var(--negative);
+}
+
+/* ---------- 시계 ---------- */
+.clock-time {
+  font-size: 76px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.clock-date {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 16px;
+  margin-top: 14px;
+}
+
+.stage:fullscreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  border-radius: 0;
+  margin: 0;
+}
+
+.stage:fullscreen .clock-time {
+  font-size: min(20vw, 220px);
+}
+
+.stage:fullscreen .clock-date {
+  font-size: 26px;
+}
+
+.world-clock-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.world-clock-item {
+  background: var(--stage-bg);
+  border-radius: 16px;
+  padding: 18px 16px;
+}
+
+.world-clock-label {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.world-clock-time {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.world-clock-meta {
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* 넓은 화면: 숫자 표시를 더 크게 키워 여백을 활용 */
+@media (min-width: 1160px) {
+  .timer-display-wrap {
+    width: 320px;
+    height: 320px;
+  }
+  .timer-display {
+    font-size: 62px;
+  }
+  .stopwatch-display {
+    font-size: 84px;
+  }
+  .clock-time {
+    font-size: 130px;
+  }
+  .world-clock-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .world-clock-time {
+    font-size: 32px;
+  }
+}
+
+@media (min-width: 1500px) {
+  .timer-display-wrap {
+    width: 380px;
+    height: 380px;
+  }
+  .timer-display {
+    font-size: 74px;
+  }
+  .stopwatch-display {
+    font-size: 100px;
+  }
+  .clock-time {
+    font-size: 168px;
+  }
+  .world-clock-time {
+    font-size: 38px;
+  }
+  .world-clock-item {
+    padding: 24px 20px;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 720px) {
+  .topbar {
+    padding: 14px 16px;
+  }
+
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    gap: 6px;
+    padding: 12px 12px 4px;
+  }
+
+  .side-tab {
+    flex: 1;
+    padding: 10px 4px;
+  }
+
+  .side-tab-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .side-tab-label {
+    font-size: 11px;
+  }
+
+  .main-content {
+    padding: 4px 16px 64px;
+    width: 100%;
+  }
+
+  .info-tooltip {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    top: auto;
+    bottom: 20px;
+    width: auto;
+    max-width: none;
+    font-size: 13.5px;
+    padding: 14px 16px;
+    transform: translateY(6px);
+  }
+  .info-btn:hover .info-tooltip,
+  .info-btn:focus-visible .info-tooltip,
+  .info-btn.open .info-tooltip {
+    transform: translateY(0);
+  }
+
+  .stage {
+    padding: 32px 16px 28px;
+    border-radius: 20px;
+  }
+
+  .panel-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .timer-display-wrap {
+    width: 190px;
+    height: 190px;
+  }
+  .timer-display {
+    font-size: 36px;
+  }
+  .timer-presets {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .timer-custom-row {
+    gap: 8px;
+  }
+
+  .stopwatch-display {
+    font-size: 40px;
+  }
+  .stopwatch-btn-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .stopwatch-btn-row #stopwatch-start-btn {
+    grid-column: 1 / -1;
+  }
+
+  .lap-item {
+    grid-template-columns: 32px 1fr 1fr;
+    padding: 10px 12px;
+    font-size: 12.5px;
+  }
+
+  .clock-time {
+    font-size: 44px;
+  }
+
+  .world-clock-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

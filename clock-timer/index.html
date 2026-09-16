@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  (function () {
+    var saved = localStorage.getItem("theme");
+    var theme = saved === "light" || saved === "dark" ? saved : "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<title>무료 온라인 타이머·스톱워치·시계 - 카운트다운 알람, 랩타임, 세계시계</title>
+<meta name="description" content="타이머, 스톱워치, 세계시계를 브라우저에서 바로 사용합니다. 회원가입 없이 무료로 이용하며, 시간이 다 되면 알림음이 울립니다." />
+<meta name="keywords" content="온라인타이머,타이머,스톱워치,카운트다운타이머,알람타이머,랩타임,세계시계,디지털시계" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://zorlain.github.io/clock-timer/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="무료 온라인 타이머·스톱워치·시계" />
+<meta property="og:description" content="타이머, 스톱워치, 세계시계를 브라우저에서 바로 사용합니다. 회원가입 없이 무료로 이용하세요." />
+<meta property="og:url" content="https://zorlain.github.io/clock-timer/" />
+<meta property="og:locale" content="ko_KR" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="무료 온라인 타이머·스톱워치·시계" />
+<meta name="twitter:description" content="타이머, 스톱워치, 세계시계를 무료로 바로 사용합니다." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "타이머·스톱워치·시계",
+  "url": "https://zorlain.github.io/clock-timer/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "description": "타이머, 스톱워치, 세계시계를 브라우저에서 바로 사용하는 무료 온라인 도구입니다."
+}
+</script>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23000000'/%3E%3Ccircle cx='12' cy='12' r='8' fill='none' stroke='%23ffb020' stroke-width='2'/%3E%3Cpath d='M12 7 L12 12 L15.5 14' fill='none' stroke='%23ffb020' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Digital+Numbers&family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span>타이머·시계</span></div>
+  <div class="topbar-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크/라이트 모드 전환"></button>
+    <div class="menu" id="menu">
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기">☰</button>
+      <div class="menu-dropdown" id="menu-dropdown">
+        <div class="tool-list-group-label">다른 도구</div>
+        <a class="tool-list-item" href="https://zorlain.github.io/lotto-generator/">로또 번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/qr-generator/">QR코드 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/image-tools/">이미지 압축·리사이즈</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/random-picker/">랜덤 추첨기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/password-generator/">비밀번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/text-tools/">텍스트 도구 모음</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/retirement-calculator/">은퇴자산계산기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/asset-allocation-calculator/">자산배분계산기</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="sidebar" id="tabs">
+    <button class="side-tab tab-btn active" data-tab="timer">
+      <span class="side-tab-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="13" r="8" />
+          <path d="M12 13 L12 9" />
+          <path d="M9.5 2.5 L14.5 2.5" />
+          <path d="M12 2.5 L12 5" />
+        </svg>
+      </span>
+      <span class="side-tab-label">타이머</span>
+    </button>
+    <button class="side-tab tab-btn" data-tab="stopwatch">
+      <span class="side-tab-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="13" r="8" />
+          <path d="M12 13 L15 10.5" />
+          <path d="M9 2.5 L15 2.5" />
+          <path d="M12 2.5 L12 5" />
+          <path d="M18.5 6 L20 4.5" />
+        </svg>
+      </span>
+      <span class="side-tab-label">스톱워치</span>
+    </button>
+    <button class="side-tab tab-btn" data-tab="clock">
+      <span class="side-tab-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9" />
+          <path d="M12 7 L12 12 L15.5 14" />
+        </svg>
+      </span>
+      <span class="side-tab-label">시계</span>
+    </button>
+  </nav>
+
+  <main class="main-content">
+
+    <!-- 타이머 -->
+    <section class="tab-panel" data-tab-panel="timer">
+      <div class="stage">
+        <div class="stage-label">
+          타이머
+          <button type="button" class="info-btn" aria-label="자세히 보기">
+            <span aria-hidden="true">ⓘ</span>
+            <span class="info-tooltip">
+              시간을 설정하고 시작을 누르면 카운트다운이 시작됩니다. 시간이 다 되면 알림음이
+              울리고 화면이 깜박입니다. 다른 탭으로 이동하거나 창을 전환해도 브라우저 탭
+              제목에 남은 시간이 계속 표시됩니다.
+            </span>
+          </button>
+        </div>
+        <div class="timer-display-wrap">
+          <svg class="timer-ring" viewBox="0 0 200 200">
+            <circle class="timer-ring-bg" cx="100" cy="100" r="90" />
+            <circle class="timer-ring-progress" id="timer-ring-progress" cx="100" cy="100" r="90" transform="rotate(-90 100 100)" />
+          </svg>
+          <div class="timer-display led" id="timer-display">05:00</div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="timer-presets" id="timer-presets">
+          <button type="button" class="preset-btn" data-sec="60">1분</button>
+          <button type="button" class="preset-btn" data-sec="180">3분</button>
+          <button type="button" class="preset-btn active" data-sec="300">5분</button>
+          <button type="button" class="preset-btn" data-sec="600">10분</button>
+          <button type="button" class="preset-btn" data-sec="900">15분</button>
+          <button type="button" class="preset-btn" data-sec="1800">30분</button>
+          <button type="button" class="preset-btn" data-sec="3600">1시간</button>
+        </div>
+
+        <div class="timer-custom-row">
+          <div class="field-group timer-custom-field">
+            <label for="timer-h">시</label>
+            <div class="field-input-wrap"><input type="number" id="timer-h" min="0" max="23" value="0" inputmode="numeric" /></div>
+          </div>
+          <div class="field-group timer-custom-field">
+            <label for="timer-m">분</label>
+            <div class="field-input-wrap"><input type="number" id="timer-m" min="0" max="59" value="5" inputmode="numeric" /></div>
+          </div>
+          <div class="field-group timer-custom-field">
+            <label for="timer-s">초</label>
+            <div class="field-input-wrap"><input type="number" id="timer-s" min="0" max="59" value="0" inputmode="numeric" /></div>
+          </div>
+        </div>
+
+        <div class="timer-btn-row">
+          <button type="button" class="calc-btn" id="timer-start-btn">▶ 시작</button>
+          <button type="button" class="calc-btn secondary-btn" id="timer-reset-btn">↺ 초기화</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 스톱워치 -->
+    <section class="tab-panel" data-tab-panel="stopwatch" hidden>
+      <div class="stage">
+        <div class="stage-label">
+          스톱워치
+          <button type="button" class="info-btn" aria-label="자세히 보기">
+            <span aria-hidden="true">ⓘ</span>
+            <span class="info-tooltip">
+              시작을 누르면 시간이 흐르기 시작합니다. 랩을 누르면 그 순간의 기록이 목록에
+              쌓입니다. 랩이 2개 이상이면 가장 빠른 구간은 초록색, 가장 느린 구간은 빨간색으로
+              표시됩니다.
+            </span>
+          </button>
+        </div>
+        <div class="stopwatch-display led" id="stopwatch-display">00:00.00</div>
+      </div>
+
+      <div class="panel-card">
+        <div class="timer-btn-row stopwatch-btn-row">
+          <button type="button" class="calc-btn" id="stopwatch-start-btn">▶ 시작</button>
+          <button type="button" class="calc-btn secondary-btn" id="stopwatch-lap-btn" disabled>랩</button>
+          <button type="button" class="calc-btn secondary-btn" id="stopwatch-reset-btn">↺ 초기화</button>
+        </div>
+
+        <div class="lap-list" id="lap-list">
+          <p class="result-placeholder lap-empty" id="lap-empty">시작 후 랩을 누르면 기록이 여기에 쌓입니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 시계 -->
+    <section class="tab-panel" data-tab-panel="clock" hidden>
+      <div class="stage" id="clock-card">
+        <button type="button" class="stage-tool-btn fullscreen-btn" id="clock-fullscreen-btn" aria-label="전체화면">⛶</button>
+        <div class="clock-time led" id="clock-time">00:00:00</div>
+        <div class="clock-date" id="clock-date">-</div>
+      </div>
+
+      <div class="panel-card">
+        <h2 class="panel-card-title">세계시계</h2>
+        <div class="world-clock-grid" id="world-clock-grid"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

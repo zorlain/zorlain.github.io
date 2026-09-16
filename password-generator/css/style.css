@@ -1,0 +1,671 @@
+/* 다크 퍼스트 디지털 시계 스타일(clock-timer)과 통일한 앰버 액센트 디자인 시스템. */
+:root {
+  --bg: #ffffff;
+  --card: #f7f7f8;
+  --card-elevated: #ececef;
+  --text: #0a0a0a;
+  --text-muted: rgba(10, 10, 10, 0.62);
+  --border: rgba(10, 10, 10, 0.12);
+  --accent: #d9770a;
+  --accent-hover: #c26a09;
+  --accent-soft: rgba(217, 119, 10, 0.12);
+  --accent-on: #ffffff;
+  --btn-primary-bg: #0a0a0a;
+  --btn-primary-text: #ffffff;
+  --btn-primary-pressed: #2e2e2e;
+  --hover-tint: rgba(10, 10, 10, 0.06);
+
+  --positive: #2c9e44;
+  --negative: #d8314f;
+  --warning: #c98a1a;
+
+  --stage-bg: #0a0908;
+  --led: #d9770a;
+  --led-dim: rgba(217, 119, 10, 0.18);
+}
+
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --card: #131313;
+  --card-elevated: #1d1d1d;
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.66);
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #ffb020;
+  --accent-hover: #e6a01c;
+  --accent-soft: rgba(255, 176, 32, 0.14);
+  --accent-on: #17110a;
+  --btn-primary-bg: #ffb020;
+  --btn-primary-text: #17110a;
+  --btn-primary-pressed: #e09710;
+  --hover-tint: rgba(255, 255, 255, 0.07);
+
+  --stage-bg: #050505;
+  --led: #ffb020;
+  --led-dim: rgba(255, 176, 32, 0.18);
+}
+
+.theme-toggle,
+.menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-toggle:hover,
+.menu-toggle:hover {
+  background: var(--hover-tint);
+}
+
+.theme-toggle:active,
+.menu-toggle:active {
+  transform: scale(0.94);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, "Pretendard Variable", Pretendard, "Apple SD Gothic Neo",
+    "Malgun Gothic", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 24px 80px;
+}
+
+/* ---------- 상단 바 (다른 도구 사이트와 동일한 프레임) ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.menu {
+  position: relative;
+}
+
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--card-elevated);
+  border-radius: 16px;
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+  z-index: 40;
+}
+
+.menu.open .menu-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tool-list-group-label {
+  padding: 6px 10px 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tool-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 10px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.tool-list-item:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.card {
+  background: var(--card);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 28px;
+}
+
+.card h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-desc-short {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: -12px 0 16px;
+}
+
+/* 탭 내비게이션 */
+.tabs {
+  display: flex;
+  gap: 6px;
+  background: var(--accent-soft);
+  border-radius: 9999px;
+  padding: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: 16px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.tab-btn.active {
+  background: var(--card);
+  color: var(--accent);
+}
+
+/* 입력 폼 */
+.field-group {
+  margin-bottom: 20px;
+}
+
+.field-group:last-child {
+  margin-bottom: 0;
+}
+
+.field-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.field-input-wrap input,
+.field-input-wrap textarea {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.field-input-wrap input:focus,
+.field-input-wrap textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.field-input-wrap input[type="color"] {
+  height: 52px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.range-input {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* 세그먼트 토글 */
+.segmented {
+  display: flex;
+  gap: 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  padding: 5px;
+}
+
+.segmented button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 11px 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.segmented button.active {
+  background: var(--accent);
+  color: var(--accent-on);
+}
+
+.calc-btn {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.24px;
+  color: var(--btn-primary-text);
+  background: var(--btn-primary-bg);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.calc-btn:active {
+  background: var(--btn-primary-pressed);
+  transform: scale(0.98);
+}
+
+.result-placeholder {
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* QR 결과 영역 */
+.qr-result {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.qr-canvas-wrap {
+  display: inline-block;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+.qr-canvas-wrap canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.qr-download-btn {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 14px 28px;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.qr-download-btn:hover {
+  background: var(--hover-tint);
+}
+
+.calc-btn.secondary-btn {
+  color: var(--text);
+  background: transparent;
+  border: 1px solid var(--border);
+}
+
+.calc-btn.secondary-btn:active {
+  background: var(--hover-tint);
+}
+
+/* 체크박스 그리드 */
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 20px;
+  margin-bottom: 8px;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.check-row input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.check-row span {
+  font-size: 14.5px;
+  font-weight: 500;
+}
+
+/* 비밀번호 표시 */
+/* 비밀번호는 타이머의 .stage(검정 표시부)와 같은 자리 — 결과물을 어두운 무대 위에
+   앰버 색으로 크게 띄워, 이 사이트에서 가장 먼저 눈에 들어오는 요소로 만든다. */
+.pw-display {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--stage-bg);
+  border-radius: 24px;
+  padding: 28px 24px;
+}
+
+.pw-text {
+  flex: 1;
+  min-width: 0;
+  font-size: 24px;
+  font-weight: 700;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+  word-break: break-all;
+  letter-spacing: 0.03em;
+  color: var(--led);
+  text-shadow: 0 0 24px var(--led-dim);
+}
+
+.pw-copy-btn {
+  flex-shrink: 0;
+  padding: 12px 20px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s, border-color 0.15s;
+}
+
+.pw-copy-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent);
+}
+
+.pw-copy-btn:active {
+  transform: scale(0.96);
+}
+
+.pw-copy-btn.copied {
+  background: var(--positive);
+  color: #ffffff;
+}
+
+/* avast.com처럼 강도를 막대그래프 대신 필드 안 작은 배지로 바로 붙여 보여준다 */
+.pw-strength-badge {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border-radius: 9999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pw-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+
+.pw-icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.pw-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--accent);
+}
+
+.pw-icon-btn:active {
+  transform: rotate(-90deg);
+}
+
+/* avast.com 느낌의 짧은 소개 문구 */
+.pw-hero {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.pw-hero h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+
+.pw-hero p {
+  color: var(--text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* avast.com처럼 슬라이더 양옆에 +/- 버튼을 붙인 스텝퍼 */
+.stepper-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepper-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--card-elevated);
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.stepper-btn:hover {
+  background: var(--hover-tint);
+}
+
+/* 여러 개 목록 */
+.pw-list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pw-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card-elevated);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: "JetBrains Mono", "Roboto Mono", monospace;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.pw-list-item span {
+  flex: 1;
+  word-break: break-all;
+}
+
+.pw-list-item button {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.pw-list-item button:hover {
+  background: var(--hover-tint);
+  color: var(--text);
+}
+
+.pw-list-item button.copied {
+  color: var(--positive);
+}
+
+/* 모바일 */
+@media (max-width: 640px) {
+  .page {
+    padding: 4px 16px 64px;
+  }
+
+  .topbar {
+    padding: 14px 16px;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 17px;
+    margin: 0 0 12px;
+  }
+
+  .tabs {
+    padding: 5px;
+    gap: 4px;
+    margin-bottom: 18px;
+  }
+  .tab-btn {
+    font-size: 11.5px;
+    padding: 12px 4px;
+    line-height: 1.3;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .calc-btn {
+    padding: 17px;
+    font-size: 16px;
+  }
+
+  .checkbox-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .pw-display {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 18px;
+  }
+
+  .pw-text {
+    font-size: 18px;
+    text-align: center;
+  }
+}

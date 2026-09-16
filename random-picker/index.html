@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  (function () {
+    var saved = localStorage.getItem("theme");
+    var theme = saved === "light" || saved === "dark" ? saved : "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<title>무료 랜덤 추첨기 - 팀 나누기, 사다리타기, 제비뽑기</title>
+<meta name="description" content="명단을 입력하고 팀 나누기, 사다리타기, 제비뽑기를 무료로 바로 실행합니다. 모임, 회의, 이벤트에서 공정하게 순서나 팀을 정하세요." />
+<meta name="keywords" content="랜덤추첨기,팀나누기,사다리타기,제비뽑기,랜덤뽑기,순서정하기,무작위추첨" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://zorlain.github.io/random-picker/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="무료 랜덤 추첨기" />
+<meta property="og:description" content="팀 나누기, 사다리타기, 제비뽑기를 무료로 바로 실행합니다." />
+<meta property="og:url" content="https://zorlain.github.io/random-picker/" />
+<meta property="og:locale" content="ko_KR" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="무료 랜덤 추첨기" />
+<meta name="twitter:description" content="팀 나누기, 사다리타기, 제비뽑기를 무료로 바로 실행합니다." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "랜덤 추첨기",
+  "url": "https://zorlain.github.io/random-picker/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "description": "팀 나누기, 사다리타기, 제비뽑기를 브라우저에서 바로 실행하는 무료 온라인 도구입니다."
+}
+</script>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23000000'/%3E%3Ccircle cx='8' cy='9' r='2' fill='white'/%3E%3Ccircle cx='16' cy='9' r='2' fill='white'/%3E%3Ccircle cx='12' cy='16' r='2' fill='white'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span>랜덤 추첨기</span></div>
+  <div class="topbar-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크/라이트 모드 전환"></button>
+    <div class="menu" id="menu">
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기">☰</button>
+      <div class="menu-dropdown" id="menu-dropdown">
+        <div class="tool-list-group-label">다른 도구</div>
+        <a class="tool-list-item" href="https://zorlain.github.io/lotto-generator/">로또 번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/clock-timer/">타이머·스톱워치·시계</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/qr-generator/">QR코드 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/image-tools/">이미지 압축·리사이즈</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/password-generator/">비밀번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/text-tools/">텍스트 도구 모음</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/retirement-calculator/">은퇴자산계산기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/asset-allocation-calculator/">자산배분계산기</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <nav class="sidebar" id="tabs">
+    <button class="side-tab tab-btn active" data-tab="single">
+      <span class="side-tab-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3 L14.3 9.3 L21 9.8 L15.8 14 L17.4 20.5 L12 16.8 L6.6 20.5 L8.2 14 L3 9.8 L9.7 9.3 Z" />
+        </svg>
+      </span>
+      <span class="side-tab-label">1명 뽑기</span>
+    </button>
+    <button class="side-tab tab-btn" data-tab="team">
+      <span class="side-tab-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="9" r="3" />
+          <circle cx="16" cy="9" r="3" />
+          <path d="M3.5 19c0.5-3 2.3-4.5 4.5-4.5s4 1.5 4.5 4.5" />
+          <path d="M11.5 19c0.5-3 2.3-4.5 4.5-4.5s4 1.5 4.5 4.5" />
+        </svg>
+      </span>
+      <span class="side-tab-label">팀 나누기</span>
+    </button>
+    <button class="side-tab tab-btn" data-tab="ladder">
+      <span class="side-tab-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 3 L7 21" />
+          <path d="M17 3 L17 21" />
+          <path d="M7 7 L17 7" />
+          <path d="M7 12 L17 12" />
+          <path d="M7 17 L17 17" />
+        </svg>
+      </span>
+      <span class="side-tab-label">사다리타기</span>
+    </button>
+    <button class="side-tab tab-btn" data-tab="draw">
+      <span class="side-tab-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 20 L9 6" />
+          <path d="M10 20 L11 6" />
+          <path d="M15 20 L13 6" />
+          <path d="M4 20 L16 20" />
+        </svg>
+      </span>
+      <span class="side-tab-label">제비뽑기</span>
+    </button>
+  </nav>
+
+  <main class="main-content">
+
+  <!-- 탭 1: 1명 뽑기 -->
+  <section class="tab-panel" data-tab-panel="single">
+    <div class="card">
+      <h2>1명 뽑기</h2>
+      <p class="card-desc-short">참가자를 한 명씩 추가하고, 그 중 한 명을 뽑습니다.</p>
+      <div class="field-group">
+        <label for="single-name-input">참가자 추가하기</label>
+        <div class="add-row">
+          <div class="field-input-wrap">
+            <input type="text" id="single-name-input" placeholder="이름을 입력하세요" />
+          </div>
+          <button type="button" class="add-btn" id="single-add-btn">추가</button>
+        </div>
+      </div>
+      <div class="chip-list" id="single-list"></div>
+      <button class="calc-btn" id="single-run-btn">뽑기</button>
+    </div>
+    <div class="result-area" id="single-result"></div>
+  </section>
+
+  <!-- 탭 2: 팀 나누기 -->
+  <section class="tab-panel" data-tab-panel="team" hidden>
+    <div class="card">
+      <h2>팀 나누기</h2>
+      <p class="card-desc-short">한 줄에 한 명씩 이름을 입력하세요.</p>
+      <div class="field-group">
+        <label for="team-names">참가자 명단</label>
+        <div class="field-input-wrap">
+          <textarea id="team-names" rows="6" placeholder="철수&#10;영희&#10;민수&#10;지훈"></textarea>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="team-count">팀 개수: <span id="team-count-label">2팀</span></label>
+        <input type="range" id="team-count" min="2" max="10" step="1" value="2" class="range-input" />
+      </div>
+      <button class="calc-btn" id="team-run-btn">팀 나누기</button>
+    </div>
+    <div class="result-area" id="team-result"></div>
+  </section>
+
+  <!-- 탭 3: 사다리타기 -->
+  <section class="tab-panel" data-tab-panel="ladder" hidden>
+    <div class="card">
+      <h2>사다리타기</h2>
+      <p class="card-desc-short">참가자와 결과를 각각 한 줄에 하나씩 입력하세요. 결과를 비워두면 "결과 1, 2, 3…"으로 채워집니다.</p>
+      <div class="field-row">
+        <div class="field-group">
+          <label for="ladder-names">참가자</label>
+          <div class="field-input-wrap">
+            <textarea id="ladder-names" rows="5" placeholder="철수&#10;영희&#10;민수"></textarea>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="ladder-results">결과 (선택)</label>
+          <div class="field-input-wrap">
+            <textarea id="ladder-results" rows="5" placeholder="꽝&#10;커피&#10;당첨"></textarea>
+          </div>
+        </div>
+      </div>
+      <button class="calc-btn" id="ladder-run-btn">사다리 만들기</button>
+    </div>
+    <div class="result-area" id="ladder-result"></div>
+  </section>
+
+  <!-- 탭 4: 제비뽑기 -->
+  <section class="tab-panel" data-tab-panel="draw" hidden>
+    <div class="card">
+      <h2>제비뽑기</h2>
+      <p class="card-desc-short">한 줄에 한 명씩 입력하고, 뽑을 인원수를 정하세요.</p>
+      <div class="field-group">
+        <label for="draw-names">참가자 명단</label>
+        <div class="field-input-wrap">
+          <textarea id="draw-names" rows="6" placeholder="철수&#10;영희&#10;민수&#10;지훈"></textarea>
+        </div>
+      </div>
+      <div class="field-group">
+        <label for="draw-count">뽑을 인원수: <span id="draw-count-label">1명</span></label>
+        <input type="range" id="draw-count" min="1" max="20" step="1" value="1" class="range-input" />
+      </div>
+      <button class="calc-btn" id="draw-run-btn">뽑기</button>
+    </div>
+    <div class="result-area" id="draw-result"></div>
+  </section>
+
+  </main>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

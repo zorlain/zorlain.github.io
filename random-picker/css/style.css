@@ -1,0 +1,675 @@
+/* 다크 퍼스트 디지털 시계 스타일(clock-timer)과 통일한 앰버 액센트 디자인 시스템. */
+:root {
+  --bg: #ffffff;
+  --card: #f7f7f8;
+  --card-elevated: #ececef;
+  --text: #0a0a0a;
+  --text-muted: rgba(10, 10, 10, 0.62);
+  --border: rgba(10, 10, 10, 0.12);
+  --accent: #d9770a;
+  --accent-hover: #c26a09;
+  --accent-soft: rgba(217, 119, 10, 0.12);
+  --accent-on: #ffffff;
+  --btn-primary-bg: #0a0a0a;
+  --btn-primary-text: #ffffff;
+  --btn-primary-pressed: #2e2e2e;
+  --hover-tint: rgba(10, 10, 10, 0.06);
+
+  --positive: #2c9e44;
+  --negative: #d8314f;
+  --warning: #c98a1a;
+}
+
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --card: #131313;
+  --card-elevated: #1d1d1d;
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.66);
+  --border: rgba(255, 255, 255, 0.1);
+  --accent: #ffb020;
+  --accent-hover: #e6a01c;
+  --accent-soft: rgba(255, 176, 32, 0.14);
+  --accent-on: #17110a;
+  --btn-primary-bg: #ffb020;
+  --btn-primary-text: #17110a;
+  --btn-primary-pressed: #e09710;
+  --hover-tint: rgba(255, 255, 255, 0.07);
+}
+
+.theme-toggle,
+.menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+.theme-toggle:hover,
+.menu-toggle:hover {
+  background: var(--hover-tint);
+}
+
+.theme-toggle:active,
+.menu-toggle:active {
+  transform: scale(0.94);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, "Pretendard Variable", Pretendard, "Apple SD Gothic Neo",
+    "Malgun Gothic", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: 0.24px;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- 상단 바 (다른 도구 사이트와 동일한 프레임) ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.menu {
+  position: relative;
+}
+
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--card-elevated);
+  border-radius: 16px;
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 0.15s, transform 0.15s, visibility 0.15s;
+  z-index: 40;
+}
+
+.menu.open .menu-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.tool-list-group-label {
+  padding: 6px 10px 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tool-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 10px;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.tool-list-item:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* 참고 사이트처럼 박스로 감싸지 않고, 제목 밑 얇은 선으로만 구획을 나누는
+   담백한 구성 (카드 배경/그림자 없음) */
+.card {
+  background: transparent;
+  padding: 0;
+  margin-bottom: 32px;
+}
+
+.card h2 {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--accent);
+  margin: 0 0 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-desc-short {
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: -8px 0 16px;
+}
+
+/* ---------- 레이아웃: 사이드바 + 본문 (다른 도구 사이트와 동일한 프레임) ---------- */
+.layout {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 108px;
+  flex-shrink: 0;
+  padding: 20px 10px;
+  position: sticky;
+  top: 0;
+}
+
+.side-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  padding: 14px 6px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
+}
+
+.side-tab-icon {
+  display: inline-flex;
+}
+
+.side-tab-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.side-tab:hover {
+  background: var(--hover-tint);
+  color: var(--text);
+}
+
+.side-tab.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+  padding: 20px 24px 80px;
+}
+
+/* 입력 폼 */
+.field-group {
+  margin-bottom: 20px;
+}
+
+.field-group:last-child {
+  margin-bottom: 0;
+}
+
+.field-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.field-input-wrap input,
+.field-input-wrap textarea {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.field-input-wrap input:focus,
+.field-input-wrap textarea:focus {
+  border-color: var(--accent);
+  outline: none;
+}
+
+.field-input-wrap input[type="color"] {
+  height: 52px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.range-input {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* 세그먼트 토글 */
+.segmented {
+  display: flex;
+  gap: 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  padding: 5px;
+}
+
+.segmented button {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 11px 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.segmented button.active {
+  background: var(--accent);
+  color: var(--accent-on);
+}
+
+.calc-btn {
+  display: block;
+  width: 100%;
+  padding: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.24px;
+  color: var(--btn-primary-text);
+  background: var(--btn-primary-bg);
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.calc-btn:active {
+  background: var(--btn-primary-pressed);
+  transform: scale(0.98);
+}
+
+.result-placeholder {
+  color: var(--text-muted);
+  font-size: 14px;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* QR 결과 영역 */
+.qr-result {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.qr-canvas-wrap {
+  display: inline-block;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+
+.qr-canvas-wrap canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.qr-download-btn {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 14px 28px;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.qr-download-btn:hover {
+  background: var(--hover-tint);
+}
+
+/* 결과 영역 공통 — 화려한 연출 없이 결과만 담백하게 보여주는 단순한 패널 */
+.result-area {
+  padding: 24px;
+  background: var(--card);
+  border-radius: 16px;
+  min-height: 0;
+}
+
+.result-area:empty {
+  display: none;
+}
+
+/* 팀 나누기 */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+}
+
+.team-card {
+  background: var(--card-elevated);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.team-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.team-card-members {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14.5px;
+}
+
+/* 사다리타기 */
+.ladder-svg-wrap {
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.ladder-svg-wrap svg {
+  display: block;
+  margin: 0 auto;
+}
+
+.ladder-table {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ladder-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card-elevated);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14.5px;
+}
+
+.ladder-row .arrow {
+  color: var(--text-muted);
+}
+
+.ladder-row .result-name {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* 제비뽑기 */
+.draw-pool {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.draw-chip {
+  padding: 8px 14px;
+  border-radius: 9999px;
+  background: var(--card-elevated);
+  font-size: 13.5px;
+  color: var(--text-muted);
+  transition: background 0.4s, color 0.4s, transform 0.3s;
+}
+
+.draw-chip.picked {
+  background: var(--accent);
+  color: var(--accent-on);
+  transform: scale(1.08);
+  font-weight: 700;
+}
+
+.draw-winners {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.draw-winner-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card-elevated);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 15.5px;
+  font-weight: 700;
+}
+
+.draw-winner-rank {
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 13px;
+  width: 28px;
+}
+
+/* 1명 뽑기 */
+.add-row {
+  display: flex;
+  gap: 8px;
+}
+
+.add-row .field-input-wrap {
+  flex: 1;
+}
+
+.add-btn {
+  flex-shrink: 0;
+  padding: 0 22px;
+  border: none;
+  border-radius: 12px;
+  background: var(--accent);
+  color: var(--accent-on);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.add-btn:hover {
+  background: var(--accent-hover);
+}
+
+.add-btn:active {
+  transform: scale(0.96);
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.chip-list:empty::before {
+  content: "추가된 참가자가 여기에 표시됩니다.";
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+
+.name-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 8px 8px 14px;
+  border-radius: 9999px;
+  background: var(--card-elevated);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.name-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.name-chip-remove:hover {
+  background: var(--hover-tint);
+  color: var(--negative);
+}
+
+.single-winner {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  padding: 12px 0;
+}
+
+/* 모바일 */
+@media (max-width: 640px) {
+  .topbar {
+    padding: 14px 16px;
+  }
+
+  .layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    gap: 6px;
+    padding: 12px 12px 4px;
+  }
+
+  .side-tab {
+    flex: 1;
+    padding: 10px 4px;
+  }
+
+  .side-tab-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .side-tab-label {
+    font-size: 11px;
+  }
+
+  .main-content {
+    padding: 4px 16px 64px;
+    width: 100%;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 17px;
+    margin: 0 0 12px;
+  }
+
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .calc-btn {
+    padding: 17px;
+    font-size: 16px;
+  }
+}

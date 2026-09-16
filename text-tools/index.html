@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  (function () {
+    var saved = localStorage.getItem("theme");
+    var theme = saved === "light" || saved === "dark" ? saved : "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<title>무료 텍스트 도구 모음 - 글자수, 대소문자, URL 인코딩, 정렬, 특수문자</title>
+<meta name="description" content="자소서·과제용 글자수 세기, 대소문자·공백 정리, URL 인코딩·디코딩, 텍스트 정렬·뒤집기, 특수문자 모음을 무료로 바로 사용합니다." />
+<meta name="keywords" content="글자수세기,자소서글자수,대소문자변환,공백제거,중복줄제거,URL인코딩,URL디코딩,텍스트정렬,텍스트뒤집기,특수문자모음,텍스트도구" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://zorlain.github.io/text-tools/" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="무료 텍스트 도구 모음" />
+<meta property="og:description" content="글자수 세기, 대소문자·공백 정리, 특수문자 모음을 무료로 바로 사용합니다." />
+<meta property="og:url" content="https://zorlain.github.io/text-tools/" />
+<meta property="og:locale" content="ko_KR" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="무료 텍스트 도구 모음" />
+<meta name="twitter:description" content="글자수 세기, 대소문자·공백 정리, 특수문자 모음을 무료로 바로 사용합니다." />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "텍스트 도구 모음",
+  "url": "https://zorlain.github.io/text-tools/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+  "description": "글자수 세기, 대소문자·공백 정리, 특수문자 모음을 브라우저에서 바로 사용하는 무료 온라인 도구입니다."
+}
+</script>
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23000000'/%3E%3Ctext x='12' y='17' font-size='14' font-weight='700' text-anchor='middle' fill='white' font-family='Arial'%3EAa%3C/text%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><span>텍스트 도구 모음</span></div>
+  <div class="topbar-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="다크/라이트 모드 전환"></button>
+    <div class="menu" id="menu">
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-label="메뉴 열기">☰</button>
+      <div class="menu-dropdown" id="menu-dropdown">
+        <div class="tool-list-group-label">다른 도구</div>
+        <a class="tool-list-item" href="https://zorlain.github.io/lotto-generator/">로또 번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/clock-timer/">타이머·스톱워치·시계</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/qr-generator/">QR코드 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/image-tools/">이미지 압축·리사이즈</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/random-picker/">랜덤 추첨기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/password-generator/">비밀번호 생성기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/retirement-calculator/">은퇴자산계산기</a>
+        <a class="tool-list-item" href="https://zorlain.github.io/asset-allocation-calculator/">자산배분계산기</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- 여러 텍스트 도구 모음 사이트를 참고해 재구성한 검색 가능한 카드 허브 -->
+  <section class="tool-hub" id="tool-hub">
+    <div class="tool-hub-hero">
+      <h1>텍스트 도구 모음</h1>
+      <p class="tool-hub-desc">글자수·대소문자·URL 인코딩·정렬·특수문자 등 무료 텍스트 도구 모음.</p>
+      <div class="tool-search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="tool-search-icon">
+          <circle cx="11" cy="11" r="7" /><path d="M21 21 L16.5 16.5" />
+        </svg>
+        <input type="text" id="tool-search" class="tool-search-input" placeholder="도구 이름이나 태그로 검색 (예: 공백, URL, 정렬)" />
+      </div>
+    </div>
+    <div class="tool-grid" id="tool-grid">
+      <button type="button" class="tool-card" data-tab="count" data-tags="글자수 세기 단어수 바이트 자소서">
+        <span class="tool-card-icon icon-amber">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 4 L7 20" />
+            <path d="M17 4 L15 20" />
+            <path d="M4 9 L20 9" />
+            <path d="M3 15 L19 15" />
+          </svg>
+        </span>
+        <span class="tool-card-title">글자수 세기</span>
+        <span class="tool-card-desc">글자수, 단어수, 바이트를 실시간으로 계산합니다. 자소서·과제 글자수 제한 확인에 유용합니다.</span>
+        <span class="tool-card-tags">
+          <span class="tool-tag">글자수</span><span class="tool-tag">단어수</span><span class="tool-tag">바이트</span>
+        </span>
+      </button>
+      <button type="button" class="tool-card" data-tab="case" data-tags="대소문자 공백 정리 중복줄 제거 title case">
+        <span class="tool-card-icon icon-blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 16 L7 6 L11 16" />
+            <path d="M4.2 13 L9.8 13" />
+            <circle cx="17" cy="13.5" r="2.8" />
+            <path d="M19.8 10.8 L19.8 16.2" />
+          </svg>
+        </span>
+        <span class="tool-card-title">대소문자·공백 정리</span>
+        <span class="tool-card-desc">대문자·소문자·Title Case 변환, 중복 줄·빈 줄·연속 공백을 한 번에 정리합니다.</span>
+        <span class="tool-card-tags">
+          <span class="tool-tag">대소문자</span><span class="tool-tag">공백제거</span><span class="tool-tag">중복줄제거</span>
+        </span>
+      </button>
+      <button type="button" class="tool-card" data-tab="sort" data-tags="정렬 뒤집기 섞기 셔플 줄바꿈">
+        <span class="tool-card-icon icon-rose">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 6 h11 M4 12 h7 M4 18 h14" /><path d="M17 15 l3 3 l3 -3" /><path d="M20 4 v14" />
+          </svg>
+        </span>
+        <span class="tool-card-title">텍스트 정렬·뒤집기</span>
+        <span class="tool-card-desc">줄 단위로 가나다순 정렬, 순서 뒤집기, 무작위 섞기를 바로 실행합니다.</span>
+        <span class="tool-card-tags">
+          <span class="tool-tag">정렬</span><span class="tool-tag">뒤집기</span><span class="tool-tag">셔플</span>
+        </span>
+      </button>
+      <button type="button" class="tool-card" data-tab="url" data-tags="url 인코딩 디코딩 퍼센트 encode decode">
+        <span class="tool-card-icon icon-teal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 15 L15 9" />
+            <path d="M10.5 6.5 L12 5 a4 4 0 0 1 5.5 5.5 L16 12" />
+            <path d="M13.5 17.5 L12 19 a4 4 0 0 1 -5.5 -5.5 L8 12" />
+          </svg>
+        </span>
+        <span class="tool-card-title">URL 인코딩·디코딩</span>
+        <span class="tool-card-desc">URL·쿼리스트링의 한글, 공백, 특수문자를 안전하게 변환하고 복원합니다.</span>
+        <span class="tool-card-tags">
+          <span class="tool-tag">URL</span><span class="tool-tag">인코딩</span><span class="tool-tag">디코딩</span>
+        </span>
+      </button>
+      <button type="button" class="tool-card" data-tab="symbols" data-tags="특수문자 이모티콘 기호 모음 복사">
+        <span class="tool-card-icon icon-purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M15.5 12 v1.5a2.5 2.5 0 0 0 5 0 V12a8.5 8.5 0 1 0 -3.5 6.9" />
+          </svg>
+        </span>
+        <span class="tool-card-title">특수문자 모음</span>
+        <span class="tool-card-desc">자주 쓰는 특수문자와 이모티콘을 모아뒀습니다. 클릭하면 바로 복사됩니다.</span>
+        <span class="tool-card-tags">
+          <span class="tool-tag">특수문자</span><span class="tool-tag">기호</span><span class="tool-tag">이모티콘</span>
+        </span>
+      </button>
+    </div>
+    <p class="tool-empty-msg" id="tool-empty-msg" hidden>검색 결과가 없습니다.</p>
+  </section>
+
+  <div class="page-inner" id="tabs">
+
+  <!-- 탭 1: 글자수 세기 -->
+  <section class="tab-panel" data-tab-panel="count" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>글자수 세기</h2>
+      <div class="field-group">
+        <div class="field-input-wrap">
+          <textarea id="count-input" rows="8" placeholder="여기에 텍스트를 입력하거나 붙여넣으세요"></textarea>
+        </div>
+      </div>
+      <div class="stat-grid">
+        <div class="result-stat highlight">
+          <div class="result-stat-label">공백 포함</div>
+          <div class="result-stat-value" id="count-with-space">0자</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-label">공백 제외</div>
+          <div class="result-stat-value" id="count-no-space">0자</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-label">단어 수</div>
+          <div class="result-stat-value" id="count-words">0개</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-label">줄 수</div>
+          <div class="result-stat-value" id="count-lines">0줄</div>
+        </div>
+        <div class="result-stat">
+          <div class="result-stat-label">바이트 (UTF-8)</div>
+          <div class="result-stat-value" id="count-bytes">0B</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 탭 2: 대소문자·공백 -->
+  <section class="tab-panel" data-tab-panel="case" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>대소문자·공백 정리</h2>
+      <div class="field-group">
+        <div class="field-input-wrap">
+          <textarea id="case-input" rows="8" placeholder="여기에 텍스트를 입력하거나 붙여넣으세요"></textarea>
+        </div>
+      </div>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" data-action="upper">대문자로</button>
+        <button type="button" class="secondary-btn" data-action="lower">소문자로</button>
+        <button type="button" class="secondary-btn" data-action="title">Title Case</button>
+        <button type="button" class="secondary-btn" data-action="trim">각 줄 앞뒤 공백 제거</button>
+        <button type="button" class="secondary-btn" data-action="dedupe-lines">중복 줄 제거</button>
+        <button type="button" class="secondary-btn" data-action="remove-empty">빈 줄 제거</button>
+        <button type="button" class="secondary-btn" data-action="collapse-spaces">연속 공백 하나로</button>
+        <button type="button" class="secondary-btn" data-action="join-lines">한 줄로 합치기</button>
+      </div>
+      <button class="calc-btn" id="case-copy-btn">결과 복사</button>
+    </div>
+  </section>
+
+  <!-- 탭: 텍스트 정렬·뒤집기 -->
+  <section class="tab-panel" data-tab-panel="sort" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>텍스트 정렬·뒤집기</h2>
+      <div class="field-group">
+        <div class="field-input-wrap">
+          <textarea id="sort-input" rows="8" placeholder="한 줄에 하나씩 입력하세요"></textarea>
+        </div>
+      </div>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" data-action="asc">가나다순 정렬</button>
+        <button type="button" class="secondary-btn" data-action="desc">역순 정렬</button>
+        <button type="button" class="secondary-btn" data-action="reverse">줄 순서 뒤집기</button>
+        <button type="button" class="secondary-btn" data-action="shuffle">무작위 섞기</button>
+      </div>
+      <button class="calc-btn" id="sort-copy-btn">결과 복사</button>
+    </div>
+  </section>
+
+  <!-- 탭: URL 인코딩·디코딩 -->
+  <section class="tab-panel" data-tab-panel="url" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>URL 인코딩·디코딩</h2>
+      <div class="field-group">
+        <div class="field-input-wrap">
+          <textarea id="url-input" rows="5" placeholder="https://example.com/검색?q=안녕하세요"></textarea>
+        </div>
+      </div>
+      <div class="tool-btn-grid">
+        <button type="button" class="secondary-btn" id="url-encode-btn">인코딩 →</button>
+        <button type="button" class="secondary-btn" id="url-decode-btn">← 디코딩</button>
+      </div>
+      <p class="calc-error-msg" id="url-error" hidden></p>
+      <div class="field-group">
+        <label for="url-output">결과</label>
+        <div class="field-input-wrap">
+          <textarea id="url-output" rows="5" readonly placeholder="여기에 결과가 표시됩니다"></textarea>
+        </div>
+      </div>
+      <button class="calc-btn" id="url-copy-btn">결과 복사</button>
+    </div>
+  </section>
+
+  <!-- 탭 3: 특수문자 -->
+  <section class="tab-panel" data-tab-panel="symbols" hidden>
+    <div class="card">
+      <button type="button" class="back-link" data-back>← 전체 도구</button>
+      <h2>특수문자 모음</h2>
+      <p class="card-desc-short">클릭하면 바로 복사됩니다.</p>
+      <div id="symbol-groups"></div>
+    </div>
+  </section>
+
+  </div>
+
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
