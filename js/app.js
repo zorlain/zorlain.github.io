@@ -63,6 +63,10 @@ function showTool(target) {
   window.scrollTo(0, 0);
   const topbarBack = document.getElementById("topbar-back");
   if (topbarBack) topbarBack.hidden = false;
+  const panel = document.querySelector(`[data-tab-panel="${target}"]`);
+  const heading = panel && panel.querySelector(".card h2");
+  const brandSpan = document.querySelector(".brand span");
+  if (heading && brandSpan) brandSpan.textContent = heading.textContent;
   if (!history.state || history.state.tool !== target) {
     history.pushState({ tool: target }, "", "#" + target);
   }
@@ -75,6 +79,8 @@ function showHub() {
   });
   const topbarBack = document.getElementById("topbar-back");
   if (topbarBack) topbarBack.hidden = true;
+  const brandSpan = document.querySelector(".brand span");
+  if (brandSpan) brandSpan.textContent = "toolbox";
   window.dispatchEvent(new Event("scroll"));
 }
 
