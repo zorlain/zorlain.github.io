@@ -655,6 +655,10 @@ body {
   margin: 20px 0;
 }
 
+.tool-btn-grid[hidden] {
+  display: none;
+}
+
 .secondary-btn {
   padding: 14px 10px;
   border-radius: 12px;
@@ -690,6 +694,10 @@ body {
   cursor: pointer;
   margin-top: 24px;
   transition: background 0.15s, transform 0.1s;
+}
+
+.calc-btn[hidden] {
+  display: none;
 }
 
 .calc-btn:active {

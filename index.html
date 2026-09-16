@@ -1708,437 +1708,601 @@
 
   <!-- 텍스트 신규 8종 -->
   <section class="tab-panel" data-tab-panel="tts" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>텍스트 읽어주기(TTS)</h2>
-      <p class="card-desc-short">입력한 텍스트를 브라우저 내장 음성으로 읽어줍니다.</p>
-      <div class="field-group">
-        <div class="field-input-wrap"><textarea id="tts-input" rows="6" placeholder="읽어줄 텍스트를 입력하세요"></textarea></div>
-      </div>
-      <div class="field-row">
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">텍스트 읽어주기(TTS)</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>텍스트 입력</div>
+      <div class="card">
+        <p class="card-desc-short">입력한 텍스트를 브라우저 내장 음성으로 읽어줍니다.</p>
         <div class="field-group">
-          <label for="tts-voice">음성</label>
-          <div class="field-input-wrap"><select id="tts-voice" style="width:100%; background:transparent; border:none; color:inherit; font:inherit;"></select></div>
+          <div class="field-input-wrap"><textarea id="tts-input" rows="6" placeholder="읽어줄 텍스트를 입력하세요"></textarea></div>
         </div>
-        <div class="field-group">
-          <label for="tts-rate">속도: <span id="tts-rate-label">1.0x</span></label>
-          <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1" class="range-input" />
+        <div class="field-row">
+          <div class="field-group">
+            <label for="tts-voice">음성</label>
+            <div class="field-input-wrap"><select id="tts-voice" style="width:100%; background:transparent; border:none; color:inherit; font:inherit;"></select></div>
+          </div>
+          <div class="field-group">
+            <label for="tts-rate">속도: <span id="tts-rate-label">1.0x</span></label>
+            <input type="range" id="tts-rate" min="0.5" max="2" step="0.1" value="1" class="range-input" />
+          </div>
         </div>
       </div>
-      <div class="tool-btn-grid">
-        <button type="button" class="secondary-btn" id="tts-play-btn">읽어주기</button>
-        <button type="button" class="secondary-btn" id="tts-stop-btn">정지</button>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>재생</div>
+      <div class="card">
+        <div class="tool-btn-grid">
+          <button type="button" class="secondary-btn" id="tts-play-btn">읽어주기</button>
+          <button type="button" class="secondary-btn" id="tts-stop-btn">정지</button>
+        </div>
+        <p class="calc-error-msg" id="tts-error" hidden></p>
       </div>
-      <p class="calc-error-msg" id="tts-error" hidden></p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="excel-merge" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>엑셀 파일 합치기</h2>
-      <p class="card-desc-short">여러 개의 엑셀 파일을 각각 시트로 담아 하나의 파일로 합칩니다.</p>
-      <div class="wip-dropzone" id="xlm-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="xlm-hint">엑셀 파일(.xlsx, .xls, .csv)을 2개 이상 선택해주세요</p>
-        <input type="file" id="xlm-input" accept=".xlsx,.xls,.csv" multiple style="display: none;" />
-        <button type="button" class="secondary-btn" id="xlm-select-btn">파일 선택</button>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">엑셀 파일 합치기</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
+      <div class="card">
+        <p class="card-desc-short">여러 개의 엑셀 파일을 각각 시트로 담아 하나의 파일로 합칩니다.</p>
+        <div class="wip-dropzone" id="xlm-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="xlm-hint">엑셀 파일(.xlsx, .xls, .csv)을 2개 이상 선택해주세요</p>
+          <input type="file" id="xlm-input" accept=".xlsx,.xls,.csv" multiple style="display: none;" />
+          <button type="button" class="secondary-btn" id="xlm-select-btn">파일 선택</button>
+        </div>
       </div>
-      <p class="calc-error-msg" id="xlm-error" hidden></p>
-      <p class="wip-note" id="xlm-loading" hidden>합치는 중입니다...</p>
-      <a class="calc-btn" id="xlm-download" style="text-align:center; text-decoration:none; display:block;" download="merged.xlsx" hidden>합쳐진 엑셀 다운로드</a>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <p class="calc-error-msg" id="xlm-error" hidden></p>
+        <p class="wip-note" id="xlm-loading" hidden>합치는 중입니다...</p>
+        <a class="calc-btn" id="xlm-download" style="text-align:center; text-decoration:none;" download="merged.xlsx" hidden>합쳐진 엑셀 다운로드</a>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="yaml-json-toml" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>YAML↔JSON↔TOML 변환기</h2>
-      <p class="card-desc-short">YAML, JSON, TOML 형식을 서로 자유롭게 변환합니다.</p>
-      <div class="field-row">
-        <div class="field-group">
-          <label>입력 형식</label>
-          <div class="segmented" id="yjt-from">
-            <button type="button" class="active" data-value="yaml">YAML</button>
-            <button type="button" data-value="json">JSON</button>
-            <button type="button" data-value="toml">TOML</button>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">YAML↔JSON↔TOML 변환기</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>입력</div>
+      <div class="card">
+        <p class="card-desc-short">YAML, JSON, TOML 형식을 서로 자유롭게 변환합니다.</p>
+        <div class="field-row">
+          <div class="field-group">
+            <label>입력 형식</label>
+            <div class="segmented" id="yjt-from">
+              <button type="button" class="active" data-value="yaml">YAML</button>
+              <button type="button" data-value="json">JSON</button>
+              <button type="button" data-value="toml">TOML</button>
+            </div>
+          </div>
+          <div class="field-group">
+            <label>출력 형식</label>
+            <div class="segmented" id="yjt-to">
+              <button type="button" data-value="yaml">YAML</button>
+              <button type="button" class="active" data-value="json">JSON</button>
+              <button type="button" data-value="toml">TOML</button>
+            </div>
           </div>
         </div>
-        <div class="field-group">
-          <label>출력 형식</label>
-          <div class="segmented" id="yjt-to">
-            <button type="button" data-value="yaml">YAML</button>
-            <button type="button" class="active" data-value="json">JSON</button>
-            <button type="button" data-value="toml">TOML</button>
-          </div>
-        </div>
-      </div>
-      <div class="field-row">
         <div class="field-group">
           <label for="yjt-input">입력</label>
           <div class="field-input-wrap"><textarea id="yjt-input" rows="8" placeholder="여기에 내용을 입력하세요"></textarea></div>
         </div>
-        <div class="field-group">
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <button class="calc-btn" id="yjt-convert-btn">변환하기</button>
+        <p class="calc-error-msg" id="yjt-error" hidden></p>
+        <div class="field-group" style="margin-top: 20px;">
           <label for="yjt-output">결과</label>
           <div class="field-input-wrap"><textarea id="yjt-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
       </div>
-      <button class="calc-btn" id="yjt-convert-btn">변환하기</button>
-      <p class="calc-error-msg" id="yjt-error" hidden></p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="xml-parser" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>XML 파서·포맷터</h2>
-      <p class="card-desc-short">XML 문서를 보기 좋게 정렬하고 구조를 확인합니다.</p>
-      <div class="field-row">
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">XML 파서·포맷터</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>입력</div>
+      <div class="card">
+        <p class="card-desc-short">XML 문서를 보기 좋게 정렬하고 구조를 확인합니다.</p>
         <div class="field-group">
           <label for="xml-input">입력</label>
           <div class="field-input-wrap"><textarea id="xml-input" rows="8" placeholder="XML을 입력하세요"></textarea></div>
         </div>
-        <div class="field-group">
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <button class="calc-btn" id="xml-format-btn">정렬하기</button>
+        <p class="calc-error-msg" id="xml-error" hidden></p>
+        <div class="field-group" style="margin-top: 20px;">
           <label for="xml-output">결과</label>
           <div class="field-input-wrap"><textarea id="xml-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
       </div>
-      <button class="calc-btn" id="xml-format-btn">정렬하기</button>
-      <p class="calc-error-msg" id="xml-error" hidden></p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="json-xml" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>JSON↔XML 변환기</h2>
-      <p class="card-desc-short">JSON과 XML 형식을 서로 변환합니다.</p>
-      <div class="field-row">
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">JSON↔XML 변환기</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>입력</div>
+      <div class="card">
+        <p class="card-desc-short">JSON과 XML 형식을 서로 변환합니다.</p>
         <div class="field-group">
           <label for="jx-input">입력</label>
           <div class="field-input-wrap"><textarea id="jx-input" rows="8" placeholder="JSON 또는 XML을 입력하세요"></textarea></div>
         </div>
-        <div class="field-group">
+      </div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <div class="tool-btn-grid">
+          <button type="button" class="secondary-btn" id="jx-to-xml-btn">JSON → XML</button>
+          <button type="button" class="secondary-btn" id="jx-to-json-btn">XML → JSON</button>
+        </div>
+        <p class="calc-error-msg" id="jx-error" hidden></p>
+        <div class="field-group" style="margin-top: 20px;">
           <label for="jx-output">결과</label>
           <div class="field-input-wrap"><textarea id="jx-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
       </div>
-      <div class="tool-btn-grid">
-        <button type="button" class="secondary-btn" id="jx-to-xml-btn">JSON → XML</button>
-        <button type="button" class="secondary-btn" id="jx-to-json-btn">XML → JSON</button>
-      </div>
-      <p class="calc-error-msg" id="jx-error" hidden></p>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="epub-txt" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>EPUB→TXT 변환</h2>
-      <p class="card-desc-short">EPUB 전자책 파일 안의 텍스트를 순서대로 추출해 TXT로 변환합니다.</p>
-      <div class="wip-dropzone" id="epub-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="epub-hint">EPUB 파일을 선택해주세요</p>
-        <input type="file" id="epub-input" accept=".epub" style="display: none;" />
-        <button type="button" class="secondary-btn" id="epub-select-btn">파일 선택</button>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">EPUB→TXT 변환</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
+      <div class="card">
+        <p class="card-desc-short">EPUB 전자책 파일 안의 텍스트를 순서대로 추출해 TXT로 변환합니다.</p>
+        <div class="wip-dropzone" id="epub-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="epub-hint">EPUB 파일을 선택해주세요</p>
+          <input type="file" id="epub-input" accept=".epub" style="display: none;" />
+          <button type="button" class="secondary-btn" id="epub-select-btn">파일 선택</button>
+        </div>
       </div>
-      <p class="calc-error-msg" id="epub-error" hidden></p>
-      <p class="wip-note" id="epub-loading" hidden>텍스트를 추출하는 중입니다...</p>
-      <div class="field-group" id="epub-result-group" hidden style="margin-top: 20px;">
-        <label>추출된 텍스트</label>
-        <div class="field-input-wrap"><textarea id="epub-output" rows="10" readonly></textarea></div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <p class="calc-error-msg" id="epub-error" hidden></p>
+        <p class="wip-note" id="epub-loading" hidden>텍스트를 추출하는 중입니다...</p>
+        <div class="field-group" id="epub-result-group" hidden>
+          <label>추출된 텍스트</label>
+          <div class="field-input-wrap"><textarea id="epub-output" rows="10" readonly></textarea></div>
+        </div>
+        <a class="calc-btn" id="epub-download" style="text-align:center; text-decoration:none;" download="book.txt" hidden>TXT 다운로드</a>
       </div>
-      <a class="calc-btn" id="epub-download" style="text-align:center; text-decoration:none; display:block;" download="book.txt" hidden>TXT 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="md-viewer" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>MD 파일 뷰어</h2>
-      <p class="card-desc-short">마크다운(.md) 파일이나 텍스트를 미리보기 화면으로 바로 확인합니다.</p>
-      <div class="wip-dropzone" id="mdv-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="mdv-hint">MD 파일을 선택해주세요</p>
-        <input type="file" id="mdv-input" accept=".md,.markdown,text/markdown,text/plain" style="display: none;" />
-        <button type="button" class="secondary-btn" id="mdv-select-btn">파일 선택</button>
-      </div>
-      <div class="field-group" style="margin-top: 16px;">
-        <label for="mdv-source">또는 직접 입력</label>
-        <div class="field-input-wrap"><textarea id="mdv-source" rows="6" placeholder="# 제목
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">MD 파일 뷰어</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>입력</div>
+      <div class="card">
+        <p class="card-desc-short">마크다운(.md) 파일이나 텍스트를 미리보기 화면으로 바로 확인합니다.</p>
+        <div class="wip-dropzone" id="mdv-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="mdv-hint">MD 파일을 선택해주세요</p>
+          <input type="file" id="mdv-input" accept=".md,.markdown,text/markdown,text/plain" style="display: none;" />
+          <button type="button" class="secondary-btn" id="mdv-select-btn">파일 선택</button>
+        </div>
+        <div class="field-group" style="margin-top: 16px;">
+          <label for="mdv-source">또는 직접 입력</label>
+          <div class="field-input-wrap"><textarea id="mdv-source" rows="6" placeholder="# 제목
 마크다운 텍스트를 입력하세요"></textarea></div>
+        </div>
       </div>
-      <button class="calc-btn" id="mdv-render-btn">미리보기</button>
-      <p class="calc-error-msg" id="mdv-error" hidden></p>
-      <div class="field-group" id="mdv-preview-wrap" hidden style="margin-top: 20px;">
-        <label>미리보기</label>
-        <div id="mdv-preview" style="background: var(--card-elevated); border-radius: 12px; padding: 20px; line-height: 1.7; overflow-x: auto;"></div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <button class="calc-btn" id="mdv-render-btn">미리보기</button>
+        <p class="calc-error-msg" id="mdv-error" hidden></p>
+        <div class="field-group" id="mdv-preview-wrap" hidden style="margin-top: 20px;">
+          <label>미리보기</label>
+          <div id="mdv-preview" style="background: var(--card-elevated); border-radius: 12px; padding: 20px; line-height: 1.7; overflow-x: auto;"></div>
+        </div>
       </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="text-compare" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>텍스트 비교</h2>
-      <p class="card-desc-short">두 텍스트를 줄 단위로 비교해 추가·삭제된 부분을 보여줍니다.</p>
-      <div class="field-row">
-        <div class="field-group">
-          <label for="tc-input-a">텍스트 A</label>
-          <div class="field-input-wrap"><textarea id="tc-input-a" rows="8" placeholder="첫 번째 텍스트를 입력하세요"></textarea></div>
-        </div>
-        <div class="field-group">
-          <label for="tc-input-b">텍스트 B</label>
-          <div class="field-input-wrap"><textarea id="tc-input-b" rows="8" placeholder="두 번째 텍스트를 입력하세요"></textarea></div>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">텍스트 비교</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>입력</div>
+      <div class="card">
+        <p class="card-desc-short">두 텍스트를 줄 단위로 비교해 추가·삭제된 부분을 보여줍니다.</p>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="tc-input-a">텍스트 A</label>
+            <div class="field-input-wrap"><textarea id="tc-input-a" rows="8" placeholder="첫 번째 텍스트를 입력하세요"></textarea></div>
+          </div>
+          <div class="field-group">
+            <label for="tc-input-b">텍스트 B</label>
+            <div class="field-input-wrap"><textarea id="tc-input-b" rows="8" placeholder="두 번째 텍스트를 입력하세요"></textarea></div>
+          </div>
         </div>
       </div>
-      <button class="calc-btn" id="tc-compare-btn">비교하기</button>
-      <div class="field-group" id="tc-result-wrap" hidden style="margin-top: 20px;">
-        <label id="tc-stat">-</label>
-        <div id="tc-result" style="background: var(--card-elevated); border-radius: 12px; padding: 12px; max-height: 400px; overflow-y: auto;"></div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <button class="calc-btn" id="tc-compare-btn">비교하기</button>
+        <div class="field-group" id="tc-result-wrap" hidden style="margin-top: 20px;">
+          <label id="tc-stat">-</label>
+          <div id="tc-result" style="background: var(--card-elevated); border-radius: 12px; padding: 12px; max-height: 400px; overflow-y: auto;"></div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- 이미지 신규 9종 -->
   <section class="tab-panel" data-tab-panel="img-to-jpg" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>Image to JPG</h2>
-      <p class="card-desc-short">PNG, WebP 등 다양한 이미지를 JPG로 변환합니다.</p>
-      <div class="wip-dropzone" id="i2jpg-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="i2jpg-hint">이미지를 선택해주세요</p>
-        <input type="file" id="i2jpg-input" accept="image/*" style="display: none;" />
-        <button type="button" class="secondary-btn" id="i2jpg-select-btn">파일 선택</button>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">Image to JPG</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
+      <div class="card">
+        <p class="card-desc-short">PNG, WebP 등 다양한 이미지를 JPG로 변환합니다.</p>
+        <div class="wip-dropzone" id="i2jpg-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="i2jpg-hint">이미지를 선택해주세요</p>
+          <input type="file" id="i2jpg-input" accept="image/*" style="display: none;" />
+          <button type="button" class="secondary-btn" id="i2jpg-select-btn">파일 선택</button>
+        </div>
       </div>
-      <p class="calc-error-msg" id="i2jpg-error" hidden></p>
-      <div style="text-align:center; margin-top:16px;" id="i2jpg-preview-wrap" hidden>
-        <img id="i2jpg-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <p class="calc-error-msg" id="i2jpg-error" hidden></p>
+        <div style="text-align:center;" id="i2jpg-preview-wrap" hidden>
+          <img id="i2jpg-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+        </div>
+        <a class="calc-btn" id="i2jpg-download" style="text-align:center; text-decoration:none;" download="converted.jpg" hidden>JPG 다운로드</a>
       </div>
-      <a class="calc-btn" id="i2jpg-download" style="text-align:center; text-decoration:none; display:block;" download="converted.jpg" hidden>JPG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-merge" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>사진 합치기</h2>
-      <p class="card-desc-short">여러 장의 사진을 세로 또는 가로로 이어 붙여 한 장으로 합칩니다.</p>
-      <div class="field-group">
-        <label>합치는 방향</label>
-        <div class="segmented" id="merge-direction">
-          <button type="button" class="active" data-value="vertical">세로로 합치기</button>
-          <button type="button" data-value="horizontal">가로로 합치기</button>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">사진 합치기</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
+      <div class="card">
+        <p class="card-desc-short">여러 장의 사진을 세로 또는 가로로 이어 붙여 한 장으로 합칩니다.</p>
+        <div class="field-group">
+          <label>합치는 방향</label>
+          <div class="segmented" id="merge-direction">
+            <button type="button" class="active" data-value="vertical">세로로 합치기</button>
+            <button type="button" data-value="horizontal">가로로 합치기</button>
+          </div>
+        </div>
+        <div class="wip-dropzone" id="merge-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="merge-hint">사진을 2장 이상 선택해주세요</p>
+          <input type="file" id="merge-input" accept="image/*" multiple style="display: none;" />
+          <button type="button" class="secondary-btn" id="merge-select-btn">파일 선택</button>
         </div>
       </div>
-      <div class="wip-dropzone" id="merge-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="merge-hint">사진을 2장 이상 선택해주세요</p>
-        <input type="file" id="merge-input" accept="image/*" multiple style="display: none;" />
-        <button type="button" class="secondary-btn" id="merge-select-btn">파일 선택</button>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <p class="calc-error-msg" id="merge-error" hidden></p>
+        <div style="text-align:center;" id="merge-preview-wrap" hidden>
+          <img id="merge-preview" style="max-width:100%; max-height:400px; border-radius:12px;" alt="합쳐진 이미지 미리보기" />
+        </div>
+        <a class="calc-btn" id="merge-download" style="text-align:center; text-decoration:none;" download="merged.png" hidden>PNG 다운로드</a>
       </div>
-      <p class="calc-error-msg" id="merge-error" hidden></p>
-      <div style="text-align:center; margin-top:16px;" id="merge-preview-wrap" hidden>
-        <img id="merge-preview" style="max-width:100%; max-height:400px; border-radius:12px;" alt="합쳐진 이미지 미리보기" />
-      </div>
-      <a class="calc-btn" id="merge-download" style="text-align:center; text-decoration:none; display:block;" download="merged.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="heic-viewer" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>HEIC 뷰어</h2>
-      <p class="card-desc-short">아이폰 HEIC 사진을 브라우저에서 바로 열어보고 JPG로 변환합니다.</p>
-      <div class="wip-dropzone" id="heic-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="heic-hint">HEIC 파일을 선택해주세요</p>
-        <input type="file" id="heic-input" accept=".heic,.heif,image/heic,image/heif" style="display: none;" />
-        <button type="button" class="secondary-btn" id="heic-select-btn">파일 선택</button>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">HEIC 뷰어</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
+      <div class="card">
+        <p class="card-desc-short">아이폰 HEIC 사진을 브라우저에서 바로 열어보고 JPG로 변환합니다.</p>
+        <div class="wip-dropzone" id="heic-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="heic-hint">HEIC 파일을 선택해주세요</p>
+          <input type="file" id="heic-input" accept=".heic,.heif,image/heic,image/heif" style="display: none;" />
+          <button type="button" class="secondary-btn" id="heic-select-btn">파일 선택</button>
+        </div>
       </div>
-      <p class="calc-error-msg" id="heic-error" hidden></p>
-      <p class="wip-note" id="heic-loading" hidden>변환 중입니다. 파일 크기에 따라 몇 초 걸릴 수 있습니다...</p>
-      <div style="text-align:center; margin-top:16px;" id="heic-preview-wrap" hidden>
-        <img id="heic-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <p class="calc-error-msg" id="heic-error" hidden></p>
+        <p class="wip-note" id="heic-loading" hidden>변환 중입니다. 파일 크기에 따라 몇 초 걸릴 수 있습니다...</p>
+        <div style="text-align:center;" id="heic-preview-wrap" hidden>
+          <img id="heic-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+        </div>
+        <a class="calc-btn" id="heic-download" style="text-align:center; text-decoration:none;" download="converted.jpg" hidden>JPG 다운로드</a>
       </div>
-      <a class="calc-btn" id="heic-download" style="text-align:center; text-decoration:none; display:block;" download="converted.jpg" hidden>JPG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="photo-date-stamp" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>사진 날짜 표시</h2>
-      <p class="card-desc-short">필름카메라 감성의 날짜 스탬프를 사진 오른쪽 아래에 찍어줍니다.</p>
-      <div class="wip-dropzone" id="pds-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="pds-hint">사진을 선택해주세요</p>
-        <input type="file" id="pds-input" accept="image/*" style="display: none;" />
-        <button type="button" class="secondary-btn" id="pds-select-btn">파일 선택</button>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">사진 날짜 표시</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>파일·날짜 선택</div>
+      <div class="card">
+        <p class="card-desc-short">필름카메라 감성의 날짜 스탬프를 사진 오른쪽 아래에 찍어줍니다.</p>
+        <div class="wip-dropzone" id="pds-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="pds-hint">사진을 선택해주세요</p>
+          <input type="file" id="pds-input" accept="image/*" style="display: none;" />
+          <button type="button" class="secondary-btn" id="pds-select-btn">파일 선택</button>
+        </div>
+        <div class="field-group" style="margin-top: 16px;">
+          <label for="pds-date">날짜</label>
+          <div class="field-input-wrap"><input type="date" id="pds-date" /></div>
+        </div>
       </div>
-      <div class="field-group" style="margin-top: 16px;">
-        <label for="pds-date">날짜</label>
-        <div class="field-input-wrap"><input type="date" id="pds-date" /></div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <button class="calc-btn" id="pds-apply-btn">날짜 찍기</button>
+        <p class="calc-error-msg" id="pds-error" hidden></p>
+        <div style="text-align:center; margin-top:16px;" id="pds-preview-wrap" hidden>
+          <canvas id="pds-canvas" style="max-width:100%; max-height:400px; border-radius:12px;"></canvas>
+        </div>
+        <a class="calc-btn" id="pds-download" style="text-align:center; text-decoration:none;" download="photo-dated.jpg" hidden>사진 다운로드</a>
       </div>
-      <button class="calc-btn" id="pds-apply-btn">날짜 찍기</button>
-      <p class="calc-error-msg" id="pds-error" hidden></p>
-      <div style="text-align:center; margin-top:16px;" id="pds-preview-wrap" hidden>
-        <canvas id="pds-canvas" style="max-width:100%; max-height:400px; border-radius:12px;"></canvas>
-      </div>
-      <a class="calc-btn" id="pds-download" style="text-align:center; text-decoration:none; display:block;" download="photo-dated.jpg" hidden>사진 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-to-png" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>Image to PNG</h2>
-      <p class="card-desc-short">JPG 등 다양한 이미지를 PNG로 변환합니다.</p>
-      <div class="wip-dropzone" id="i2png-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="i2png-hint">이미지를 선택해주세요</p>
-        <input type="file" id="i2png-input" accept="image/*" style="display: none;" />
-        <button type="button" class="secondary-btn" id="i2png-select-btn">파일 선택</button>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">Image to PNG</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
+      <div class="card">
+        <p class="card-desc-short">JPG 등 다양한 이미지를 PNG로 변환합니다.</p>
+        <div class="wip-dropzone" id="i2png-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="i2png-hint">이미지를 선택해주세요</p>
+          <input type="file" id="i2png-input" accept="image/*" style="display: none;" />
+          <button type="button" class="secondary-btn" id="i2png-select-btn">파일 선택</button>
+        </div>
       </div>
-      <p class="calc-error-msg" id="i2png-error" hidden></p>
-      <div style="text-align:center; margin-top:16px;" id="i2png-preview-wrap" hidden>
-        <img id="i2png-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <p class="calc-error-msg" id="i2png-error" hidden></p>
+        <div style="text-align:center;" id="i2png-preview-wrap" hidden>
+          <img id="i2png-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+        </div>
+        <a class="calc-btn" id="i2png-download" style="text-align:center; text-decoration:none;" download="converted.png" hidden>PNG 다운로드</a>
       </div>
-      <a class="calc-btn" id="i2png-download" style="text-align:center; text-decoration:none; display:block;" download="converted.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-to-webp" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>Image to WebP</h2>
-      <p class="card-desc-short">이미지를 용량이 작은 WebP 형식으로 변환합니다.</p>
-      <div class="wip-dropzone" id="i2webp-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="i2webp-hint">이미지를 선택해주세요</p>
-        <input type="file" id="i2webp-input" accept="image/*" style="display: none;" />
-        <button type="button" class="secondary-btn" id="i2webp-select-btn">파일 선택</button>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">Image to WebP</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
+      <div class="card">
+        <p class="card-desc-short">이미지를 용량이 작은 WebP 형식으로 변환합니다.</p>
+        <div class="wip-dropzone" id="i2webp-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="i2webp-hint">이미지를 선택해주세요</p>
+          <input type="file" id="i2webp-input" accept="image/*" style="display: none;" />
+          <button type="button" class="secondary-btn" id="i2webp-select-btn">파일 선택</button>
+        </div>
       </div>
-      <p class="calc-error-msg" id="i2webp-error" hidden></p>
-      <div style="text-align:center; margin-top:16px;" id="i2webp-preview-wrap" hidden>
-        <img id="i2webp-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <p class="calc-error-msg" id="i2webp-error" hidden></p>
+        <div style="text-align:center;" id="i2webp-preview-wrap" hidden>
+          <img id="i2webp-preview" style="max-width:100%; max-height:320px; border-radius:12px;" alt="변환된 이미지 미리보기" />
+        </div>
+        <a class="calc-btn" id="i2webp-download" style="text-align:center; text-decoration:none;" download="converted.webp" hidden>WebP 다운로드</a>
       </div>
-      <a class="calc-btn" id="i2webp-download" style="text-align:center; text-decoration:none; display:block;" download="converted.webp" hidden>WebP 다운로드</a>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="svg-trim" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>SVG 여백 제거</h2>
-      <p class="card-desc-short">SVG 이미지의 불필요한 여백을 실제 도형 크기에 맞게 자동으로 잘라냅니다.</p>
-      <div class="wip-dropzone" id="svgtrim-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="svgtrim-hint">SVG 파일을 선택해주세요</p>
-        <input type="file" id="svgtrim-input" accept=".svg,image/svg+xml" style="display: none;" />
-        <button type="button" class="secondary-btn" id="svgtrim-select-btn">파일 선택</button>
-      </div>
-      <p class="calc-error-msg" id="svgtrim-error" hidden></p>
-      <div id="svgtrim-preview-wrap" hidden style="margin-top: 16px;">
-        <div style="background:#fff; border-radius:12px; padding:16px; text-align:center;" id="svgtrim-preview"></div>
-        <div class="result-stat" style="margin-top:12px;">
-          <div class="result-stat-label">잘라낸 결과 크기</div>
-          <div class="result-stat-value" id="svgtrim-size-value">-</div>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">SVG 여백 제거</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>파일 선택</div>
+      <div class="card">
+        <p class="card-desc-short">SVG 이미지의 불필요한 여백을 실제 도형 크기에 맞게 자동으로 잘라냅니다.</p>
+        <div class="wip-dropzone" id="svgtrim-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="svgtrim-hint">SVG 파일을 선택해주세요</p>
+          <input type="file" id="svgtrim-input" accept=".svg,image/svg+xml" style="display: none;" />
+          <button type="button" class="secondary-btn" id="svgtrim-select-btn">파일 선택</button>
         </div>
       </div>
-      <a class="calc-btn" id="svgtrim-download" style="text-align:center; text-decoration:none; display:block;" download="trimmed.svg" hidden>SVG 다운로드</a>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <p class="calc-error-msg" id="svgtrim-error" hidden></p>
+        <div id="svgtrim-preview-wrap" hidden>
+          <div style="background:#fff; border-radius:12px; padding:16px; text-align:center;" id="svgtrim-preview"></div>
+          <div class="result-stat" style="margin-top:12px;">
+            <div class="result-stat-label">잘라낸 결과 크기</div>
+            <div class="result-stat-value" id="svgtrim-size-value">-</div>
+          </div>
+        </div>
+        <a class="calc-btn" id="svgtrim-download" style="text-align:center; text-decoration:none;" download="trimmed.svg" hidden>SVG 다운로드</a>
+      </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="img-base64" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>이미지 Base64 변환</h2>
-      <p class="card-desc-short">이미지를 Base64 문자열로 변환하거나, Base64 문자열을 다시 이미지로 복원합니다.</p>
-      <div class="wip-dropzone" id="ib64-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="ib64-hint">이미지를 선택해주세요</p>
-        <input type="file" id="ib64-input" accept="image/*" style="display: none;" />
-        <button type="button" class="secondary-btn" id="ib64-select-btn">파일 선택</button>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">이미지 Base64 변환</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>입력</div>
+      <div class="card">
+        <p class="card-desc-short">이미지를 Base64 문자열로 변환하거나, Base64 문자열을 다시 이미지로 복원합니다.</p>
+        <div class="wip-dropzone" id="ib64-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="ib64-hint">이미지를 선택해주세요</p>
+          <input type="file" id="ib64-input" accept="image/*" style="display: none;" />
+          <button type="button" class="secondary-btn" id="ib64-select-btn">파일 선택</button>
+        </div>
+        <div class="field-group" style="margin-top: 16px;">
+          <label for="ib64-output">Base64 (Data URL)</label>
+          <div class="field-input-wrap"><textarea id="ib64-output" rows="6" placeholder="여기에 Base64 문자열을 붙여넣어 이미지로 복원할 수도 있습니다"></textarea></div>
+        </div>
       </div>
-      <div class="field-group" style="margin-top: 16px;">
-        <label for="ib64-output">Base64 (Data URL)</label>
-        <div class="field-input-wrap"><textarea id="ib64-output" rows="6" placeholder="여기에 Base64 문자열을 붙여넣어 이미지로 복원할 수도 있습니다"></textarea></div>
-      </div>
-      <div class="tool-btn-grid">
-        <button type="button" class="secondary-btn" id="ib64-copy-btn">Base64 복사</button>
-        <button type="button" class="secondary-btn" id="ib64-restore-btn">Base64 → 이미지로 보기</button>
-      </div>
-      <div style="text-align:center; margin-top:16px;" id="ib64-preview-wrap" hidden>
-        <img id="ib64-preview" style="max-width:100%; max-height:300px; border-radius:12px;" alt="이미지 미리보기" />
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <div class="tool-btn-grid">
+          <button type="button" class="secondary-btn" id="ib64-copy-btn">Base64 복사</button>
+          <button type="button" class="secondary-btn" id="ib64-restore-btn">Base64 → 이미지로 보기</button>
+        </div>
+        <div style="text-align:center; margin-top:16px;" id="ib64-preview-wrap" hidden>
+          <img id="ib64-preview" style="max-width:100%; max-height:300px; border-radius:12px;" alt="이미지 미리보기" />
+        </div>
       </div>
     </div>
   </section>
 
   <section class="tab-panel" data-tab-panel="video-to-gif" hidden>
-    <div class="card">
-      <button type="button" class="back-link" data-back>← 전체 도구</button>
-      <h2>동영상 GIF 변환</h2>
-      <p class="card-desc-short">짧은 동영상 구간을 브라우저에서 바로 움직이는 GIF 이미지로 변환합니다.</p>
-      <div class="wip-dropzone" id="vtg-dropzone">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
-        </svg>
-        <p id="vtg-hint">동영상을 선택해주세요</p>
-        <input type="file" id="vtg-input" accept="video/*" style="display: none;" />
-        <button type="button" class="secondary-btn" id="vtg-select-btn">파일 선택</button>
-      </div>
-      <video id="vtg-preview" style="width:100%; max-height:220px; border-radius:12px; margin-top:16px; display:none;" controls muted></video>
-      <div class="field-row" style="margin-top: 16px;">
-        <div class="field-group">
-          <label for="vtg-start">시작 시간(초)</label>
-          <div class="field-input-wrap"><input type="text" inputmode="decimal" id="vtg-start" value="0" /></div>
+    <button type="button" class="back-link" data-back>← 전체 도구</button>
+    <h2 class="tool-heading">동영상 GIF 변환</h2>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">1</span>파일·옵션 선택</div>
+      <div class="card">
+        <p class="card-desc-short">짧은 동영상 구간을 브라우저에서 바로 움직이는 GIF 이미지로 변환합니다.</p>
+        <div class="wip-dropzone" id="vtg-dropzone">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 16 V4 M8 8 L12 4 L16 8" /><path d="M4 15 v3 a2 2 0 0 0 2 2 h12 a2 2 0 0 0 2 -2 v-3" />
+          </svg>
+          <p id="vtg-hint">동영상을 선택해주세요</p>
+          <input type="file" id="vtg-input" accept="video/*" style="display: none;" />
+          <button type="button" class="secondary-btn" id="vtg-select-btn">파일 선택</button>
         </div>
-        <div class="field-group">
-          <label for="vtg-duration">길이(초, 최대 8초)</label>
-          <div class="field-input-wrap"><input type="text" inputmode="decimal" id="vtg-duration" value="3" /></div>
+        <video id="vtg-preview" style="width:100%; max-height:220px; border-radius:12px; margin-top:16px; display:none;" controls muted></video>
+        <div class="field-row" style="margin-top: 16px;">
+          <div class="field-group">
+            <label for="vtg-start">시작 시간(초)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="vtg-start" value="0" /></div>
+          </div>
+          <div class="field-group">
+            <label for="vtg-duration">길이(초, 최대 8초)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="vtg-duration" value="3" /></div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="vtg-fps">초당 프레임 수(FPS)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="numeric" id="vtg-fps" value="8" /></div>
+          </div>
+          <div class="field-group">
+            <label for="vtg-width">GIF 너비(px)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="numeric" id="vtg-width" value="320" /></div>
+          </div>
         </div>
       </div>
-      <div class="field-row">
-        <div class="field-group">
-          <label for="vtg-fps">초당 프레임 수(FPS)</label>
-          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="vtg-fps" value="8" /></div>
+    </div>
+
+    <div class="step-block">
+      <div class="step-label"><span class="step-num">2</span>결과</div>
+      <div class="card">
+        <button class="calc-btn" id="vtg-convert-btn">GIF로 변환하기</button>
+        <p class="calc-error-msg" id="vtg-error" hidden></p>
+        <p class="wip-note" id="vtg-progress" hidden>변환 중입니다...</p>
+        <div style="text-align:center; margin-top:16px;" id="vtg-result-wrap" hidden>
+          <img id="vtg-result" style="max-width:100%; border-radius:12px;" alt="변환된 GIF" />
         </div>
-        <div class="field-group">
-          <label for="vtg-width">GIF 너비(px)</label>
-          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="vtg-width" value="320" /></div>
-        </div>
+        <a class="calc-btn" id="vtg-download" style="text-align:center; text-decoration:none;" download="animated.gif" hidden>GIF 다운로드</a>
       </div>
-      <button class="calc-btn" id="vtg-convert-btn">GIF로 변환하기</button>
-      <p class="calc-error-msg" id="vtg-error" hidden></p>
-      <p class="wip-note" id="vtg-progress" hidden>변환 중입니다...</p>
-      <div style="text-align:center; margin-top:16px;" id="vtg-result-wrap" hidden>
-        <img id="vtg-result" style="max-width:100%; border-radius:12px;" alt="변환된 GIF" />
-      </div>
-      <a class="calc-btn" id="vtg-download" style="text-align:center; text-decoration:none; display:block;" download="animated.gif" hidden>GIF 다운로드</a>
     </div>
   </section>
 
@@ -2158,7 +2322,7 @@
       </div>
       <p class="calc-error-msg" id="pm-error" hidden></p>
       <p class="wip-note" id="pm-loading" hidden>합치는 중입니다...</p>
-      <a class="calc-btn" id="pm-download" style="text-align:center; text-decoration:none; display:block;" download="merged.pdf" hidden>합쳐진 PDF 다운로드</a>
+      <a class="calc-btn" id="pm-download" style="text-align:center; text-decoration:none;" download="merged.pdf" hidden>합쳐진 PDF 다운로드</a>
     </div>
   </section>
 
@@ -2186,7 +2350,7 @@
         <div class="result-stat"><div class="result-stat-label">원본 용량</div><div class="result-stat-value" id="pcps-before-value">-</div></div>
         <div class="result-stat highlight"><div class="result-stat-label">압축 후 용량</div><div class="result-stat-value" id="pcps-after-value">-</div></div>
       </div>
-      <a class="calc-btn" id="pcps-download" style="text-align:center; text-decoration:none; display:block;" download="compressed.pdf" hidden>압축된 PDF 다운로드</a>
+      <a class="calc-btn" id="pcps-download" style="text-align:center; text-decoration:none;" download="compressed.pdf" hidden>압축된 PDF 다운로드</a>
       <p class="wip-note" id="pcps-warn" hidden>텍스트 위주 PDF는 이미지로 다시 그리면 오히려 용량이 늘어날 수 있습니다. 스캔·사진 위주 PDF에서 더 효과적입니다.</p>
     </div>
   </section>
@@ -2207,7 +2371,7 @@
       <p class="calc-error-msg" id="p2j-error" hidden></p>
       <p class="wip-note" id="p2j-loading" hidden>변환하는 중입니다...</p>
       <div id="p2j-preview" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;"></div>
-      <a class="calc-btn" id="p2j-download" style="text-align:center; text-decoration:none; display:block;" download="pages.zip" hidden>JPG 전체 다운로드 (ZIP)</a>
+      <a class="calc-btn" id="p2j-download" style="text-align:center; text-decoration:none;" download="pages.zip" hidden>JPG 전체 다운로드 (ZIP)</a>
     </div>
   </section>
 
@@ -2230,7 +2394,7 @@
       </div>
       <button class="calc-btn" id="pdp-run-btn">삭제하기</button>
       <p class="calc-error-msg" id="pdp-error" hidden></p>
-      <a class="calc-btn" id="pdp-download" style="text-align:center; text-decoration:none; display:block;" download="deleted.pdf" hidden>결과 PDF 다운로드</a>
+      <a class="calc-btn" id="pdp-download" style="text-align:center; text-decoration:none;" download="deleted.pdf" hidden>결과 PDF 다운로드</a>
     </div>
   </section>
 
@@ -2254,7 +2418,7 @@
       <button class="calc-btn" id="psp-run-btn">나누기</button>
       <p class="calc-error-msg" id="psp-error" hidden></p>
       <p class="wip-note" id="psp-loading" hidden>나누는 중입니다...</p>
-      <a class="calc-btn" id="psp-download" style="text-align:center; text-decoration:none; display:block;" download="split.zip" hidden>나눠진 파일 다운로드 (ZIP)</a>
+      <a class="calc-btn" id="psp-download" style="text-align:center; text-decoration:none;" download="split.zip" hidden>나눠진 파일 다운로드 (ZIP)</a>
     </div>
   </section>
 
@@ -2292,7 +2456,7 @@
       </div>
       <button class="calc-btn" id="psg-run-btn">서명 추가하기</button>
       <p class="calc-error-msg" id="psg-error" hidden></p>
-      <a class="calc-btn" id="psg-download" style="text-align:center; text-decoration:none; display:block;" download="signed.pdf" hidden>서명된 PDF 다운로드</a>
+      <a class="calc-btn" id="psg-download" style="text-align:center; text-decoration:none;" download="signed.pdf" hidden>서명된 PDF 다운로드</a>
     </div>
   </section>
 
@@ -2312,7 +2476,7 @@
       <p class="calc-error-msg" id="p2p-error" hidden></p>
       <p class="wip-note" id="p2p-loading" hidden>변환하는 중입니다...</p>
       <div id="p2p-preview" style="display:flex; flex-wrap:wrap; gap:10px; margin-top:16px;"></div>
-      <a class="calc-btn" id="p2p-download" style="text-align:center; text-decoration:none; display:block;" download="pages.zip" hidden>PNG 전체 다운로드 (ZIP)</a>
+      <a class="calc-btn" id="p2p-download" style="text-align:center; text-decoration:none;" download="pages.zip" hidden>PNG 전체 다운로드 (ZIP)</a>
     </div>
   </section>
 
@@ -2331,7 +2495,7 @@
       </div>
       <button class="calc-btn" id="phs-run-btn">반으로 나누기</button>
       <p class="calc-error-msg" id="phs-error" hidden></p>
-      <a class="calc-btn" id="phs-download" style="text-align:center; text-decoration:none; display:block;" download="half-split.pdf" hidden>결과 PDF 다운로드</a>
+      <a class="calc-btn" id="phs-download" style="text-align:center; text-decoration:none;" download="half-split.pdf" hidden>결과 PDF 다운로드</a>
     </div>
   </section>
 
@@ -2350,7 +2514,7 @@
       </div>
       <button class="calc-btn" id="p2u-run-btn">2장씩 합치기</button>
       <p class="calc-error-msg" id="p2u-error" hidden></p>
-      <a class="calc-btn" id="p2u-download" style="text-align:center; text-decoration:none; display:block;" download="2up.pdf" hidden>결과 PDF 다운로드</a>
+      <a class="calc-btn" id="p2u-download" style="text-align:center; text-decoration:none;" download="2up.pdf" hidden>결과 PDF 다운로드</a>
     </div>
   </section>
 
@@ -2373,7 +2537,7 @@
       </div>
       <button class="calc-btn" id="pcr-run-btn">여백 자르기</button>
       <p class="calc-error-msg" id="pcr-error" hidden></p>
-      <a class="calc-btn" id="pcr-download" style="text-align:center; text-decoration:none; display:block;" download="cropped.pdf" hidden>결과 PDF 다운로드</a>
+      <a class="calc-btn" id="pcr-download" style="text-align:center; text-decoration:none;" download="cropped.pdf" hidden>결과 PDF 다운로드</a>
     </div>
   </section>
 
@@ -2443,7 +2607,7 @@
       </div>
       <p class="calc-error-msg" id="i2p-error" hidden></p>
       <p class="wip-note" id="i2p-loading" hidden>PDF를 만드는 중입니다...</p>
-      <a class="calc-btn" id="i2p-download" style="text-align:center; text-decoration:none; display:block;" download="images.pdf" hidden>PDF 다운로드</a>
+      <a class="calc-btn" id="i2p-download" style="text-align:center; text-decoration:none;" download="images.pdf" hidden>PDF 다운로드</a>
     </div>
   </section>
 
@@ -2509,7 +2673,7 @@
       <div style="display:flex; justify-content:center; margin-top: 20px;">
         <canvas id="cst-canvas" style="max-width:100%;"></canvas>
       </div>
-      <a class="calc-btn secondary-btn" id="cst-download" style="text-align:center; text-decoration:none; display:block;" download="stamp.png" hidden>PNG 다운로드</a>
+      <a class="calc-btn secondary-btn" id="cst-download" style="text-align:center; text-decoration:none;" download="stamp.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
@@ -2584,7 +2748,7 @@
       <div style="display:flex; justify-content:center; margin-top: 16px;">
         <canvas id="idp-canvas" style="max-width:100%; max-height:320px;"></canvas>
       </div>
-      <a class="calc-btn" id="idp-download" style="text-align:center; text-decoration:none; display:block;" download="id-photo.jpg" hidden>다운로드</a>
+      <a class="calc-btn" id="idp-download" style="text-align:center; text-decoration:none;" download="id-photo.jpg" hidden>다운로드</a>
     </div>
   </section>
 
@@ -2624,7 +2788,7 @@
       <div style="display:flex; justify-content:center; margin-top: 20px;">
         <canvas id="sqs-canvas" style="max-width:100%;"></canvas>
       </div>
-      <a class="calc-btn secondary-btn" id="sqs-download" style="text-align:center; text-decoration:none; display:block;" download="square-stamp.png" hidden>PNG 다운로드</a>
+      <a class="calc-btn secondary-btn" id="sqs-download" style="text-align:center; text-decoration:none;" download="square-stamp.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
@@ -2650,7 +2814,7 @@
       <div style="display:flex; justify-content:center; margin-top:16px; background: repeating-conic-gradient(#888 0% 25%, #bbb 0% 50%) 50% / 16px 16px; border-radius: 12px;">
         <canvas id="scut-canvas" style="max-width:100%; max-height:320px;"></canvas>
       </div>
-      <a class="calc-btn" id="scut-download" style="text-align:center; text-decoration:none; display:block;" download="stamp-cutout.png" hidden>PNG 다운로드</a>
+      <a class="calc-btn" id="scut-download" style="text-align:center; text-decoration:none;" download="stamp-cutout.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
@@ -2666,7 +2830,7 @@
       <div style="display:flex; justify-content:center; margin-top: 20px;">
         <canvas id="sti-canvas" style="max-width:100%;"></canvas>
       </div>
-      <a class="calc-btn secondary-btn" id="sti-download" style="text-align:center; text-decoration:none; display:block;" download="name-stamp.png" hidden>PNG 다운로드</a>
+      <a class="calc-btn secondary-btn" id="sti-download" style="text-align:center; text-decoration:none;" download="name-stamp.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
@@ -2682,7 +2846,7 @@
       <div style="display:flex; justify-content:center; margin-top: 20px;">
         <canvas id="bnp-canvas" style="max-width:100%;"></canvas>
       </div>
-      <a class="calc-btn secondary-btn" id="bnp-download" style="text-align:center; text-decoration:none; display:block;" download="nameplate.png" hidden>PNG 다운로드</a>
+      <a class="calc-btn secondary-btn" id="bnp-download" style="text-align:center; text-decoration:none;" download="nameplate.png" hidden>PNG 다운로드</a>
     </div>
   </section>
 
@@ -2858,7 +3022,7 @@
       <div style="overflow-x: auto; text-align: center; margin-top: 20px;">
         <canvas id="bar-canvas" style="max-width: 100%;"></canvas>
       </div>
-      <a class="calc-btn secondary-btn" id="bar-download" style="text-align:center; text-decoration:none; display:block;" download="barcode.png" hidden>PNG 다운로드</a>
+      <a class="calc-btn secondary-btn" id="bar-download" style="text-align:center; text-decoration:none;" download="barcode.png" hidden>PNG 다운로드</a>
       <p class="wip-note">지원 문자: 0-9, A-Z(자동 대문자 변환), 공백, - . $ / + %</p>
     </div>
   </section>
@@ -2881,7 +3045,7 @@
         <label>SRT 결과</label>
         <div class="field-input-wrap"><textarea id="smi-output" rows="10" readonly></textarea></div>
       </div>
-      <a class="calc-btn secondary-btn" id="smi-download" style="text-align:center; text-decoration:none; display:block;" download="subtitle.srt" hidden>SRT 다운로드</a>
+      <a class="calc-btn secondary-btn" id="smi-download" style="text-align:center; text-decoration:none;" download="subtitle.srt" hidden>SRT 다운로드</a>
     </div>
   </section>
 
