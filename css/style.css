@@ -508,11 +508,12 @@ body {
   color: var(--accent);
 }
 
+/* random-picker 등 참고 사이트처럼 박스로 감싸지 않는 담백한 구성
+   (카드 배경·테두리 없이 여백으로만 구획) */
 .card {
-  background: var(--card);
-  border-radius: 20px;
-  padding: 32px;
-  margin-bottom: 28px;
+  background: transparent;
+  padding: 0;
+  margin-bottom: 32px;
   max-width: 760px;
   margin-left: auto;
   margin-right: auto;
@@ -743,9 +744,7 @@ body {
   }
 
   .card {
-    padding: 18px;
-    border-radius: 20px;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
   }
   .field-row {
     grid-template-columns: 1fr;
