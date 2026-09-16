@@ -20,17 +20,6 @@ function initThemeToggle() {
   });
 }
 
-function initMenu() {
-  const menu = document.getElementById("menu");
-  const toggle = document.getElementById("menu-toggle");
-  if (!menu || !toggle) return;
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    menu.classList.toggle("open");
-  });
-  document.addEventListener("click", () => menu.classList.remove("open"));
-}
-
 /* ---------- itool.co.kr 느낌: 카드 그리드 허브 ↔ 개별 도구 화면 전환 ---------- */
 function showTool(target) {
   document.getElementById("tool-hub").hidden = true;
@@ -269,7 +258,6 @@ function initUrlTools() {
 
 function init() {
   initThemeToggle();
-  initMenu();
   initTabs();
   initSearch();
   initCharCount();

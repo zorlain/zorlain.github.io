@@ -20,17 +20,6 @@ function initThemeToggle() {
   });
 }
 
-function initMenu() {
-  const menu = document.getElementById("menu");
-  const toggle = document.getElementById("menu-toggle");
-  if (!menu || !toggle) return;
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    menu.classList.toggle("open");
-  });
-  document.addEventListener("click", () => menu.classList.remove("open"));
-}
-
 /* ---------- 비밀번호 생성 ---------- */
 const CHARSETS = {
   upper: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
@@ -226,7 +215,6 @@ function initGenerateMany() {
 
 function init() {
   initThemeToggle();
-  initMenu();
   initGenerate();
   initGenerateMany();
 }

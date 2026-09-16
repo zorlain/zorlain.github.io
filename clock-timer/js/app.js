@@ -22,17 +22,6 @@ function initThemeToggle() {
   });
 }
 
-function initMenu() {
-  const menu = document.getElementById("menu");
-  const toggle = document.getElementById("menu-toggle");
-  if (!menu || !toggle) return;
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    menu.classList.toggle("open");
-  });
-  document.addEventListener("click", () => menu.classList.remove("open"));
-}
-
 function initInfoTooltips() {
   document.querySelectorAll(".info-btn").forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -461,7 +450,6 @@ function initClock() {
 /* ---------- 초기화 ---------- */
 function init() {
   initThemeToggle();
-  initMenu();
   initTabs();
   initInfoTooltips();
   initTimer();

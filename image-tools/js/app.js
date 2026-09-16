@@ -20,17 +20,6 @@ function initThemeToggle() {
   });
 }
 
-function initMenu() {
-  const menu = document.getElementById("menu");
-  const toggle = document.getElementById("menu-toggle");
-  if (!menu || !toggle) return;
-  toggle.addEventListener("click", (e) => {
-    e.stopPropagation();
-    menu.classList.toggle("open");
-  });
-  document.addEventListener("click", () => menu.classList.remove("open"));
-}
-
 function initSegmented(id) {
   const wrap = document.getElementById(id);
   if (!wrap) return;
@@ -175,7 +164,6 @@ function initProcess() {
 
 function init() {
   initThemeToggle();
-  initMenu();
   initSegmented("opt-format");
   initUpload();
   initOptions();
