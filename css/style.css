@@ -779,3 +779,20 @@ body {
   line-height: 1.6;
   margin: 0;
 }
+
+.ad-video {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin: 8px 0 20px;
+}
+.ad-video[hidden] { display: none; }
+.ad-video img {
+  width: 140px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.ad-video-title { font-weight: 600; line-height: 1.4; }
+.ad-video-author { color: var(--text-muted); font-size: 14px; margin-top: 4px; }

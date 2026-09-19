@@ -724,32 +724,91 @@ function initSavings() {
   });
 }
 
-/* ---------- 애드센스 현실 계산기 ---------- */
+/* ---------- 애드센스 계산기 (유튜브 링크 → 조회수 → 예상 수익) ---------- */
+function extractYoutubeId(text) {
+  const m = text.trim().match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/|v\/))([\w-]{11})/);
+  return m ? m[1] : null;
+}
+
 function initAdsense() {
-  document.getElementById("ad-calc-btn").addEventListener("click", () => {
-    const errorEl = document.getElementById("ad-error");
-    const resultEl = document.getElementById("ad-result");
-    errorEl.hidden = true;
-    resultEl.hidden = true;
+  const urlEl = document.getElementById("ad-url");
+  const rpmEl = document.getElementById("ad-rpm");
+  const errorEl = document.getElementById("ad-error");
+  const statusEl = document.getElementById("ad-status");
+  const resultEl = document.getElementById("ad-result");
+  const videoEl = document.getElementById("ad-video");
+  let views = null;
+  let seq = 0;
 
-    const visitors = Number(document.getElementById("ad-visitors").value);
-    const ctr = Number(document.getElementById("ad-ctr").value);
-    const cpc = Number(document.getElementById("ad-cpc").value);
-
-    if (!visitors || !ctr || !cpc) {
-      errorEl.hidden = false;
-      errorEl.textContent = "방문자 수, CTR, CPC를 모두 입력해주세요.";
+  function render() {
+    if (views === null) return;
+    const rpm = Number(String(rpmEl.value).replace(/,/g, ""));
+    if (!rpm || rpm < 0) {
+      resultEl.hidden = true;
       return;
     }
-
-    const dailyClicks = visitors * (ctr / 100);
-    const dailyRevenue = dailyClicks * cpc;
-    const monthlyRevenue = dailyRevenue * 30;
-
-    document.getElementById("ad-daily-value").textContent = formatWon(dailyRevenue);
-    document.getElementById("ad-monthly-value").textContent = formatWon(monthlyRevenue);
+    document.getElementById("ad-views-value").textContent = `${views.toLocaleString()}회`;
+    document.getElementById("ad-revenue-value").textContent = formatWon((views / 1000) * rpm);
+    document.getElementById("ad-range-value").textContent =
+      `${formatWon((views / 1000) * 1000)} ~ ${formatWon((views / 1000) * 3500)}`;
     resultEl.hidden = false;
+  }
+
+  function reset() {
+    views = null;
+    errorEl.hidden = true;
+    statusEl.hidden = true;
+    resultEl.hidden = true;
+    videoEl.hidden = true;
+  }
+
+  async function load() {
+    const id = extractYoutubeId(urlEl.value);
+    const my = ++seq;
+    reset();
+    if (!urlEl.value.trim()) return;
+    if (!id) {
+      errorEl.hidden = false;
+      errorEl.textContent = "올바른 유튜브 영상 링크를 입력해주세요.";
+      return;
+    }
+    statusEl.hidden = false;
+    statusEl.textContent = "조회수를 불러오는 중...";
+    try {
+      const [votes, oembed] = await Promise.all([
+        fetch(`https://returnyoutubedislikeapi.com/votes?videoId=${id}`).then((r) => {
+          if (!r.ok) throw new Error();
+          return r.json();
+        }),
+        fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent("https://www.youtube.com/watch?v=" + id)}&format=json`)
+          .then((r) => (r.ok ? r.json() : null))
+          .catch(() => null),
+      ]);
+      if (my !== seq) return;
+      if (typeof votes.viewCount !== "number") throw new Error();
+      views = votes.viewCount;
+      statusEl.hidden = true;
+      if (oembed) {
+        document.getElementById("ad-thumb").src = oembed.thumbnail_url || "";
+        document.getElementById("ad-title").textContent = oembed.title || "";
+        document.getElementById("ad-author").textContent = oembed.author_name || "";
+        videoEl.hidden = false;
+      }
+      render();
+    } catch (e) {
+      if (my !== seq) return;
+      statusEl.hidden = true;
+      errorEl.hidden = false;
+      errorEl.textContent = "조회수를 불러오지 못했습니다. 링크를 확인하거나 잠시 후 다시 시도해주세요.";
+    }
+  }
+
+  let timer;
+  urlEl.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(load, 400);
   });
+  rpmEl.addEventListener("input", render);
 }
 
 /* ---------- JSON <-> CSV 변환기 ---------- */
