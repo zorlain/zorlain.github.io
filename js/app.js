@@ -4516,6 +4516,27 @@ function initCatNav() {
   updateActive();
 }
 
+function initToolHeroes() {
+  document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
+    const card = document.querySelector(`.tool-card[data-tab="${panel.dataset.tabPanel}"]`);
+    if (!card || panel.querySelector(".tool-hero")) return;
+    const title = card.querySelector(".tool-card-title");
+    const desc = card.querySelector(".tool-card-desc");
+    if (!title) return;
+    const hero = document.createElement("div");
+    hero.className = "tool-hero";
+    const h1 = document.createElement("h1");
+    h1.textContent = title.textContent;
+    hero.appendChild(h1);
+    if (desc) {
+      const p = document.createElement("p");
+      p.textContent = desc.textContent;
+      hero.appendChild(p);
+    }
+    panel.insertBefore(hero, panel.firstChild);
+  });
+}
+
 function initDropzones() {
   document.querySelectorAll(".wip-dropzone").forEach((zone) => {
     const input = zone.querySelector('input[type="file"]');
@@ -4557,6 +4578,7 @@ function init() {
   initTabs();
   initSearch();
   initCatNav();
+  initToolHeroes();
   initDropzones();
   initJsonFormatter();
   initBase64();
