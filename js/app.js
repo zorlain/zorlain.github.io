@@ -811,15 +811,18 @@ function initAdsense() {
   rpmEl.addEventListener("input", render);
 }
 
-/* ---------- 블로그 애드센스 계산기 ---------- */
+/* ---------- 애드센스 계산기 (블로그 링크 → 게시 빈도로 방문자 추정 → 수익) ---------- */
 function initBlogAdsense() {
   const urlEl = document.getElementById("bl-url");
   const infoEl = document.getElementById("bl-info");
   const rpmEl = document.getElementById("bl-rpm");
   const errorEl = document.getElementById("bl-error");
   const resultEl = document.getElementById("bl-result");
+  const hintEl = document.getElementById("bl-hint");
+  const visitorsEl = document.getElementById("bl-visitors");
   const num = (id) => Number(String(document.getElementById(id).value).replace(/,/g, ""));
   let seq = 0;
+  let manual = false;
 
   function render() {
     const visitors = num("bl-visitors");
@@ -845,6 +848,14 @@ function initBlogAdsense() {
     return { name: "개인 블로그", rpm: 2000 };
   }
 
+  function feedUrlOf(u) {
+    if (/blog\.naver\.com$/.test(u.hostname)) {
+      const id = u.searchParams.get("blogId") || u.pathname.split("/").filter(Boolean)[0];
+      return "https://rss.blog.naver.com/" + id + ".xml";
+    }
+    return u.origin + "/rss";
+  }
+
   async function detect() {
     const my = ++seq;
     infoEl.hidden = true;
@@ -862,17 +873,35 @@ function initBlogAdsense() {
     errorEl.hidden = true;
     const p = platformOf(u.hostname);
     rpmEl.value = p.rpm;
+    manual = false;
     infoEl.hidden = false;
-    infoEl.textContent = `${p.name} · ${u.hostname} (기본 RPM ${p.rpm.toLocaleString()}원 적용)`;
-    render();
+    infoEl.textContent = "게시글 정보를 불러오는 중...";
+
+    let est = 100;
+    let note = "게시글 정보를 불러오지 못해 기본값(일 100명)으로 추정했습니다.";
     try {
-      const r = await fetch("https://r.jina.ai/" + u.href, { headers: { Accept: "application/json" } });
+      const r = await fetch("https://r.jina.ai/" + feedUrlOf(u), { headers: { Accept: "application/json" } });
       const d = await r.json();
-      const title = d && d.data && d.data.title;
-      if (my === seq && title) infoEl.textContent = `${title} — ${p.name} (기본 RPM ${p.rpm.toLocaleString()}원 적용)`;
+      const text = (d && d.data && d.data.content) || "";
+      const dates = (text.match(/\b\d{1,2} [A-Z][a-z]{2} \d{4}\b|\b\d{4}-\d{2}-\d{2}(?=T)/g) || [])
+        .map((s) => new Date(s).getTime())
+        .filter((t) => !isNaN(t));
+      if (dates.length >= 2) {
+        const spanDays = Math.max(7, (Math.max(...dates) - Math.min(...dates)) / 86400000);
+        const per30 = (dates.length / spanDays) * 30;
+        est = Math.max(20, Math.round((30 + per30 * 12) / 10) * 10);
+        note = "최근 게시글 " + dates.length + "개, 월 약 " + per30.toFixed(1) + "개 발행 기준으로 추정";
+      }
     } catch (e) {
-      /* 제목 조회 실패는 무시 */
+      /* 조회 실패 시 기본값 사용 */
     }
+    if (my !== seq) return;
+    if (!manual) {
+      visitorsEl.value = est;
+      hintEl.hidden = false;
+    }
+    infoEl.textContent = p.name + " · " + u.hostname + " — " + note;
+    render();
   }
 
   let timer;
@@ -881,6 +910,10 @@ function initBlogAdsense() {
     timer = setTimeout(detect, 400);
   });
   ["bl-visitors", "bl-pv", "bl-rpm"].forEach((id) => document.getElementById(id).addEventListener("input", render));
+  visitorsEl.addEventListener("input", () => {
+    manual = true;
+    hintEl.hidden = true;
+  });
 }
 
 /* ---------- JSON <-> CSV 변환기 ---------- */

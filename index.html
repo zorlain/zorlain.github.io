@@ -46,7 +46,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="css/style.css?v=20260919" />
+<link rel="stylesheet" href="css/style.css?v=20260919b" />
 </head>
 <body>
 <header class="topbar">
@@ -1590,6 +1590,7 @@
         <div class="field-row">
           <div class="field-group">
             <label for="bl-visitors">일 평균 방문자 수</label>
+            <p class="wip-note" id="bl-hint" hidden>링크 기반 자동 추정값입니다. 알고 있다면 직접 고치세요.</p>
             <div class="field-input-wrap"><input type="text" inputmode="numeric" id="bl-visitors" placeholder="예: 500" /></div>
           </div>
           <div class="field-group">
@@ -1616,7 +1617,7 @@
             <div class="result-stat-value" id="bl-yearly-value">-</div>
           </div>
         </div>
-        <p class="wip-note">블로그 방문자 수는 외부에서 조회할 수 없어 직접 입력해야 합니다. 링크는 블로그 종류와 제목 확인에 쓰이며, 종류에 따라 RPM 기본값이 자동으로 채워집니다. 실제 수익은 주제·국가·광고 배치에 따라 크게 달라지는 참고용 추정치입니다.</p>
+        <p class="wip-note">블로그 방문자 수는 외부에서 조회할 수 없어, 링크의 최근 게시글 발행 빈도로 방문자 수를 대략 추정합니다(정확한 값이 아닙니다). 블로그 종류에 따라 RPM 기본값도 자동으로 채워집니다. 실제 수익은 주제·국가·광고 배치에 따라 크게 달라지는 참고용 추정치입니다.</p>
     </div>
   </section>
 
@@ -3222,6 +3223,6 @@
 
 <footer class="site-footer">© toolbox — <a href="https://zorlain.github.io/">zorlain</a></footer>
 
-<script src="js/app.js?v=20260919"></script>
+<script src="js/app.js?v=20260919b"></script>
 </body>
 </html>
