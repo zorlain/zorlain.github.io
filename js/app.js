@@ -724,10 +724,26 @@ function initSavings() {
   });
 }
 
-/* ---------- 애드센스 계산기 (유튜브 링크 → 조회수 → 예상 수익) ---------- */
+/* ---------- 유튜브 수익 계산기 (영상 링크 / 채널 링크 → 예상 수익) ---------- */
+// 채널 조회에는 YouTube Data API v3 키가 필요합니다 (HTTP 리퍼러 제한을 건 키를 넣으세요).
+const YT_API_KEY = "";
+
 function extractYoutubeId(text) {
   const m = text.trim().match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/|v\/))([\w-]{11})/);
   return m ? m[1] : null;
+}
+
+function parseYoutubeChannel(text) {
+  const raw = text.trim();
+  if (!/youtube\.com\//i.test(raw) && !/^@[\w.\-]+$/.test(raw)) return null;
+  const path = /^@/.test(raw) ? "/" + raw : new URL(/^https?:\/\//i.test(raw) ? raw : "https://" + raw).pathname;
+  let m = path.match(/^\/(@[^\/?#]+)/);
+  if (m) return { handle: decodeURIComponent(m[1]) };
+  m = path.match(/^\/channel\/(UC[\w-]{22})/);
+  if (m) return { id: m[1] };
+  m = path.match(/^\/(?:c|user)\/([^\/?#]+)/);
+  if (m) return { query: decodeURIComponent(m[1]) };
+  return null;
 }
 
 function initAdsense() {
@@ -736,49 +752,65 @@ function initAdsense() {
   const errorEl = document.getElementById("ad-error");
   const statusEl = document.getElementById("ad-status");
   const resultEl = document.getElementById("ad-result");
+  const chResultEl = document.getElementById("ad-ch-result");
   const videoEl = document.getElementById("ad-video");
   let views = null;
+  let channel = null;
   let seq = 0;
-  const viewsEl = document.getElementById("ad-views");
+
+  const rpm = () => Number(String(rpmEl.value).replace(/,/g, ""));
 
   function render() {
-    const typed = Number(String(viewsEl.value).replace(/,/g, ""));
-    views = typed > 0 ? typed : null;
-    if (views === null) {
+    const r = rpm();
+    if (!r || r < 0) {
       resultEl.hidden = true;
+      chResultEl.hidden = true;
       return;
     }
-    const rpm = Number(String(rpmEl.value).replace(/,/g, ""));
-    if (!rpm || rpm < 0) {
-      resultEl.hidden = true;
-      return;
+    if (views !== null) {
+      document.getElementById("ad-views-value").textContent = `${views.toLocaleString()}회`;
+      document.getElementById("ad-revenue-value").textContent = formatWon((views / 1000) * r);
+      document.getElementById("ad-range-value").textContent =
+        `${formatWon((views / 1000) * 1000)} ~ ${formatWon((views / 1000) * 3500)}`;
+      resultEl.hidden = false;
     }
-    document.getElementById("ad-views-value").textContent = `${views.toLocaleString()}회`;
-    document.getElementById("ad-revenue-value").textContent = formatWon((views / 1000) * rpm);
-    document.getElementById("ad-range-value").textContent =
-      `${formatWon((views / 1000) * 1000)} ~ ${formatWon((views / 1000) * 3500)}`;
-    resultEl.hidden = false;
+    if (channel) {
+      document.getElementById("ad-ch-monthly").textContent = formatWon((channel.recent / 1000) * r);
+      document.getElementById("ad-ch-total").textContent = formatWon((channel.views / 1000) * r);
+      chResultEl.hidden = false;
+    }
   }
 
   function reset() {
     views = null;
-    viewsEl.value = "";
+    channel = null;
     errorEl.hidden = true;
     statusEl.hidden = true;
     resultEl.hidden = true;
+    chResultEl.hidden = true;
     videoEl.hidden = true;
   }
 
-  async function load() {
-    const id = extractYoutubeId(urlEl.value);
-    const my = ++seq;
-    reset();
-    if (!urlEl.value.trim()) return;
-    if (!id) {
-      errorEl.hidden = false;
-      errorEl.textContent = "올바른 유튜브 영상 링크를 입력해주세요.";
-      return;
-    }
+  function fail(msg) {
+    statusEl.hidden = true;
+    errorEl.hidden = false;
+    errorEl.textContent = msg;
+  }
+
+  function showHeader(img, title, author) {
+    document.getElementById("ad-thumb").src = img || "";
+    document.getElementById("ad-title").textContent = title || "";
+    document.getElementById("ad-author").textContent = author || "";
+    videoEl.hidden = false;
+  }
+
+  async function api(path) {
+    const r = await fetch(`https://www.googleapis.com/youtube/v3/${path}&key=${YT_API_KEY}`);
+    if (!r.ok) throw new Error(String(r.status));
+    return r.json();
+  }
+
+  async function loadVideo(id, my) {
     statusEl.hidden = false;
     statusEl.textContent = "조회수를 불러오는 중...";
     try {
@@ -793,22 +825,89 @@ function initAdsense() {
       ]);
       if (my !== seq) return;
       if (typeof votes.viewCount !== "number") throw new Error();
-      viewsEl.value = votes.viewCount.toLocaleString();
+      views = votes.viewCount;
       rpmEl.value = urlEl.value.includes("/shorts/") ? 300 : 2000;
       statusEl.hidden = true;
-      if (oembed) {
-        document.getElementById("ad-thumb").src = oembed.thumbnail_url || "";
-        document.getElementById("ad-title").textContent = oembed.title || "";
-        document.getElementById("ad-author").textContent = oembed.author_name || "";
-        videoEl.hidden = false;
-      }
+      if (oembed) showHeader(oembed.thumbnail_url, oembed.title, oembed.author_name);
       render();
     } catch (e) {
-      if (my !== seq) return;
-      statusEl.hidden = true;
-      errorEl.hidden = false;
-      errorEl.textContent = "조회수를 불러오지 못했습니다. 링크를 확인하거나 잠시 후 다시 시도해주세요.";
+      if (my === seq) fail("조회수를 불러오지 못했습니다. 링크를 확인하거나 잠시 후 다시 시도해주세요.");
     }
+  }
+
+  async function loadChannel(ch, my) {
+    if (!YT_API_KEY) {
+      fail("채널 조회는 준비 중입니다. 영상 링크로는 바로 계산할 수 있습니다.");
+      return;
+    }
+    statusEl.hidden = false;
+    statusEl.textContent = "채널 정보를 불러오는 중...";
+    try {
+      const part = "part=snippet,statistics,contentDetails";
+      let item;
+      if (ch.handle) {
+        const d = await api(`channels?${part}&forHandle=${encodeURIComponent(ch.handle)}`);
+        item = d.items && d.items[0];
+      } else if (ch.id) {
+        const d = await api(`channels?${part}&id=${ch.id}`);
+        item = d.items && d.items[0];
+      } else {
+        const s = await api(`search?part=snippet&type=channel&maxResults=1&q=${encodeURIComponent(ch.query)}`);
+        const found = s.items && s.items[0] && s.items[0].snippet.channelId;
+        if (found) {
+          const d = await api(`channels?${part}&id=${found}`);
+          item = d.items && d.items[0];
+        }
+      }
+      if (my !== seq) return;
+      if (!item) throw new Error("none");
+
+      const st = item.statistics;
+      const totalViews = Number(st.viewCount) || 0;
+      let recent = 0;
+      const uploads = item.contentDetails.relatedPlaylists.uploads;
+      const pl = await api(`playlistItems?part=contentDetails&maxResults=50&playlistId=${uploads}`);
+      const since = Date.now() - 30 * 86400000;
+      const ids = (pl.items || [])
+        .filter((v) => new Date(v.contentDetails.videoPublishedAt).getTime() >= since)
+        .map((v) => v.contentDetails.videoId);
+      if (ids.length) {
+        const vd = await api(`videos?part=statistics&id=${ids.join(",")}`);
+        recent = (vd.items || []).reduce((sum, v) => sum + (Number(v.statistics.viewCount) || 0), 0);
+      }
+      if (my !== seq) return;
+
+      channel = { views: totalViews, recent };
+      const thumbs = item.snippet.thumbnails || {};
+      showHeader((thumbs.medium || thumbs.default || {}).url, item.snippet.title, item.snippet.customUrl || "");
+      document.getElementById("ad-ch-subs").textContent = st.hiddenSubscriberCount
+        ? "비공개"
+        : `${Number(st.subscriberCount).toLocaleString()}명`;
+      document.getElementById("ad-ch-views").textContent =
+        `${totalViews.toLocaleString()}회 · ${Number(st.videoCount).toLocaleString()}개`;
+      document.getElementById("ad-ch-recent").textContent = `${recent.toLocaleString()}회 (${ids.length}개 영상)`;
+      statusEl.hidden = true;
+      render();
+    } catch (e) {
+      if (my === seq) fail("채널 정보를 불러오지 못했습니다. 링크를 확인하거나 잠시 후 다시 시도해주세요.");
+    }
+  }
+
+  async function load() {
+    const text = urlEl.value;
+    const my = ++seq;
+    reset();
+    if (!text.trim()) return;
+    const id = extractYoutubeId(text);
+    if (id) return loadVideo(id, my);
+    let ch = null;
+    try {
+      ch = parseYoutubeChannel(text);
+    } catch (e) {
+      /* 잘못된 URL */
+    }
+    if (ch) return loadChannel(ch, my);
+    fail("올바른 유튜브 영상 또는 채널 링크를 입력해주세요.");
   }
 
   let timer;
@@ -817,7 +916,6 @@ function initAdsense() {
     timer = setTimeout(load, 400);
   });
   rpmEl.addEventListener("input", render);
-  viewsEl.addEventListener("input", render);
 }
 
 /* ---------- 애드센스 계산기 (블로그 링크 → 게시 빈도로 방문자 추정 → 수익) ---------- */
