@@ -297,6 +297,16 @@
         <span class="tool-card-desc">유튜브 링크만 넣으면 조회수를 불러와 예상 수익을 자동으로 계산합니다.</span>
         <span class="tool-card-tags"><span class="tool-tag">애드센스</span><span class="tool-tag">유튜브</span></span>
       </button>
+      <button type="button" class="tool-card" data-tab="blog-adsense" data-tags="블로그 애드센스 계산기 티스토리 광고수익">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 4h14v16H5z" /><path d="M9 8h6M9 12h6M9 16h3" />
+          </svg>
+        </span>
+        <span class="tool-card-title">블로그 애드센스 계산기</span>
+        <span class="tool-card-desc">블로그 링크와 방문자 수로 예상 광고 수익을 계산합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">블로그</span><span class="tool-tag">티스토리</span></span>
+      </button>
     </div>
 
     <div class="tool-section-label" id="cat-text2">텍스트</div>
@@ -1569,6 +1579,47 @@
         <p class="wip-note">링크를 붙여넣으면 자동으로 계산됩니다. 조회수는 외부 공개 데이터 기준이며, 실제 수익은 국가·시청 시간·광고 유형·영상 주제에 따라 크게 달라지는 참고용 추정치입니다.</p>
     </div>
   </section>
+
+  <section class="tab-panel" data-tab-panel="blog-adsense" hidden>
+    <div class="card">
+        <div class="field-group">
+          <label for="bl-url">블로그 링크</label>
+          <div class="field-input-wrap"><input type="text" id="bl-url" placeholder="https://myblog.tistory.com" autocomplete="off" /></div>
+        </div>
+        <p class="wip-note" id="bl-info" hidden></p>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="bl-visitors">일 평균 방문자 수</label>
+            <div class="field-input-wrap"><input type="text" inputmode="numeric" id="bl-visitors" placeholder="예: 500" /></div>
+          </div>
+          <div class="field-group">
+            <label for="bl-pv">방문자당 페이지뷰</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="bl-pv" value="1.5" /></div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="bl-rpm">RPM - 페이지뷰 1,000회당 수익 (원)</label>
+          <div class="field-input-wrap"><input type="text" inputmode="numeric" id="bl-rpm" value="2000" /></div>
+        </div>
+        <p class="calc-error-msg" id="bl-error" hidden></p>
+        <div class="tool-btn-grid" id="bl-result" hidden>
+          <div class="result-stat">
+            <div class="result-stat-label">일 예상 수익</div>
+            <div class="result-stat-value" id="bl-daily-value">-</div>
+          </div>
+          <div class="result-stat highlight">
+            <div class="result-stat-label">월 예상 수익</div>
+            <div class="result-stat-value" id="bl-monthly-value">-</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-label">연 예상 수익</div>
+            <div class="result-stat-value" id="bl-yearly-value">-</div>
+          </div>
+        </div>
+        <p class="wip-note">블로그 방문자 수는 외부에서 조회할 수 없어 직접 입력해야 합니다. 링크는 블로그 종류와 제목 확인에 쓰이며, 종류에 따라 RPM 기본값이 자동으로 채워집니다. 실제 수익은 주제·국가·광고 배치에 따라 크게 달라지는 참고용 추정치입니다.</p>
+    </div>
+  </section>
+
 
   <!-- 텍스트 신규 8종 -->
   <section class="tab-panel" data-tab-panel="tts" hidden>

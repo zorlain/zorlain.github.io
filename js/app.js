@@ -811,6 +811,78 @@ function initAdsense() {
   rpmEl.addEventListener("input", render);
 }
 
+/* ---------- 블로그 애드센스 계산기 ---------- */
+function initBlogAdsense() {
+  const urlEl = document.getElementById("bl-url");
+  const infoEl = document.getElementById("bl-info");
+  const rpmEl = document.getElementById("bl-rpm");
+  const errorEl = document.getElementById("bl-error");
+  const resultEl = document.getElementById("bl-result");
+  const num = (id) => Number(String(document.getElementById(id).value).replace(/,/g, ""));
+  let seq = 0;
+
+  function render() {
+    const visitors = num("bl-visitors");
+    const pv = num("bl-pv");
+    const rpm = num("bl-rpm");
+    errorEl.hidden = true;
+    if (!visitors || !pv || !rpm) {
+      resultEl.hidden = true;
+      return;
+    }
+    const daily = ((visitors * pv) / 1000) * rpm;
+    document.getElementById("bl-daily-value").textContent = formatWon(daily);
+    document.getElementById("bl-monthly-value").textContent = formatWon(daily * 30);
+    document.getElementById("bl-yearly-value").textContent = formatWon(daily * 365);
+    resultEl.hidden = false;
+  }
+
+  function platformOf(host) {
+    if (/tistory\.com$/.test(host)) return { name: "티스토리", rpm: 2500 };
+    if (/blog\.naver\.com$/.test(host)) return { name: "네이버 블로그(애드포스트)", rpm: 800 };
+    if (/blogspot\.com$/.test(host) || /blogger\.com$/.test(host)) return { name: "블로거", rpm: 2500 };
+    if (/velog\.io$/.test(host)) return { name: "벨로그", rpm: 1500 };
+    return { name: "개인 블로그", rpm: 2000 };
+  }
+
+  async function detect() {
+    const my = ++seq;
+    infoEl.hidden = true;
+    const raw = urlEl.value.trim();
+    if (!raw) return;
+    let u;
+    try {
+      u = new URL(/^https?:\/\//i.test(raw) ? raw : "https://" + raw);
+      if (!u.hostname.includes(".")) throw new Error();
+    } catch (e) {
+      errorEl.hidden = false;
+      errorEl.textContent = "올바른 블로그 링크를 입력해주세요.";
+      return;
+    }
+    errorEl.hidden = true;
+    const p = platformOf(u.hostname);
+    rpmEl.value = p.rpm;
+    infoEl.hidden = false;
+    infoEl.textContent = `${p.name} · ${u.hostname} (기본 RPM ${p.rpm.toLocaleString()}원 적용)`;
+    render();
+    try {
+      const r = await fetch("https://r.jina.ai/" + u.href, { headers: { Accept: "application/json" } });
+      const d = await r.json();
+      const title = d && d.data && d.data.title;
+      if (my === seq && title) infoEl.textContent = `${title} — ${p.name} (기본 RPM ${p.rpm.toLocaleString()}원 적용)`;
+    } catch (e) {
+      /* 제목 조회 실패는 무시 */
+    }
+  }
+
+  let timer;
+  urlEl.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(detect, 400);
+  });
+  ["bl-visitors", "bl-pv", "bl-rpm"].forEach((id) => document.getElementById(id).addEventListener("input", render));
+}
+
 /* ---------- JSON <-> CSV 변환기 ---------- */
 function jsonArrayToCsv(arr) {
   if (!Array.isArray(arr) || arr.length === 0) throw new Error("빈 배열이거나 배열이 아닙니다.");
@@ -4653,6 +4725,7 @@ function init() {
   initJeonse();
   initSavings();
   initAdsense();
+  initBlogAdsense();
   initJsonToCsv();
   initUnixTimestamp();
   initBaseConverter();
