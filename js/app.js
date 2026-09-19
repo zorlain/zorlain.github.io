@@ -739,9 +739,15 @@ function initAdsense() {
   const videoEl = document.getElementById("ad-video");
   let views = null;
   let seq = 0;
+  const viewsEl = document.getElementById("ad-views");
 
   function render() {
-    if (views === null) return;
+    const typed = Number(String(viewsEl.value).replace(/,/g, ""));
+    views = typed > 0 ? typed : null;
+    if (views === null) {
+      resultEl.hidden = true;
+      return;
+    }
     const rpm = Number(String(rpmEl.value).replace(/,/g, ""));
     if (!rpm || rpm < 0) {
       resultEl.hidden = true;
@@ -756,6 +762,7 @@ function initAdsense() {
 
   function reset() {
     views = null;
+    viewsEl.value = "";
     errorEl.hidden = true;
     statusEl.hidden = true;
     resultEl.hidden = true;
@@ -786,7 +793,8 @@ function initAdsense() {
       ]);
       if (my !== seq) return;
       if (typeof votes.viewCount !== "number") throw new Error();
-      views = votes.viewCount;
+      viewsEl.value = votes.viewCount.toLocaleString();
+      rpmEl.value = urlEl.value.includes("/shorts/") ? 300 : 2000;
       statusEl.hidden = true;
       if (oembed) {
         document.getElementById("ad-thumb").src = oembed.thumbnail_url || "";
@@ -809,6 +817,7 @@ function initAdsense() {
     timer = setTimeout(load, 400);
   });
   rpmEl.addEventListener("input", render);
+  viewsEl.addEventListener("input", render);
 }
 
 /* ---------- 애드센스 계산기 (블로그 링크 → 게시 빈도로 방문자 추정 → 수익) ---------- */
