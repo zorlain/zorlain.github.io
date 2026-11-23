@@ -54,12 +54,24 @@ function flashCopied(btn, original) {
   }, 1200);
 }
 
-/* ---------- itool.co.kr 느낌: 카드 그리드 허브 ↔ 개별 도구 화면 전환 ---------- */
-function showTool(target) {
+/* ---------- 카드 그리드 허브 ↔ 개별 도구 화면 전환 ----------
+   도구마다 /tools/<id>/ 주소를 가진다. 검색엔진이 따로 색인할 수 있도록 실제 페이지가 있고,
+   허브에서 카드를 누르면 새로 불러오지 않고 같은 주소로 바로 전환한다. */
+const HUB_TITLE = "무료 온라인 도구 모음 - QR코드·이미지 압축·PDF·계산기 | toolbox";
+
+// 사이트가 놓인 폴더 (루트면 "/", 로컬 테스트처럼 하위 폴더면 그 폴더)
+const APP_BASE = (() => {
+  const m = location.pathname.match(/^(.*\/)tools\/[^/]+\/?$/);
+  return m ? m[1] : location.pathname.replace(/[^/]*$/, "");
+})();
+const toolUrl = (id) => `${APP_BASE}tools/${id}/`;
+
+function showTool(target, push = true) {
   document.getElementById("tool-hub").hidden = true;
   document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
     panel.hidden = panel.dataset.tabPanel !== target;
   });
+  ensureToolHero(document.querySelector(`[data-tab-panel="${target}"]`));
   window.scrollTo(0, 0);
   const topbarBack = document.getElementById("topbar-back");
   if (topbarBack) topbarBack.hidden = false;
@@ -67,9 +79,16 @@ function showTool(target) {
   const heading = card && card.querySelector(".tool-card-title");
   const brandSpan = document.querySelector(".brand span");
   if (heading && brandSpan) brandSpan.textContent = heading.textContent;
-  if (!history.state || history.state.tool !== target) {
-    history.pushState({ tool: target }, "", "#" + target);
+  if (heading) document.title = `${heading.textContent} - 무료 온라인 도구 | toolbox`;
+  if (push && (!history.state || history.state.tool !== target)) {
+    history.pushState({ tool: target, fromHub: true }, "", toolUrl(target));
   }
+}
+
+// 도구 화면의 뒤로가기: 허브에서 들어왔으면 이전 화면으로, 주소로 바로 들어왔으면 허브로 간다
+function goBackToHub() {
+  if (history.state && history.state.fromHub) history.back();
+  else location.assign(APP_BASE);
 }
 
 function showHub() {
@@ -81,6 +100,7 @@ function showHub() {
   if (topbarBack) topbarBack.hidden = true;
   const brandSpan = document.querySelector(".brand span");
   if (brandSpan) brandSpan.textContent = "toolbox";
+  document.title = HUB_TITLE;
   window.dispatchEvent(new Event("scroll"));
 }
 
@@ -88,27 +108,44 @@ function initTabs() {
   document.getElementById("tool-hub").addEventListener("click", (e) => {
     const card = e.target.closest(".tool-card[data-tab]");
     if (!card) return;
+    // 새 탭으로 열기(Ctrl·Shift 클릭, 가운데 버튼)는 브라우저 기본 동작에 맡긴다
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
     showTool(card.dataset.tab);
   });
 
-  // 뒤로가기는 항상 history.back()으로 위임해 브라우저/모바일 뒤로가기
-  // 버튼과 동작을 일치시킨다 (popstate 리스너가 실제 화면 전환을 담당).
+  // 뒤로가기는 브라우저/모바일 뒤로가기 버튼과 동작을 일치시킨다
+  // (popstate 리스너가 실제 화면 전환을 담당).
   document.getElementById("tabs").addEventListener("click", (e) => {
-    if (e.target.closest("[data-back]")) history.back();
+    if (e.target.closest("[data-back]")) goBackToHub();
   });
 
   const topbarBack = document.getElementById("topbar-back");
   if (topbarBack) {
-    topbarBack.addEventListener("click", () => history.back());
+    topbarBack.addEventListener("click", goBackToHub);
   }
 
   window.addEventListener("popstate", (e) => {
     if (e.state && e.state.tool) {
-      showTool(e.state.tool);
+      showTool(e.state.tool, false);
     } else {
       showHub();
     }
   });
+
+  // 처음 열린 주소가 도구 주소(/tools/<id>/)이면 그 도구를 바로 보여준다.
+  // 예전 주소 방식(/#도구이름)으로 들어온 경우에는 새 주소로 옮겨 준다.
+  const m = location.pathname.match(/\/tools\/([^/]+)\/?$/);
+  const hashId = location.hash.length > 1 ? decodeURIComponent(location.hash.slice(1)) : "";
+  const has = (id) => !!document.querySelector(`[data-tab-panel="${CSS.escape(id)}"]`);
+  if (m && has(m[1])) {
+    history.replaceState({ tool: m[1], fromHub: false }, "", location.pathname);
+    showTool(m[1], false);
+  } else if (m) {
+    location.replace(APP_BASE);
+  } else if (hashId && has(hashId)) {
+    location.replace(toolUrl(hashId));
+  }
 }
 
 /* ---------- 자주 쓰는 도구 (기존 카드를 복사해 맨 위에 모아 보여준다) ---------- */
@@ -4870,25 +4907,26 @@ function initToolKinds() {
   });
 }
 
-function initToolHeroes() {
-  document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
-    const card = document.querySelector(`.tool-card[data-tab="${panel.dataset.tabPanel}"]`);
-    if (!card || panel.querySelector(".tool-hero")) return;
-    const title = card.querySelector(".tool-card-title");
-    const desc = card.querySelector(".tool-card-desc");
-    if (!title) return;
-    const hero = document.createElement("div");
-    hero.className = "tool-hero";
-    const h1 = document.createElement("h1");
-    h1.textContent = title.textContent;
-    hero.appendChild(h1);
-    if (desc) {
-      const p = document.createElement("p");
-      p.textContent = desc.textContent;
-      hero.appendChild(p);
-    }
-    panel.insertBefore(hero, panel.firstChild);
-  });
+// 도구를 열 때 그 도구 화면 맨 위에 큰 제목(h1)과 설명을 만든다.
+// 허브 화면에서는 제목이 하나뿐이도록, 열지 않은 도구에는 미리 만들지 않는다.
+function ensureToolHero(panel) {
+  if (!panel || panel.querySelector(".tool-hero")) return;
+  const card = document.querySelector(`.tool-card[data-tab="${panel.dataset.tabPanel}"]`);
+  if (!card) return;
+  const title = card.querySelector(".tool-card-title");
+  const desc = card.querySelector(".tool-card-desc");
+  if (!title) return;
+  const hero = document.createElement("div");
+  hero.className = "tool-hero";
+  const h1 = document.createElement("h1");
+  h1.textContent = title.textContent;
+  hero.appendChild(h1);
+  if (desc) {
+    const p = document.createElement("p");
+    p.textContent = desc.textContent;
+    hero.appendChild(p);
+  }
+  panel.insertBefore(hero, panel.firstChild);
 }
 
 function initDropzones() {
@@ -4934,7 +4972,6 @@ function init() {
   initCategoryCounts();
   initSearch();
   initCatNav();
-  initToolHeroes();
   initToolKinds();
   initDropzones();
   initJsonFormatter();

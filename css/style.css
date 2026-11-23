@@ -1026,3 +1026,34 @@ body {
 [data-kind="play"] #rst-box,
 [data-kind="play"] #cps-box { min-height: min(52vh, 420px); }
 [data-kind="play"] .wip-dropzone { min-height: 220px; display: flex; flex-direction: column; justify-content: center; }
+
+/* ---------- 허브 하단 자주 묻는 질문 (검색엔진용 본문) ---------- */
+.seo-faq {
+  max-width: 760px;
+  margin: 24px auto 0;
+}
+.seo-faq h2 {
+  font-size: 18px;
+  margin: 0 0 14px;
+}
+.seo-faq-list details {
+  border-top: 1px solid var(--border);
+  padding: 14px 0;
+}
+.seo-faq-list details:last-child {
+  border-bottom: 1px solid var(--border);
+}
+.seo-faq-list summary {
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+.seo-faq-list p {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+@media (min-width: 900px) {
+  .seo-faq { margin-left: 240px; max-width: 760px; }
+}
