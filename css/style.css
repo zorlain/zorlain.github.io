@@ -868,3 +868,161 @@ body {
 .tool-section-label {
   scroll-margin-top: calc(var(--topbar-h) + 16px);
 }
+
+/* =====================================================================
+   도구 화면 유형별 구성 (data-kind 는 js/app.js 의 initToolKinds 가 붙인다)
+   calc: 위 입력 줄 + 아래 큰 결과 / file: 드롭존 → 하단 실행 바
+   text: 상단 도구줄 + 위아래 / gen: 위 미리보기 + 아래 컨트롤 / play: 상단 기록 바 + 큰 플레이 영역
+   ===================================================================== */
+[data-kind] .card { max-width: 900px; }
+
+/* ---------- A2 계산기: 입력은 한 줄, 결과는 크게 ---------- */
+[data-kind="calc"] .card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px 12px;
+}
+[data-kind="calc"] .card > * { flex: 1 1 100%; min-width: 0; margin-top: 0; margin-bottom: 0; }
+[data-kind="calc"] .field-row,
+[data-kind="calc"] .percent-panel:not([hidden]) { display: contents; }
+[data-kind="calc"] .card .field-group {
+  flex: 1 1 170px;
+  min-width: 0;
+  margin: 0;
+}
+[data-kind="calc"] .card .field-group:has(.segmented),
+[data-kind="calc"] .card .field-group:has(textarea),
+[data-kind="calc"] .card .field-group:has(.range-input),
+[data-kind="calc"] .card .field-group:has(.preset-chips) { flex-basis: 100%; }
+[data-kind="calc"] .card .calc-btn:not(.secondary-btn) {
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 132px;
+  padding: 14px 28px;
+  margin: 0 0 1px;
+  border-radius: 12px;
+}
+[data-kind="calc"] .calc-error-msg { margin: 0; }
+/* 결과: 핵심 값 하나를 크게, 나머지는 타일 */
+[data-kind="calc"] .result-stat { margin: 0; }
+[data-kind="calc"] .result-stat.highlight {
+  flex-basis: 100%;
+  padding: 26px 16px;
+}
+[data-kind="calc"] .result-stat.highlight .result-stat-value {
+  font-size: clamp(30px, 7vw, 52px);
+  line-height: 1.15;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+[data-kind="calc"] .tool-btn-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  margin: 4px 0 0;
+}
+[data-kind="calc"] .tool-btn-grid .result-stat.highlight { grid-column: 1 / -1; order: -1; }
+[data-kind="calc"] .tool-btn-grid .result-stat:not(.highlight) .result-stat-value { font-size: 20px; }
+@media (max-width: 640px) {
+  [data-kind="calc"] .card .calc-btn:not(.secondary-btn) { flex: 1 1 100%; }
+}
+
+/* ---------- B1 파일 처리: 드롭존 → 목록·미리보기 → 하단 고정 실행 바 ---------- */
+[data-kind="file"] .wip-dropzone { padding: 28px 20px; }
+[data-kind="file"] .card > .calc-btn:not([hidden]),
+[data-kind="file"] .card > a.calc-btn:not([hidden]) {
+  position: sticky;
+  bottom: 14px;
+  z-index: 6;
+  box-shadow: 0 0 0 14px var(--bg);
+  margin-top: 22px;
+}
+[data-kind="file"] .tool-btn-grid > .calc-btn:not([hidden]) { box-shadow: none; }
+
+/* ---------- C2 텍스트·코드: 상단 도구줄, 입력은 위, 결과는 아래 ---------- */
+[data-kind="text"] .card { display: flex; flex-direction: column; gap: 14px; }
+[data-kind="text"] .card > * { margin-top: 0; margin-bottom: 0; }
+[data-kind="text"] .card > .card-desc-short { order: -3; }
+[data-kind="text"] .card > .field-row:has(.segmented) { order: -2; }
+[data-kind="text"] .card > .tool-btn-grid {
+  order: -2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+[data-kind="text"] .card > .tool-btn-grid:not(#hg-result) .secondary-btn {
+  width: auto;
+  padding: 9px 18px;
+  font-size: 14px;
+  border-radius: 9999px;
+}
+[data-kind="text"] .card > .calc-btn {
+  order: 5;
+  align-self: flex-end;
+  width: auto;
+  min-width: 140px;
+  padding: 12px 26px;
+  font-size: 14.5px;
+  border-radius: 12px;
+}
+[data-kind="text"] textarea { min-height: 180px; font-family: "JetBrains Mono", "Roboto Mono", Consolas, monospace; font-size: 13.5px; line-height: 1.55; }
+[data-kind="text"] .card > .field-group:has(textarea[readonly]),
+[data-kind="text"] .card > .field-group:has(textarea[id$="-output"]) textarea { background: var(--card); }
+[data-kind="text"] .tool-btn-grid#hg-result { order: 4; }
+
+/* ---------- D2 생성기: 위에 큰 미리보기, 아래에 컨트롤과 코드 ---------- */
+[data-kind="gen"] .card { display: flex; flex-direction: column; gap: 14px; }
+[data-kind="gen"] .card > * { margin-top: 0; margin-bottom: 0; }
+[data-kind="gen"] .card > .card-desc-short { order: -3; }
+[data-kind="gen"] .tk-preview {
+  order: -2;
+  min-height: 200px;
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+[data-kind="gen"] .tk-preview canvas,
+[data-kind="gen"] .tk-preview svg { max-width: 100%; height: auto; }
+[data-kind="gen"] .field-row { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+[data-kind="gen"] .card > .calc-btn {
+  width: auto;
+  align-self: flex-start;
+  padding: 13px 28px;
+  border-radius: 12px;
+}
+[data-kind="gen"] .card > .field-group:last-of-type textarea,
+[data-kind="gen"] .card > .field-group:last-of-type input[readonly] {
+  font-family: "JetBrains Mono", "Roboto Mono", Consolas, monospace;
+  font-size: 13px;
+}
+
+/* ---------- E3 체험·테스트: 상단 기록 바 + 큰 플레이 영역 ---------- */
+[data-kind="play"] .card { display: flex; flex-direction: column; gap: 14px; }
+[data-kind="play"] .card > * { margin-top: 0; margin-bottom: 0; }
+[data-kind="play"] .card > .card-desc-short { order: -3; }
+[data-kind="play"] .card > .result-stat.highlight,
+[data-kind="play"] .card > .tool-btn-grid:has(.result-stat) {
+  order: -2;
+}
+[data-kind="play"] .card > .result-stat.highlight {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 18px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 12px;
+  text-align: left;
+}
+[data-kind="play"] .card > .result-stat.highlight .result-stat-label { font-size: 13px; }
+[data-kind="play"] .card > .result-stat.highlight .result-stat-value { font-size: 20px; color: var(--accent); }
+[data-kind="play"] .card > .tool-btn-grid:has(.result-stat) { grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); margin: 0; }
+[data-kind="play"] .card > .tool-btn-grid .result-stat { margin: 0; padding: 12px 14px; }
+[data-kind="play"] #rst-box,
+[data-kind="play"] #cps-box { min-height: min(52vh, 420px); }
+[data-kind="play"] .wip-dropzone { min-height: 220px; display: flex; flex-direction: column; justify-content: center; }

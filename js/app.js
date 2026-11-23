@@ -4843,6 +4843,33 @@ function initCatNav() {
   updateActive();
 }
 
+/* ---------- 도구 화면 유형 (calc / file / text / gen / play) ---------- */
+const TOOL_KINDS = {
+  calc: ["percent", "loan", "age", "vat", "weekly-pay", "freelance-tax", "severance-pay", "unemployment-benefit", "jeonse-conversion", "savings-calc", "adsense-reality", "blog-adsense", "unix-timestamp", "base-converter", "regex-tester", "http-status", "wcag-contrast", "ip-lookup", "code-finder", "color-converter"],
+  text: ["json", "base64", "yaml-json-toml", "xml-parser", "json-xml", "text-compare", "hangul-typo-fix", "json-to-csv", "sql-formatter", "ascii-converter", "code-minifier", "curl-converter", "jwt-decoder", "tts", "hash-generator", "addr-translate"],
+  gen: ["lorem", "cron-generator", "gitignore-generator", "css-gradient", "css-box-shadow", "cubic-bezier", "favicon-generator", "calendar-print", "chord-sheet", "uuid-generator", "corp-stamp", "device-size-compare", "cinema-size-compare", "square-stamp", "stamp-image", "biz-nameplate", "barcode-generator"],
+  play: ["emoji-symbols", "guitar-tuner", "reaction-speed-test", "cps-test", "typing-speed-test", "metronome", "habit-tracker", "keycode-checker"],
+};
+
+function initToolKinds() {
+  const kindOf = {};
+  Object.entries(TOOL_KINDS).forEach(([kind, ids]) => ids.forEach((id) => (kindOf[id] = kind)));
+  document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
+    // 목록에 없는 나머지는 모두 파일 처리 도구
+    const kind = kindOf[panel.dataset.tabPanel] || "file";
+    panel.dataset.kind = kind;
+    if (kind === "gen") {
+      // 미리보기 영역(캔버스·SVG·미리보기 요소를 담은 상자)을 찾아 맨 위로 올릴 수 있게 표시한다
+      const card = panel.querySelector(".card");
+      if (!card) return;
+      Array.from(card.children).forEach((child) => {
+        if (child.matches(".field-row, .field-group, .tool-btn-grid, .calc-btn, .card-desc-short, .calc-error-msg, .wip-note, .wip-dropzone, .result-stat")) return;
+        if (child.querySelector("canvas, svg, [id*='preview']") || /preview/.test(child.id)) child.classList.add("tk-preview");
+      });
+    }
+  });
+}
+
 function initToolHeroes() {
   document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
     const card = document.querySelector(`.tool-card[data-tab="${panel.dataset.tabPanel}"]`);
@@ -4908,6 +4935,7 @@ function init() {
   initSearch();
   initCatNav();
   initToolHeroes();
+  initToolKinds();
   initDropzones();
   initJsonFormatter();
   initBase64();
