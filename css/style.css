@@ -1057,3 +1057,46 @@ body {
 @media (min-width: 900px) {
   .seo-faq { margin-left: 240px; max-width: 760px; }
 }
+
+/* ---------- 도구 화면 아래: 사용 방법과 자주 묻는 질문 ---------- */
+.tool-guide {
+  max-width: 860px;
+  margin: 44px auto 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.tool-guide h2 {
+  font-size: 18px;
+  margin: 0 0 14px;
+}
+.tool-guide h2:not(:first-child) {
+  margin-top: 30px;
+}
+.tool-guide-steps {
+  margin: 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.7;
+}
+.tool-guide-tip {
+  margin: 18px 0 0;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text-muted);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+.tool-guide-tip b {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--accent);
+  font-size: 13px;
+}
+.tool-guide .seo-faq-list details {
+  border-top: 1px solid var(--border);
+  padding: 14px 0;
+}

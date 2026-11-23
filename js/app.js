@@ -71,7 +71,9 @@ function showTool(target, push = true) {
   document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
     panel.hidden = panel.dataset.tabPanel !== target;
   });
-  ensureToolHero(document.querySelector(`[data-tab-panel="${target}"]`));
+  const targetPanel = document.querySelector(`[data-tab-panel="${target}"]`);
+  ensureToolHero(targetPanel);
+  ensureToolGuide(targetPanel);
   window.scrollTo(0, 0);
   const topbarBack = document.getElementById("topbar-back");
   if (topbarBack) topbarBack.hidden = false;
@@ -4927,6 +4929,44 @@ function ensureToolHero(panel) {
     hero.appendChild(p);
   }
   panel.insertBefore(hero, panel.firstChild);
+}
+
+// 도구 화면 아래에 사용 방법과 자주 묻는 질문을 만든다 (내용은 js/guides.js)
+function ensureToolGuide(panel) {
+  if (!panel || panel.querySelector(".tool-guide") || typeof TOOL_GUIDES === "undefined") return;
+  const id = panel.dataset.tabPanel;
+  const g = TOOL_GUIDES[id];
+  if (!g) return;
+  const el = (tag, cls, text) => {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text) n.textContent = text;
+    return n;
+  };
+  const section = el("section", "tool-guide");
+  section.setAttribute("aria-labelledby", `guide-title-${id}`);
+  const h2 = el("h2", "", "사용 방법");
+  h2.id = `guide-title-${id}`;
+  section.appendChild(h2);
+  const ol = el("ol", "tool-guide-steps");
+  g.use.forEach((s) => ol.appendChild(el("li", "", s)));
+  section.appendChild(ol);
+  if (g.tip) {
+    const p = el("p", "tool-guide-tip");
+    p.appendChild(el("b", "", "알아 두면 좋은 점"));
+    p.appendChild(document.createTextNode(" " + g.tip));
+    section.appendChild(p);
+  }
+  section.appendChild(el("h2", "", "자주 묻는 질문"));
+  const list = el("div", "seo-faq-list");
+  g.faq.forEach(([q, a]) => {
+    const d = el("details");
+    d.appendChild(el("summary", "", q));
+    d.appendChild(el("p", "", a));
+    list.appendChild(d);
+  });
+  section.appendChild(list);
+  panel.appendChild(section);
 }
 
 function initDropzones() {
