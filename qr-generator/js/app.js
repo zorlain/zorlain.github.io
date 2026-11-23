@@ -94,6 +94,24 @@ function buildPayload() {
   return buildTextPayload();
 }
 
+let qrInstance = null;
+
+/* 생성된 QR의 모듈 정보로 SVG 문자열을 만든다 (여백 4칸) */
+function buildSvg(fg, bg) {
+  const q = qrInstance && qrInstance._oQRCode;
+  if (!q || !q.getModuleCount) return "";
+  const n = q.getModuleCount();
+  const margin = 4;
+  let d = "";
+  for (let r = 0; r < n; r++) {
+    for (let c = 0; c < n; c++) {
+      if (q.isDark(r, c)) d += `M${c + margin} ${r + margin}h1v1h-1z`;
+    }
+  }
+  const total = n + margin * 2;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${total} ${total}" width="${total * 10}" height="${total * 10}" shape-rendering="crispEdges"><rect width="${total}" height="${total}" fill="${bg}"/><path d="${d}" fill="${fg}"/></svg>`;
+}
+
 /* ---------- QR 생성 (qrfy.com처럼 입력하는 즉시 미리보기가 갱신됨) ---------- */
 function regenerateQr() {
   const resultEl = document.getElementById("qr-result");
@@ -115,8 +133,7 @@ function regenerateQr() {
   resultEl.appendChild(wrap);
 
   try {
-    // eslint-disable-next-line no-new
-    new QRCode(wrap, {
+    qrInstance = new QRCode(wrap, {
       text: payload,
       width: size,
       height: size,
@@ -131,12 +148,26 @@ function regenerateQr() {
 
   const canvas = wrap.querySelector("canvas");
   if (canvas) {
-    const dlBtn = document.createElement("a");
-    dlBtn.className = "qr-download-btn";
-    dlBtn.textContent = "이미지로 저장";
-    dlBtn.href = canvas.toDataURL("image/png");
-    dlBtn.download = "qrcode.png";
-    resultEl.appendChild(dlBtn);
+    const actions = document.createElement("div");
+    actions.className = "qr-actions";
+
+    const pngBtn = document.createElement("a");
+    pngBtn.className = "qr-download-btn primary";
+    pngBtn.textContent = "PNG 저장";
+    pngBtn.href = canvas.toDataURL("image/png");
+    pngBtn.download = "qrcode.png";
+    actions.appendChild(pngBtn);
+
+    const svg = buildSvg(fg, bg);
+    if (svg) {
+      const svgBtn = document.createElement("a");
+      svgBtn.className = "qr-download-btn";
+      svgBtn.textContent = "SVG 저장";
+      svgBtn.href = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+      svgBtn.download = "qrcode.svg";
+      actions.appendChild(svgBtn);
+    }
+    resultEl.appendChild(actions);
   }
 }
 
@@ -173,6 +204,21 @@ function initQrGenerate() {
 
   document.getElementById("wifi-security").addEventListener("click", () => {
     scheduleRegenerate();
+  });
+
+  const makeBtn = document.getElementById("qr-make-btn");
+  if (makeBtn) makeBtn.addEventListener("click", regenerateQr);
+  const textInput = document.getElementById("text-input");
+  const fit = () => {
+    textInput.style.height = "auto";
+    textInput.style.height = Math.min(textInput.scrollHeight, 160) + "px";
+  };
+  textInput.addEventListener("input", fit);
+  textInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      regenerateQr();
+    }
   });
 }
 

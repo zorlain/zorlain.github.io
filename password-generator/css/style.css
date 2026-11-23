@@ -620,3 +620,91 @@ body {
     text-align: center;
   }
 }
+
+/* ---------- 비밀번호 A: 일러스트 + 강도 배지가 달린 결과 칸 ---------- */
+.pw-hero h1 {
+  font-size: clamp(26px, 5vw, 34px);
+}
+.pw-body {
+  display: flex;
+  align-items: center;
+  gap: 48px;
+  max-width: 880px;
+  margin: 8px auto 0;
+}
+.pw-art {
+  flex: 0 0 220px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  background: radial-gradient(circle at 30% 25%, var(--accent-soft), transparent 70%), var(--card);
+}
+.pw-art svg {
+  width: 56%;
+  height: 56%;
+}
+.pw-controls {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.pw-controls .pw-display {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  padding: 10px 10px 10px 26px;
+  gap: 10px;
+}
+.pw-controls .pw-text {
+  font-size: 19px;
+  color: var(--text);
+}
+.pw-controls .pw-copy-btn {
+  border-radius: 9999px;
+}
+.pw-controls .field-group {
+  margin: 0;
+}
+.pw-controls .checkbox-grid {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px 18px;
+  margin: 0;
+}
+.pw-many {
+  max-width: 880px;
+  margin: 44px auto 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.pw-many h2 {
+  font-size: 18px;
+  margin: 0 0 16px;
+}
+@media (max-width: 760px) {
+  .pw-body {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .pw-art {
+    flex: none;
+    width: 120px;
+    height: 120px;
+  }
+  .pw-controls {
+    width: 100%;
+  }
+  .pw-controls .pw-display {
+    padding-left: 18px;
+    flex-wrap: wrap;
+    border-radius: 24px;
+  }
+  .pw-controls .pw-text {
+    flex-basis: 100%;
+    font-size: 17px;
+  }
+}

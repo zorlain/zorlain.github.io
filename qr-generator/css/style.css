@@ -437,3 +437,137 @@ body {
     font-size: 16px;
   }
 }
+
+/* ---------- QR B: 한 칸 미니멀 (큰 제목 + 입력 한 줄 + 결과) ---------- */
+.qr-min {
+  max-width: 680px;
+  text-align: center;
+}
+.qr-hero {
+  margin: 12px 0 24px;
+}
+.qr-hero h1 {
+  font-size: clamp(26px, 5vw, 34px);
+  line-height: 1.2;
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+.qr-hero p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 15px;
+}
+.qr-min .type-tabs {
+  display: inline-flex;
+  width: auto;
+  background: transparent;
+  padding: 0;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+.qr-min .type-tab {
+  flex: none;
+  padding: 8px 16px;
+  font-size: 14px;
+}
+.qr-wide {
+  display: flex;
+  align-items: stretch;
+  border: 2px solid var(--text);
+  border-radius: 14px;
+  overflow: hidden;
+  text-align: left;
+}
+.qr-wide textarea {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  resize: none;
+  padding: 16px 18px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.qr-make-btn {
+  flex: none;
+  border: 0;
+  padding: 0 28px;
+  background: var(--text);
+  color: var(--bg);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.qr-make-btn:hover {
+  background: var(--accent);
+  color: var(--accent-on);
+}
+.qr-fields {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.qr-min .qr-result {
+  margin-top: 24px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+.qr-min .qr-result .result-placeholder {
+  width: min(280px, 100%);
+  aspect-ratio: 1;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  border: 2px dashed var(--border);
+  border-radius: 16px;
+  color: var(--text-muted);
+}
+.qr-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+.qr-min .qr-download-btn {
+  margin-top: 0;
+  padding: 12px 26px;
+  border-radius: 10px;
+  border: 2px solid var(--text);
+  background: transparent;
+  color: var(--text);
+  font-size: 15px;
+}
+.qr-min .qr-download-btn.primary {
+  background: var(--text);
+  color: var(--bg);
+}
+.qr-min .qr-download-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-on);
+}
+.qr-style {
+  margin-top: 28px;
+  text-align: left;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.qr-style summary {
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+@media (max-width: 640px) {
+  .qr-make-btn { padding: 0 18px; }
+  .qr-min .type-tab { padding: 8px 12px; font-size: 13px; }
+}

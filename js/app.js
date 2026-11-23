@@ -111,12 +111,58 @@ function initTabs() {
   });
 }
 
+/* ---------- 자주 쓰는 도구 (기존 카드를 복사해 맨 위에 모아 보여준다) ---------- */
+const POPULAR_SELECTORS = [
+  '.tool-card[href$="/qr-generator/"]',
+  '.tool-card[href$="/image-tools/"]',
+  '.tool-card[href$="/password-generator/"]',
+  '.tool-card[data-tab="loan"]',
+  '.tool-card[data-tab="severance-pay"]',
+  '.tool-card[data-tab="pdf-merge"]',
+];
+
+function initPopular() {
+  const grid = document.getElementById("tool-grid-popular");
+  if (!grid) return;
+  POPULAR_SELECTORS.forEach((sel) => {
+    const card = document.querySelector(sel);
+    if (card) grid.appendChild(card.cloneNode(true));
+  });
+}
+
+/* 카테고리 목록에 도구 개수 표시, 상단에 전체 개수 안내 */
+function initCategoryCounts() {
+  const nav = document.getElementById("cat-nav");
+  if (!nav) return;
+  let total = 0;
+  nav.querySelectorAll(".cat-nav-btn").forEach((btn) => {
+    const label = document.getElementById(btn.dataset.catTarget);
+    const grid = label && label.nextElementSibling;
+    if (!grid || label.id === "cat-popular") return;
+    const count = grid.querySelectorAll(".tool-card").length;
+    total += count;
+    const span = document.createElement("span");
+    span.className = "cat-count";
+    span.textContent = String(count);
+    btn.appendChild(span);
+  });
+  const hero = document.querySelector(".tool-hub-hero");
+  if (hero && total) {
+    const p = document.createElement("p");
+    p.className = "hub-total";
+    p.textContent = `도구 ${total}개`;
+    hero.insertBefore(p, hero.querySelector(".tool-search-wrap"));
+  }
+}
+
 /* ---------- 도구 검색 필터 ---------- */
 function initSearch() {
   const input = document.getElementById("tool-search");
   const cards = Array.from(document.querySelectorAll(".tool-card"));
   const emptyMsg = document.getElementById("tool-empty-msg");
   const sectionLabels = Array.from(document.querySelectorAll(".tool-section-label"));
+  const popularLabel = document.getElementById("cat-popular");
+  const popularGrid = document.getElementById("tool-grid-popular");
 
   input.addEventListener("input", () => {
     const q = input.value.trim().toLowerCase();
@@ -125,13 +171,19 @@ function initSearch() {
       const haystack = `${card.dataset.tags || ""} ${card.querySelector(".tool-card-title").textContent}`.toLowerCase();
       const match = !q || haystack.includes(q);
       card.hidden = !match;
-      if (match) visibleCount++;
+      // 맨 위 '자주 쓰는 도구'는 같은 카드의 복사본이라 개수에서 제외한다
+      if (match && !(popularGrid && popularGrid.contains(card))) visibleCount++;
     });
     sectionLabels.forEach((label) => {
       const grid = label.nextElementSibling;
       const anyVisible = grid && Array.from(grid.querySelectorAll(".tool-card")).some((c) => !c.hidden);
       label.hidden = !anyVisible;
     });
+    // 검색 중에는 복사본 영역을 숨겨 같은 카드가 두 번 나오지 않게 한다
+    if (popularLabel && popularGrid) {
+      popularLabel.hidden = !!q;
+      popularGrid.hidden = !!q;
+    }
     emptyMsg.hidden = visibleCount !== 0;
   });
 }
@@ -4747,7 +4799,11 @@ function initCatNav() {
 
   // 상단바도 스티키라 카테고리 내비 위쪽에 항상 걸쳐 있으므로, 스크롤 이동/
   // 활성 구간 계산 모두 상단바 높이까지 함께 보정해야 한다.
-  const stickyOffset = () => (topbar ? topbar.getBoundingClientRect().height : 0) + nav.getBoundingClientRect().height;
+  // 넓은 화면에서는 카테고리 목록이 왼쪽에 세로로 놓이므로 높이를 더하지 않는다.
+  const stickyOffset = () => {
+    const vertical = getComputedStyle(nav).flexDirection === "column";
+    return (topbar ? topbar.getBoundingClientRect().height : 0) + (vertical ? 0 : nav.getBoundingClientRect().height);
+  };
 
   buttons.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -4847,6 +4903,8 @@ function initDropzones() {
 function init() {
   initThemeToggle();
   initTabs();
+  initPopular();
+  initCategoryCounts();
   initSearch();
   initCatNav();
   initToolHeroes();

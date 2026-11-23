@@ -781,3 +781,113 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* ---------- 타이머 C: 위쪽 모드 칩 + 프리셋 칩 + 큰 시작 버튼 (포모도로 추가) ---------- */
+.layout {
+  display: block;
+  max-width: 880px;
+}
+.sidebar {
+  position: static;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: auto;
+  gap: 8px;
+  padding: 20px 16px 0;
+}
+.side-tab {
+  flex-direction: row;
+  gap: 0;
+  padding: 9px 20px;
+  border-radius: 9999px;
+  font-size: 14.5px;
+  border: 1px solid var(--border);
+}
+.side-tab-icon {
+  display: none;
+}
+.side-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-on);
+}
+.main-content {
+  padding: 24px 16px 80px;
+}
+.stage {
+  background: transparent;
+  padding: 16px 0 8px;
+}
+.timer-presets {
+  grid-template-columns: repeat(auto-fit, minmax(76px, 1fr));
+}
+.preset-btn {
+  background: var(--card);
+  border-color: transparent;
+}
+.preset-btn:hover {
+  border-color: var(--accent);
+}
+.timer-btn-row .calc-btn:first-child {
+  padding: 20px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.pomo-phase {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 12px;
+  border-radius: 9999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+}
+.pomo-phase[data-phase="break"],
+.pomo-phase[data-phase="long"] {
+  background: rgba(44, 158, 68, 0.16);
+  color: var(--positive);
+}
+.pomo-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+.pomo-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+}
+.pomo-dot.on {
+  background: var(--accent);
+}
+.pomo-count {
+  margin: 10px 0 0;
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+.pomo-btn-row {
+  grid-template-columns: 2fr 1fr 1fr;
+}
+.pomo-modes {
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 720px) {
+  .sidebar { padding: 14px 12px 0; }
+  .side-tab { flex: 0 0 auto; padding: 8px 15px; }
+  .side-tab-label { font-size: 13px; }
+  .main-content { padding: 16px 16px 64px; }
+  .pomo-btn-row { grid-template-columns: 1fr 1fr; }
+  .pomo-btn-row .calc-btn:first-child { grid-column: 1 / -1; }
+}
+.timer-presets:not(.pomo-modes) {
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (min-width: 760px) {
+  .timer-presets:not(.pomo-modes) {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}

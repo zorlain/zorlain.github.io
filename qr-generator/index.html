@@ -47,7 +47,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style.css?v=20261123" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
@@ -65,109 +65,97 @@
   </div>
 </header>
 
-<div class="layout">
+<div class="layout qr-min">
 
-  <div class="qr-workspace">
-    <div class="qr-form-col">
+  <header class="qr-hero">
+    <h1>QR코드 생성기</h1>
+    <p>주소나 텍스트를 넣으면 바로 만들어집니다</p>
+  </header>
 
-      <div class="step-label"><span class="step-num">1</span>QR 코드 정보 입력</div>
-      <nav class="type-tabs" id="tabs">
-        <button class="type-tab tab-btn active" data-tab="text">텍스트·URL</button>
-        <button class="type-tab tab-btn" data-tab="wifi">와이파이</button>
-        <button class="type-tab tab-btn" data-tab="vcard">연락처</button>
-      </nav>
+  <nav class="type-tabs" id="tabs">
+    <button class="type-tab tab-btn active" data-tab="text">텍스트·URL</button>
+    <button class="type-tab tab-btn" data-tab="wifi">와이파이</button>
+    <button class="type-tab tab-btn" data-tab="vcard">연락처</button>
+  </nav>
 
-      <!-- 탭 1: 텍스트/URL -->
-      <section class="tab-panel" data-tab-panel="text">
-        <div class="card">
-          <p class="card-desc-short">QR코드로 만들 주소나 텍스트를 입력하세요.</p>
-          <div class="field-group">
-            <label for="text-input">URL 또는 텍스트</label>
-            <div class="field-input-wrap">
-              <textarea id="text-input" rows="3" placeholder="https://example.com"></textarea>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 탭 2: 와이파이 -->
-      <section class="tab-panel" data-tab-panel="wifi" hidden>
-        <div class="card">
-          <p class="card-desc-short">스캔하면 바로 와이파이에 연결되는 QR코드를 만듭니다.</p>
-          <div class="field-group">
-            <label for="wifi-ssid">네트워크 이름 (SSID)</label>
-            <div class="field-input-wrap"><input type="text" id="wifi-ssid" placeholder="MyHomeWiFi" /></div>
-          </div>
-          <div class="field-group">
-            <label for="wifi-password">비밀번호</label>
-            <div class="field-input-wrap"><input type="text" id="wifi-password" placeholder="비밀번호" /></div>
-          </div>
-          <div class="field-group">
-            <label>보안 방식</label>
-            <div class="segmented" id="wifi-security">
-              <button type="button" class="active" data-value="WPA">WPA/WPA2</button>
-              <button type="button" data-value="WEP">WEP</button>
-              <button type="button" data-value="nopass">암호 없음</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 탭 3: 연락처 -->
-      <section class="tab-panel" data-tab-panel="vcard" hidden>
-        <div class="card">
-          <p class="card-desc-short">스캔하면 연락처로 바로 저장되는 QR코드를 만듭니다.</p>
-          <div class="field-group">
-            <label for="vcard-name">이름</label>
-            <div class="field-input-wrap"><input type="text" id="vcard-name" placeholder="홍길동" /></div>
-          </div>
-          <div class="field-group">
-            <label for="vcard-phone">전화번호</label>
-            <div class="field-input-wrap"><input type="text" id="vcard-phone" placeholder="010-1234-5678" /></div>
-          </div>
-          <div class="field-group">
-            <label for="vcard-email">이메일</label>
-            <div class="field-input-wrap"><input type="text" id="vcard-email" placeholder="example@email.com" /></div>
-          </div>
-          <div class="field-group">
-            <label for="vcard-org">소속(선택)</label>
-            <div class="field-input-wrap"><input type="text" id="vcard-org" placeholder="회사명" /></div>
-          </div>
-        </div>
-      </section>
-
-      <div class="step-label"><span class="step-num">2</span>디자인 설정</div>
-      <div class="card">
-        <div class="field-row">
-          <div class="field-group">
-            <label for="qr-fg">전경색</label>
-            <div class="field-input-wrap"><input type="color" id="qr-fg" value="#0a0a0a" /></div>
-          </div>
-          <div class="field-group">
-            <label for="qr-bg">배경색</label>
-            <div class="field-input-wrap"><input type="color" id="qr-bg" value="#ffffff" /></div>
-          </div>
-        </div>
-        <div class="field-group">
-          <label for="qr-size">크기: <span id="qr-size-label">320px</span></label>
-          <input type="range" id="qr-size" min="160" max="640" step="20" value="320" class="range-input" />
-        </div>
-      </div>
-
+  <!-- 탭 1: 텍스트/URL -->
+  <section class="tab-panel" data-tab-panel="text">
+    <div class="qr-wide">
+      <textarea id="text-input" rows="1" placeholder="https://example.com" aria-label="URL 또는 텍스트"></textarea>
+      <button type="button" class="qr-make-btn" id="qr-make-btn">만들기</button>
     </div>
+  </section>
 
-    <div class="qr-preview-col">
-      <div class="qr-preview-sticky">
-        <div class="step-label"><span class="step-num">3</span>QR 다운로드</div>
-        <div class="qr-result" id="qr-result">
-          <p class="result-placeholder">정보를 입력하면 QR코드가 바로 만들어집니다.</p>
+  <!-- 탭 2: 와이파이 -->
+  <section class="tab-panel" data-tab-panel="wifi" hidden>
+    <div class="qr-fields">
+      <p class="card-desc-short">스캔하면 바로 와이파이에 연결되는 QR코드를 만듭니다.</p>
+      <div class="field-group">
+        <label for="wifi-ssid">네트워크 이름 (SSID)</label>
+        <div class="field-input-wrap"><input type="text" id="wifi-ssid" placeholder="MyHomeWiFi" /></div>
+      </div>
+      <div class="field-group">
+        <label for="wifi-password">비밀번호</label>
+        <div class="field-input-wrap"><input type="text" id="wifi-password" placeholder="비밀번호" /></div>
+      </div>
+      <div class="field-group">
+        <label>보안 방식</label>
+        <div class="segmented" id="wifi-security">
+          <button type="button" class="active" data-value="WPA">WPA/WPA2</button>
+          <button type="button" data-value="WEP">WEP</button>
+          <button type="button" data-value="nopass">암호 없음</button>
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- 탭 3: 연락처 -->
+  <section class="tab-panel" data-tab-panel="vcard" hidden>
+    <div class="qr-fields">
+      <p class="card-desc-short">스캔하면 연락처로 바로 저장되는 QR코드를 만듭니다.</p>
+      <div class="field-group">
+        <label for="vcard-name">이름</label>
+        <div class="field-input-wrap"><input type="text" id="vcard-name" placeholder="홍길동" /></div>
+      </div>
+      <div class="field-group">
+        <label for="vcard-phone">전화번호</label>
+        <div class="field-input-wrap"><input type="text" id="vcard-phone" placeholder="010-1234-5678" /></div>
+      </div>
+      <div class="field-group">
+        <label for="vcard-email">이메일</label>
+        <div class="field-input-wrap"><input type="text" id="vcard-email" placeholder="example@email.com" /></div>
+      </div>
+      <div class="field-group">
+        <label for="vcard-org">소속(선택)</label>
+        <div class="field-input-wrap"><input type="text" id="vcard-org" placeholder="회사명" /></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="qr-result" id="qr-result">
+    <p class="result-placeholder">정보를 입력하면 QR코드가 바로 만들어집니다.</p>
   </div>
+
+  <details class="qr-style">
+    <summary>꾸미기 (색상·크기)</summary>
+    <div class="field-row">
+      <div class="field-group">
+        <label for="qr-fg">전경색</label>
+        <div class="field-input-wrap"><input type="color" id="qr-fg" value="#0a0a0a" /></div>
+      </div>
+      <div class="field-group">
+        <label for="qr-bg">배경색</label>
+        <div class="field-input-wrap"><input type="color" id="qr-bg" value="#ffffff" /></div>
+      </div>
+    </div>
+    <div class="field-group">
+      <label for="qr-size">크기: <span id="qr-size-label">320px</span></label>
+      <input type="range" id="qr-size" min="160" max="640" step="20" value="320" class="range-input" />
+    </div>
+  </details>
 
 </div>
 
-<script src="js/app.js"></script>
+<script src="js/app.js?v=20261123"></script>
 </body>
 </html>

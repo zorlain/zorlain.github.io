@@ -47,7 +47,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/style.css?v=20261123" />
 </head>
 <body>
 <header class="topbar">
@@ -71,7 +71,16 @@
     <p>다양한 문자를 조합한 안전하고 고유한 비밀번호를 무료로 생성하세요.</p>
   </div>
 
-  <div class="card">
+  <div class="pw-body">
+    <div class="pw-art" aria-hidden="true">
+      <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="30" y="54" width="60" height="44" rx="9" />
+        <path d="M42 54V40a18 18 0 0 1 36 0v14" />
+        <circle cx="60" cy="76" r="5" fill="currentColor" stroke="none" />
+        <path d="M60 80v8" />
+      </svg>
+    </div>
+    <div class="pw-controls">
     <div class="pw-display" id="pw-display">
       <span class="pw-text" id="pw-text"></span>
       <span class="pw-strength-badge" id="pw-strength-badge"></span>
@@ -83,10 +92,7 @@
       </button>
       <button type="button" class="pw-copy-btn" id="pw-copy-btn">복사</button>
     </div>
-  </div>
 
-  <div class="card">
-    <h2>옵션</h2>
     <div class="field-group">
       <label for="opt-length">길이: <span id="opt-length-label">16자</span></label>
       <div class="stepper-row">
@@ -102,9 +108,10 @@
       <label class="check-row"><input type="checkbox" id="opt-symbols" checked /><span>특수문자 (!@#$…)</span></label>
       <label class="check-row"><input type="checkbox" id="opt-exclude-ambiguous" /><span>헷갈리는 문자 제외 (0,O,1,l,I)</span></label>
     </div>
+    </div>
   </div>
 
-  <div class="card">
+  <section class="pw-many">
     <h2>여러 개 한번에 생성</h2>
     <div class="field-group">
       <label for="opt-count">생성 개수: <span id="opt-count-label">5개</span></label>
@@ -112,10 +119,10 @@
     </div>
     <button class="calc-btn secondary-btn" id="pw-generate-many-btn">여러 개 생성</button>
     <div class="pw-list" id="pw-list"></div>
-  </div>
+  </section>
 
 </div>
 
-<script src="js/app.js"></script>
+<script src="js/app.js?v=20261123"></script>
 </body>
 </html>

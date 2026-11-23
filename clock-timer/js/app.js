@@ -234,6 +234,151 @@ function initTimer() {
   render();
 }
 
+/* ---------- 포모도로 (집중 → 짧은 휴식 ×3 → 집중 → 긴 휴식) ---------- */
+function initPomodoro() {
+  const display = document.getElementById("pomo-display");
+  if (!display) return;
+  const ring = document.getElementById("pomo-ring-progress");
+  const phaseEl = document.getElementById("pomo-phase");
+  const dotsEl = document.getElementById("pomo-dots");
+  const countEl = document.getElementById("pomo-count");
+  const modesEl = document.getElementById("pomo-modes");
+  const startBtn = document.getElementById("pomo-start-btn");
+  const skipBtn = document.getElementById("pomo-skip-btn");
+  const resetBtn = document.getElementById("pomo-reset-btn");
+
+  const CIRCUMFERENCE = 2 * Math.PI * 90;
+  ring.style.strokeDasharray = String(CIRCUMFERENCE);
+
+  let cfg = { focus: 25, brk: 5, long: 15 };
+  let phase = "focus"; // focus | break | long
+  let focusDone = 0; // 이번 사이클(4회 기준)에서 끝낸 집중 횟수
+  let totalDone = 0; // 이 페이지에서 끝낸 전체 집중 횟수
+  let totalMs = cfg.focus * 60000;
+  let remainingMs = totalMs;
+  let running = false;
+  let endTimestamp = 0;
+  let intervalId = null;
+
+  const PHASE_LABEL = { focus: "집중", break: "짧은 휴식", long: "긴 휴식" };
+
+  function phaseMinutes() {
+    return phase === "focus" ? cfg.focus : phase === "break" ? cfg.brk : cfg.long;
+  }
+
+  function fmt(ms) {
+    const sec = Math.max(0, Math.ceil(ms / 1000));
+    return `${pad2(Math.floor(sec / 60))}:${pad2(sec % 60)}`;
+  }
+
+  function renderDots() {
+    dotsEl.innerHTML = [0, 1, 2, 3]
+      .map((i) => `<span class="pomo-dot${i < focusDone ? " on" : ""}"></span>`)
+      .join("");
+    countEl.textContent = `오늘 완료한 집중 ${totalDone}회`;
+  }
+
+  function render() {
+    display.textContent = fmt(remainingMs);
+    ring.style.strokeDashoffset = String(CIRCUMFERENCE * (1 - (totalMs > 0 ? remainingMs / totalMs : 0)));
+    phaseEl.textContent = PHASE_LABEL[phase];
+    phaseEl.dataset.phase = phase;
+  }
+
+  function setPhase(next) {
+    phase = next;
+    totalMs = phaseMinutes() * 60000;
+    remainingMs = totalMs;
+    render();
+  }
+
+  function advance(autoStart) {
+    if (phase === "focus") {
+      focusDone += 1;
+      totalDone += 1;
+      if (focusDone >= 4) {
+        focusDone = 0;
+        setPhase("long");
+        // 긴 휴식에 들어가면 4칸이 모두 찬 모습을 잠깐 보여 준다
+        dotsEl.innerHTML = [0, 1, 2, 3].map(() => '<span class="pomo-dot on"></span>').join("");
+        countEl.textContent = `오늘 완료한 집중 ${totalDone}회`;
+      } else {
+        setPhase("break");
+        renderDots();
+      }
+    } else {
+      setPhase("focus");
+      renderDots();
+    }
+    if (autoStart) startRunning();
+  }
+
+  function tick() {
+    remainingMs = endTimestamp - Date.now();
+    if (remainingMs <= 0) {
+      stopRunning();
+      playBeeps(3);
+      advance(true);
+      return;
+    }
+    render();
+    document.title = `${fmt(remainingMs)} ${PHASE_LABEL[phase]} - 포모도로`;
+  }
+
+  function startRunning() {
+    endTimestamp = Date.now() + remainingMs;
+    running = true;
+    startBtn.textContent = "⏸ 일시정지";
+    intervalId = setInterval(tick, 200);
+    tick();
+  }
+
+  function stopRunning() {
+    running = false;
+    clearInterval(intervalId);
+    intervalId = null;
+    startBtn.textContent = "▶ 시작";
+  }
+
+  startBtn.addEventListener("click", () => {
+    getAudioCtx();
+    if (running) {
+      remainingMs = endTimestamp - Date.now();
+      stopRunning();
+      startBtn.textContent = "▶ 재개";
+      document.title = DEFAULT_TITLE;
+      return;
+    }
+    startRunning();
+  });
+
+  skipBtn.addEventListener("click", () => {
+    const wasRunning = running;
+    stopRunning();
+    advance(wasRunning);
+  });
+
+  function reset() {
+    stopRunning();
+    focusDone = 0;
+    setPhase("focus");
+    renderDots();
+    document.title = DEFAULT_TITLE;
+  }
+  resetBtn.addEventListener("click", reset);
+
+  modesEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".preset-btn");
+    if (!btn) return;
+    modesEl.querySelectorAll(".preset-btn").forEach((b) => b.classList.toggle("active", b === btn));
+    cfg = { focus: Number(btn.dataset.focus), brk: Number(btn.dataset.break), long: Number(btn.dataset.long) };
+    reset();
+  });
+
+  renderDots();
+  render();
+}
+
 /* ---------- 스톱워치 ---------- */
 function initStopwatch() {
   const display = document.getElementById("stopwatch-display");
@@ -453,6 +598,7 @@ function init() {
   initTabs();
   initInfoTooltips();
   initTimer();
+  initPomodoro();
   initStopwatch();
   initClock();
 }

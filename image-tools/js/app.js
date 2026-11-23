@@ -110,12 +110,53 @@ function initOptions() {
   });
 }
 
+/* ---------- 작업 선택(압축 / 크기 조절 / 변환) ---------- */
+const MODES = {
+  compress: {
+    title: "이미지 압축",
+    desc: "JPG, PNG, WebP 용량을 한 번에 줄입니다. 파일은 서버로 전송되지 않고 브라우저에서만 처리됩니다.",
+    btn: "압축하기",
+  },
+  resize: {
+    title: "이미지 크기 조절",
+    desc: "가로 폭을 정해 사진 크기를 줄입니다. 파일은 서버로 전송되지 않고 브라우저에서만 처리됩니다.",
+    btn: "크기 조절하기",
+  },
+  convert: {
+    title: "이미지 형식 변환",
+    desc: "JPG, PNG, WebP로 형식을 바꿉니다. 파일은 서버로 전송되지 않고 브라우저에서만 처리됩니다.",
+    btn: "변환하기",
+  },
+};
+let currentMode = "compress";
+
+function setMode(mode) {
+  currentMode = mode;
+  document.querySelectorAll("#tool-modes .mode-btn").forEach((b) => b.classList.toggle("active", b.dataset.mode === mode));
+  document.getElementById("hero-title").textContent = MODES[mode].title;
+  document.getElementById("hero-desc").textContent = MODES[mode].desc;
+  document.getElementById("process-btn").textContent = MODES[mode].btn;
+  document.querySelectorAll("[data-modes]").forEach((el) => {
+    el.hidden = !el.dataset.modes.split(" ").includes(mode);
+  });
+  document.getElementById("result-card").hidden = true;
+}
+
+function initModes() {
+  document.getElementById("tool-modes").addEventListener("click", (e) => {
+    const btn = e.target.closest(".mode-btn");
+    if (btn) setMode(btn.dataset.mode);
+  });
+  setMode("compress");
+}
+
 function initProcess() {
   document.getElementById("process-btn").addEventListener("click", () => {
     if (!currentImage || !currentFile) return;
 
-    const maxWidth = Number(document.getElementById("opt-maxwidth").value);
-    const quality = Number(document.getElementById("opt-quality").value) / 100;
+    // 크기 조절 작업에서만 가로 폭을 줄이고, 그 외에는 원본 크기를 유지한다.
+    const maxWidth = currentMode === "resize" ? Number(document.getElementById("opt-maxwidth").value) : Infinity;
+    const quality = currentMode === "resize" ? 0.9 : Number(document.getElementById("opt-quality").value) / 100;
     const format = getSegmentedValue("opt-format");
 
     let targetW = currentImage.naturalWidth;
@@ -167,6 +208,7 @@ function init() {
   initSegmented("opt-format");
   initUpload();
   initOptions();
+  initModes();
   initProcess();
 }
 

@@ -796,3 +796,75 @@ body {
 }
 .ad-video-title { font-weight: 600; line-height: 1.4; }
 .ad-video-author { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+
+/* ---------- toolbox B: 왼쪽 카테고리 + 카드 목록 ---------- */
+.hub-layout {
+  display: block;
+}
+@media (min-width: 900px) {
+  .page {
+    max-width: 1280px;
+  }
+  .hub-layout {
+    display: grid;
+    grid-template-columns: 208px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+  .cat-nav {
+    position: sticky;
+    top: calc(var(--topbar-h) + 16px);
+    flex-direction: column;
+    gap: 2px;
+    overflow: visible;
+    padding: 0;
+    margin: 0;
+    border-bottom: 0;
+    background: transparent;
+  }
+  .cat-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    text-align: left;
+    font-size: 14.5px;
+  }
+  .cat-nav-btn:hover {
+    background: var(--hover-tint);
+  }
+  .cat-nav-btn.active {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+  .tool-grid {
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  }
+}
+.cat-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+.cat-nav-btn.active .cat-count {
+  color: inherit;
+}
+@media (max-width: 899px) {
+  .cat-count {
+    display: none;
+  }
+}
+.hub-total {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin: -12px 0 24px;
+}
+.tool-section-label {
+  scroll-margin-top: calc(var(--topbar-h) + 16px);
+}

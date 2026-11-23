@@ -49,7 +49,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="css/style.css?v=20260919d" />
+<link rel="stylesheet" href="css/style.css?v=20261123" />
 </head>
 <body>
 <header class="topbar">
@@ -80,7 +80,9 @@
       </div>
     </div>
 
+    <div class="hub-layout">
     <nav class="cat-nav" id="cat-nav" aria-label="카테고리 바로가기">
+      <button type="button" class="cat-nav-btn" data-cat-target="cat-popular">자주 쓰는 도구</button>
       <button type="button" class="cat-nav-btn" data-cat-target="cat-tools">도구 모음</button>
       <button type="button" class="cat-nav-btn" data-cat-target="cat-calc">계산기</button>
       <button type="button" class="cat-nav-btn" data-cat-target="cat-text2">텍스트</button>
@@ -89,6 +91,10 @@
       <button type="button" class="cat-nav-btn" data-cat-target="cat-util">유틸리티</button>
       <button type="button" class="cat-nav-btn" data-cat-target="cat-dev">개발자 도구</button>
     </nav>
+
+    <div class="hub-main">
+    <div class="tool-section-label" id="cat-popular">자주 쓰는 도구</div>
+    <div class="tool-grid" id="tool-grid-popular"></div>
 
     <div class="tool-section-label" id="cat-tools">도구 모음</div>
     <div class="tool-grid" id="tool-grid-tools">
@@ -1103,6 +1109,8 @@
     </div>
 
     <p class="tool-empty-msg" id="tool-empty-msg" hidden>검색 결과가 없습니다.</p>
+    </div>
+    </div>
   </section>
 
   <div id="tabs">
@@ -3248,6 +3256,6 @@
 
 <footer class="site-footer">© toolbox — <a href="https://zorlain.github.io/">zorlain</a></footer>
 
-<script src="js/app.js?v=20260919d"></script>
+<script src="js/app.js?v=20261123"></script>
 </body>
 </html>

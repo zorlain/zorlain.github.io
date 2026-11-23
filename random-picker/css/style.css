@@ -624,3 +624,117 @@ body {
     font-size: 16px;
   }
 }
+
+/* ---------- 추첨 A: 어두운 미니멀 (가운데 정렬, 입력 → 칩 → 빨간 추첨 버튼) ---------- */
+:root {
+  --rp-red: #dc3545;
+  --rp-red-hover: #c22b3a;
+}
+.layout {
+  display: block;
+  max-width: 640px;
+}
+.sidebar {
+  position: static;
+  flex-direction: row;
+  justify-content: center;
+  width: auto;
+  gap: 6px;
+  padding: 20px 16px 0;
+}
+.side-tab {
+  flex-direction: row;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: 9999px;
+  font-size: 14px;
+  border: 1px solid var(--border);
+}
+.side-tab-icon svg {
+  width: 17px;
+  height: 17px;
+}
+.side-tab.active {
+  background: var(--rp-red);
+  border-color: var(--rp-red);
+  color: #ffffff;
+}
+.main-content {
+  padding: 28px 16px 80px;
+}
+.main-content .card {
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  text-align: center;
+}
+.main-content .card h2 {
+  font-size: clamp(24px, 5vw, 32px);
+  margin: 0 0 8px;
+  letter-spacing: -0.02em;
+}
+.main-content .card-desc-short {
+  margin: 0 auto 24px;
+  max-width: 440px;
+}
+.main-content .field-group {
+  text-align: left;
+}
+.add-row .field-input-wrap input {
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+}
+.add-btn {
+  background: var(--accent);
+  border-radius: 12px;
+}
+.chip-list {
+  justify-content: center;
+  margin-top: 18px;
+}
+.main-content .calc-btn {
+  display: block;
+  width: auto;
+  min-width: 190px;
+  margin: 28px auto 0;
+  padding: 16px 44px;
+  border-radius: 12px;
+  background: var(--rp-red);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+}
+.main-content .calc-btn:hover {
+  background: var(--rp-red-hover);
+}
+.main-content .calc-btn:active {
+  background: var(--rp-red-hover);
+}
+.rp-hint {
+  margin: 12px 0 0;
+  color: var(--text-muted);
+  font-size: 13.5px;
+}
+.result-area {
+  margin-top: 28px;
+  background: transparent;
+  padding: 0;
+  text-align: center;
+}
+.single-winner {
+  font-size: clamp(34px, 9vw, 56px);
+  color: var(--text);
+}
+@media (max-width: 640px) {
+  .sidebar { padding: 14px 12px 0; flex-wrap: wrap; }
+  .side-tab { flex: 0 0 auto; padding: 8px 14px; }
+  .side-tab-label { font-size: 13px; }
+  .main-content { padding: 20px 16px 64px; }
+}
+.main-content .card h2 {
+  display: block;
+  color: var(--text);
+  border-bottom: 0;
+  padding-bottom: 0;
+  text-align: center;
+}

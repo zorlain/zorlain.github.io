@@ -265,6 +265,8 @@ function initSinglePick() {
           `<span class="name-chip">${escapeHtml(name)}<button type="button" class="name-chip-remove" data-index="${i}" aria-label="삭제">✕</button></span>`
       )
       .join("");
+    const hint = document.getElementById("single-hint");
+    if (hint) hint.textContent = `참가자 ${names.length}명 · 당첨 1명`;
   }
 
   function addName() {

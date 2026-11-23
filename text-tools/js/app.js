@@ -20,31 +20,27 @@ function initThemeToggle() {
   });
 }
 
-/* ---------- itool.co.kr 느낌: 카드 그리드 허브 ↔ 개별 도구 화면 전환 ---------- */
-function showTool(target) {
-  document.getElementById("tool-hub").hidden = true;
+/* ---------- 도구 탭 ---------- */
+function showTab(target) {
+  document.querySelectorAll("#txt-tabs .txt-tab").forEach((b) => {
+    const on = b.dataset.tab === target;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-selected", on ? "true" : "false");
+  });
   document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
     panel.hidden = panel.dataset.tabPanel !== target;
   });
 }
 
-function showHub() {
-  document.getElementById("tool-hub").hidden = false;
-  document.querySelectorAll("[data-tab-panel]").forEach((panel) => {
-    panel.hidden = true;
-  });
-}
-
 function initTabs() {
-  document.getElementById("tool-hub").addEventListener("click", (e) => {
-    const card = e.target.closest(".tool-card");
-    if (!card) return;
-    showTool(card.dataset.tab);
+  document.getElementById("txt-tabs").addEventListener("click", (e) => {
+    const btn = e.target.closest(".txt-tab");
+    if (!btn) return;
+    showTab(btn.dataset.tab);
+    history.replaceState(null, "", "#" + btn.dataset.tab);
   });
-
-  document.getElementById("tabs").addEventListener("click", (e) => {
-    if (e.target.closest("[data-back]")) showHub();
-  });
+  const fromHash = location.hash.replace("#", "");
+  if (fromHash && document.querySelector(`[data-tab-panel="${fromHash}"]`)) showTab(fromHash);
 }
 
 async function copyText(text) {
@@ -82,6 +78,7 @@ function initCharCount() {
 /* ---------- 탭 2: 대소문자·공백 정리 ---------- */
 function initCaseTools() {
   const input = document.getElementById("case-input");
+  const output = document.getElementById("case-output");
 
   const actions = {
     upper: (t) => t.toUpperCase(),
@@ -109,13 +106,20 @@ function initCaseTools() {
     btn.addEventListener("click", () => {
       const action = actions[btn.dataset.action];
       if (!action) return;
-      input.value = action(input.value);
+      output.value = action(input.value);
     });
+  });
+
+  document.getElementById("case-chain-btn").addEventListener("click", () => {
+    if (output.value) {
+      input.value = output.value;
+      output.value = "";
+    }
   });
 
   document.getElementById("case-copy-btn").addEventListener("click", async () => {
     const btn = document.getElementById("case-copy-btn");
-    const ok = await copyText(input.value);
+    const ok = await copyText(output.value || input.value);
     if (ok) {
       const original = btn.textContent;
       btn.textContent = "복사됨";
@@ -159,28 +163,10 @@ function initSymbols() {
   });
 }
 
-/* ---------- 도구 검색 필터 ---------- */
-function initSearch() {
-  const input = document.getElementById("tool-search");
-  const cards = Array.from(document.querySelectorAll(".tool-card"));
-  const emptyMsg = document.getElementById("tool-empty-msg");
-
-  input.addEventListener("input", () => {
-    const q = input.value.trim().toLowerCase();
-    let visibleCount = 0;
-    cards.forEach((card) => {
-      const haystack = `${card.dataset.tags || ""} ${card.querySelector(".tool-card-title").textContent}`.toLowerCase();
-      const match = !q || haystack.includes(q);
-      card.hidden = !match;
-      if (match) visibleCount++;
-    });
-    emptyMsg.hidden = visibleCount !== 0;
-  });
-}
-
 /* ---------- 텍스트 정렬·뒤집기 ---------- */
 function initSortTool() {
   const input = document.getElementById("sort-input");
+  const output = document.getElementById("sort-output");
 
   function shuffle(arr) {
     const a = [...arr];
@@ -203,13 +189,20 @@ function initSortTool() {
       const action = actions[btn.dataset.action];
       if (!action) return;
       const lines = input.value.split("\n");
-      input.value = action(lines).join("\n");
+      output.value = action(lines).join("\n");
     });
+  });
+
+  document.getElementById("sort-chain-btn").addEventListener("click", () => {
+    if (output.value) {
+      input.value = output.value;
+      output.value = "";
+    }
   });
 
   document.getElementById("sort-copy-btn").addEventListener("click", async () => {
     const btn = document.getElementById("sort-copy-btn");
-    const ok = await copyText(input.value);
+    const ok = await copyText(output.value || input.value);
     if (ok) {
       const original = btn.textContent;
       btn.textContent = "복사됨";
@@ -259,7 +252,6 @@ function initUrlTools() {
 function init() {
   initThemeToggle();
   initTabs();
-  initSearch();
   initCharCount();
   initCaseTools();
   initSymbols();
