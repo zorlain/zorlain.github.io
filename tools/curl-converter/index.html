@@ -49,7 +49,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="../../css/style.css?v=20261201" />
+<link rel="stylesheet" href="../../css/style.css?v=20261202" />
 </head>
 <body>
 <header class="topbar">
@@ -3134,7 +3134,7 @@
           <div class="field-input-wrap"><textarea id="curl-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
     </div>
-  <section class="tool-guide" aria-labelledby="guide-title-curl-converter"><h2 id="guide-title-curl-converter">사용 방법</h2><ol class="tool-guide-steps"><li>curl 명령어를 입력 칸에 붙여 넣습니다.</li><li>변환하기를 누릅니다.</li><li>JavaScript fetch 코드가 결과 칸에 나옵니다.</li><li>결과 복사로 가져갑니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">API 문서에 있는 curl 예제를 자바스크립트 코드로 옮겨서 써야 할 때 씁니다.</p><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> API 문서에 있는 curl 예제를 자바스크립트 코드로 옮길 때 씁니다. 복잡한 옵션은 변환되지 않을 수 있으니 결과를 한 번 확인하세요.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>axios로도 바꿀 수 있나요?</summary><p>이 도구는 fetch 코드로 바꿉니다.</p></details><details><summary>명령어가 서버로 전송되나요?</summary><p>아니요. 변환은 브라우저 안에서만 이루어집니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../http-status/" data-related="http-status"><b>HTTP 상태코드 조회</b><span>HTTP 상태 코드의 의미를 검색하고 쉽게 확인합니다.</span></a></li><li><a href="../jwt-decoder/" data-related="jwt-decoder"><b>JWT 디코더</b><span>JSON Web Token을 헤더와 페이로드로 풀어 봅니다. 서명 검증은 하지 않습니다.</span></a></li><li><a href="../unix-timestamp/" data-related="unix-timestamp"><b>Unix 타임스탬프 변환기</b><span>Unix 타임스탬프와 날짜·시간을 서로 변환합니다.</span></a></li><li><a href="../gitignore-generator/" data-related="gitignore-generator"><b>.gitignore 생성기</b><span>언어·프레임워크를 입력하면 알맞은 .gitignore 파일을 만들어줍니다.</span></a></li></ul></section>
+  <section class="tool-guide" aria-labelledby="guide-title-curl-converter"><h2 id="guide-title-curl-converter">사용 방법</h2><ol class="tool-guide-steps"><li>curl 명령어를 입력 칸에 붙여 넣습니다.</li><li>변환하기를 누릅니다.</li><li>JavaScript fetch 코드가 결과 칸에 나옵니다.</li><li>결과 복사로 가져갑니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">API 문서에 있는 curl 예제를 자바스크립트 코드로 옮겨서 써야 할 때 씁니다.</p><h2>자세히 알아보기</h2><div class="tool-guide-detail"><h3>curl 옵션이 fetch에서 바뀌는 방식</h3><p>-X는 method, -H는 headers, -d는 body로 옮겨집니다. URL은 fetch의 첫 번째 인자가 됩니다. 이 도구는 자주 쓰는 옵션을 자바스크립트 fetch 코드로 바꿔 줍니다.</p><h3>변환 결과를 쓰기 전에</h3><p>브라우저의 fetch는 다른 사이트의 API를 부를 때 CORS 정책의 제한을 받습니다. curl에서는 되던 요청이 브라우저에서는 막힐 수 있습니다. 서버에서 실행하는 코드(Node.js)에서는 이 제한이 없습니다.</p><h3>민감한 정보</h3><p>curl 명령에는 인증 토큰이나 API 키가 포함되는 경우가 많습니다. 변환은 브라우저 안에서만 이루어지지만, 결과를 다른 사람과 공유하거나 저장소에 올릴 때는 키 값을 반드시 지우세요.</p></div><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> API 문서에 있는 curl 예제를 자바스크립트 코드로 옮길 때 씁니다. 복잡한 옵션은 변환되지 않을 수 있으니 결과를 한 번 확인하세요.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>axios로도 바꿀 수 있나요?</summary><p>이 도구는 fetch 코드로 바꿉니다.</p></details><details><summary>명령어가 서버로 전송되나요?</summary><p>아니요. 변환은 브라우저 안에서만 이루어집니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../http-status/" data-related="http-status"><b>HTTP 상태코드 조회</b><span>HTTP 상태 코드의 의미를 검색하고 쉽게 확인합니다.</span></a></li><li><a href="../jwt-decoder/" data-related="jwt-decoder"><b>JWT 디코더</b><span>JSON Web Token을 헤더와 페이로드로 풀어 봅니다. 서명 검증은 하지 않습니다.</span></a></li><li><a href="../unix-timestamp/" data-related="unix-timestamp"><b>Unix 타임스탬프 변환기</b><span>Unix 타임스탬프와 날짜·시간을 서로 변환합니다.</span></a></li><li><a href="../gitignore-generator/" data-related="gitignore-generator"><b>.gitignore 생성기</b><span>언어·프레임워크를 입력하면 알맞은 .gitignore 파일을 만들어줍니다.</span></a></li></ul></section>
   </section>
 
   <section class="tab-panel" data-tab-panel="jwt-decoder" hidden>
@@ -3393,6 +3393,6 @@
 
 <footer class="site-footer">© toolbox — <a href="https://zorlain.github.io/">zorlain</a> · <a href="https://zorlain.github.io/about/">소개</a> · <a href="https://zorlain.github.io/privacy/">개인정보처리방침</a> · <a href="https://zorlain.github.io/contact/">문의</a></footer>
 
-<script src="../../js/app.js?v=20261201"></script>
+<script src="../../js/app.js?v=20261202"></script>
 </body>
 </html>

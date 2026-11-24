@@ -49,7 +49,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="../../css/style.css?v=20261201" />
+<link rel="stylesheet" href="../../css/style.css?v=20261202" />
 </head>
 <body>
 <header class="topbar">
@@ -1881,7 +1881,7 @@
           <div class="field-input-wrap"><textarea id="xml-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
     </div>
-  <section class="tool-guide" aria-labelledby="guide-title-xml-parser"><h2 id="guide-title-xml-parser">사용 방법</h2><ol class="tool-guide-steps"><li>입력 칸에 XML을 붙여 넣습니다.</li><li>정렬하기를 누릅니다.</li><li>들여쓰기가 들어간 XML이 결과 칸에 나옵니다. 문법 오류가 있으면 오류 안내가 나옵니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">한 줄로 이어진 XML을 읽기 쉽게 펼쳐서 구조를 확인하거나 오류를 찾을 때 씁니다.</p><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> 닫는 태그가 빠졌거나 태그 이름이 다르면 오류가 납니다. 오류 안내를 보고 해당 부분을 고쳐 다시 누르세요.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>XML 정렬은 어디에 쓰나요?</summary><p>한 줄로 이어진 XML을 사람이 읽기 쉽게 바꿔서 구조를 확인하거나 수정할 때 씁니다.</p></details><details><summary>입력한 XML이 서버로 전송되나요?</summary><p>아니요. 브라우저 안에서만 처리됩니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../json-to-csv/" data-related="json-to-csv"><b>JSON→CSV 변환기</b><span>JSON 배열을 CSV로, CSV를 다시 JSON으로 변환합니다.</span></a></li><li><a href="../excel-merge/" data-related="excel-merge"><b>엑셀 파일 합치기</b><span>여러 개의 엑셀 파일을 하나로 합쳐 정리합니다.</span></a></li><li><a href="../json/" data-related="json"><b>JSON 포맷터</b><span>JSON을 보기 좋게 정렬하거나 한 줄로 압축하고, 문법 오류를 바로 확인합니다.</span></a></li><li><a href="../yaml-json-toml/" data-related="yaml-json-toml"><b>YAML↔JSON↔TOML 변환기</b><span>YAML, JSON, TOML 형식을 서로 자유롭게 변환합니다.</span></a></li></ul></section>
+  <section class="tool-guide" aria-labelledby="guide-title-xml-parser"><h2 id="guide-title-xml-parser">사용 방법</h2><ol class="tool-guide-steps"><li>입력 칸에 XML을 붙여 넣습니다.</li><li>정렬하기를 누릅니다.</li><li>들여쓰기가 들어간 XML이 결과 칸에 나옵니다. 문법 오류가 있으면 오류 안내가 나옵니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">한 줄로 이어진 XML을 읽기 쉽게 펼쳐서 구조를 확인하거나 오류를 찾을 때 씁니다.</p><h2>자세히 알아보기</h2><div class="tool-guide-detail"><h3>XML이 지켜야 하는 규칙</h3><p>모든 여는 태그는 닫는 태그가 있어야 하고, 태그는 올바르게 중첩되어야 하며, 최상위 요소는 하나여야 합니다. 속성 값은 따옴표로 감싸고 대소문자를 구분합니다. 이 규칙을 하나라도 어기면 오류가 납니다.</p><h3>정렬하면 무엇이 달라지나요</h3><p>들여쓰기와 줄바꿈만 바뀌고 데이터는 그대로입니다. 한 줄로 이어진 응답에서 어느 태그 안에 무엇이 있는지 구조를 한눈에 볼 수 있습니다. 태그 사이의 공백이 의미를 가지는 문서(예: 일부 문서 형식)는 정렬하면 공백이 달라질 수 있으니 주의하세요.</p><h3>특수문자와 인코딩</h3><p>&amp;, &lt;, &gt; 같은 문자는 &amp;amp;, &amp;lt;, &amp;gt;로 바꿔 써야 합니다. 이를 지키지 않으면 문법 오류가 납니다. 한글이 깨진다면 파일의 인코딩 선언(예: UTF-8)이 실제 저장 방식과 같은지 확인하세요.</p></div><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> 닫는 태그가 빠졌거나 태그 이름이 다르면 오류가 납니다. 오류 안내를 보고 해당 부분을 고쳐 다시 누르세요.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>XML 정렬은 어디에 쓰나요?</summary><p>한 줄로 이어진 XML을 사람이 읽기 쉽게 바꿔서 구조를 확인하거나 수정할 때 씁니다.</p></details><details><summary>입력한 XML이 서버로 전송되나요?</summary><p>아니요. 브라우저 안에서만 처리됩니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../json-to-csv/" data-related="json-to-csv"><b>JSON→CSV 변환기</b><span>JSON 배열을 CSV로, CSV를 다시 JSON으로 변환합니다.</span></a></li><li><a href="../excel-merge/" data-related="excel-merge"><b>엑셀 파일 합치기</b><span>여러 개의 엑셀 파일을 하나로 합쳐 정리합니다.</span></a></li><li><a href="../json/" data-related="json"><b>JSON 포맷터</b><span>JSON을 보기 좋게 정렬하거나 한 줄로 압축하고, 문법 오류를 바로 확인합니다.</span></a></li><li><a href="../yaml-json-toml/" data-related="yaml-json-toml"><b>YAML↔JSON↔TOML 변환기</b><span>YAML, JSON, TOML 형식을 서로 자유롭게 변환합니다.</span></a></li></ul></section>
   </section>
 
   <section class="tab-panel" data-tab-panel="json-xml" hidden>
@@ -3393,6 +3393,6 @@
 
 <footer class="site-footer">© toolbox — <a href="https://zorlain.github.io/">zorlain</a> · <a href="https://zorlain.github.io/about/">소개</a> · <a href="https://zorlain.github.io/privacy/">개인정보처리방침</a> · <a href="https://zorlain.github.io/contact/">문의</a></footer>
 
-<script src="../../js/app.js?v=20261201"></script>
+<script src="../../js/app.js?v=20261202"></script>
 </body>
 </html>

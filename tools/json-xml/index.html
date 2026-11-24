@@ -49,7 +49,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="../../css/style.css?v=20261201" />
+<link rel="stylesheet" href="../../css/style.css?v=20261202" />
 </head>
 <body>
 <header class="topbar">
@@ -1900,7 +1900,7 @@
           <div class="field-input-wrap"><textarea id="jx-output" rows="8" readonly placeholder="결과가 여기에 표시됩니다"></textarea></div>
         </div>
     </div>
-  <section class="tool-guide" aria-labelledby="guide-title-json-xml"><h2 id="guide-title-json-xml">사용 방법</h2><ol class="tool-guide-steps"><li>입력 칸에 JSON 또는 XML을 붙여 넣습니다.</li><li>JSON → XML 또는 XML → JSON 버튼 중 맞는 것을 누릅니다.</li><li>결과 칸에 변환된 내용이 나옵니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">서로 다른 형식을 쓰는 시스템 사이에서 데이터를 옮길 때, JSON 데이터를 XML로 보내거나 XML 응답을 JSON으로 확인할 때 씁니다.</p><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> JSON과 XML은 구조가 완전히 같지 않아서 배열이나 속성이 있는 데이터는 변환 모양이 달라질 수 있습니다. 변환 후 결과를 한 번 확인하세요.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>두 형식을 서로 바꾸면 원래대로 돌아오나요?</summary><p>단순한 데이터는 거의 그대로 돌아오지만 XML 속성이나 배열은 표현이 달라질 수 있습니다.</p></details><details><summary>문법이 틀린 입력은 어떻게 되나요?</summary><p>변환하지 않고 오류 안내를 보여줍니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../xml-parser/" data-related="xml-parser"><b>XML 파서·포맷터</b><span>XML 문서를 보기 좋게 정렬하고 구조를 확인합니다.</span></a></li><li><a href="../json-to-csv/" data-related="json-to-csv"><b>JSON→CSV 변환기</b><span>JSON 배열을 CSV로, CSV를 다시 JSON으로 변환합니다.</span></a></li><li><a href="../excel-merge/" data-related="excel-merge"><b>엑셀 파일 합치기</b><span>여러 개의 엑셀 파일을 하나로 합쳐 정리합니다.</span></a></li><li><a href="../json/" data-related="json"><b>JSON 포맷터</b><span>JSON을 보기 좋게 정렬하거나 한 줄로 압축하고, 문법 오류를 바로 확인합니다.</span></a></li></ul></section>
+  <section class="tool-guide" aria-labelledby="guide-title-json-xml"><h2 id="guide-title-json-xml">사용 방법</h2><ol class="tool-guide-steps"><li>입력 칸에 JSON 또는 XML을 붙여 넣습니다.</li><li>JSON → XML 또는 XML → JSON 버튼 중 맞는 것을 누릅니다.</li><li>결과 칸에 변환된 내용이 나옵니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">서로 다른 형식을 쓰는 시스템 사이에서 데이터를 옮길 때, JSON 데이터를 XML로 보내거나 XML 응답을 JSON으로 확인할 때 씁니다.</p><h2>자세히 알아보기</h2><div class="tool-guide-detail"><h3>두 형식의 구조 차이</h3><p>JSON은 객체, 배열, 문자열, 숫자, 불리언, null로 이루어져 있고 XML은 태그와 속성, 텍스트로 이루어집니다. XML에는 배열이라는 개념이 없어서 같은 이름의 태그를 반복하는 방식으로 표현합니다. 이 차이 때문에 변환 결과의 모양이 달라질 수 있습니다.</p><h3>변환 전후에 확인할 것</h3><p>이 도구는 태그의 자식 요소와 텍스트만 옮기고 XML 속성은 JSON에 담지 않습니다. 또 XML에서 JSON으로 바꾸면 숫자와 true/false도 모두 문자열로 나옵니다. 같은 이름의 태그가 반복되면 배열이 되고, 한 번만 나오면 배열이 아닌 값이 됩니다. 시스템 사이에 데이터를 옮길 때는 받는 쪽이 기대하는 구조와 맞는지 꼭 확인하세요.</p><h3>루트 요소</h3><p>XML은 최상위 요소가 하나여야 합니다. JSON의 최상위 키가 하나면 그 키가 루트 태그가 되고, 키가 여러 개면 root라는 태그로 감쌉니다. 결과가 예상과 다르면 입력의 최상위 구조부터 살펴보세요.</p></div><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> JSON과 XML은 구조가 완전히 같지 않아서 배열이나 속성이 있는 데이터는 변환 모양이 달라질 수 있습니다. 변환 후 결과를 한 번 확인하세요.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>두 형식을 서로 바꾸면 원래대로 돌아오나요?</summary><p>단순한 데이터는 거의 그대로 돌아오지만 XML 속성이나 배열은 표현이 달라질 수 있습니다.</p></details><details><summary>문법이 틀린 입력은 어떻게 되나요?</summary><p>변환하지 않고 오류 안내를 보여줍니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../xml-parser/" data-related="xml-parser"><b>XML 파서·포맷터</b><span>XML 문서를 보기 좋게 정렬하고 구조를 확인합니다.</span></a></li><li><a href="../json-to-csv/" data-related="json-to-csv"><b>JSON→CSV 변환기</b><span>JSON 배열을 CSV로, CSV를 다시 JSON으로 변환합니다.</span></a></li><li><a href="../excel-merge/" data-related="excel-merge"><b>엑셀 파일 합치기</b><span>여러 개의 엑셀 파일을 하나로 합쳐 정리합니다.</span></a></li><li><a href="../json/" data-related="json"><b>JSON 포맷터</b><span>JSON을 보기 좋게 정렬하거나 한 줄로 압축하고, 문법 오류를 바로 확인합니다.</span></a></li></ul></section>
   </section>
 
   <section class="tab-panel" data-tab-panel="epub-txt" hidden>
@@ -3393,6 +3393,6 @@
 
 <footer class="site-footer">© toolbox — <a href="https://zorlain.github.io/">zorlain</a> · <a href="https://zorlain.github.io/about/">소개</a> · <a href="https://zorlain.github.io/privacy/">개인정보처리방침</a> · <a href="https://zorlain.github.io/contact/">문의</a></footer>
 
-<script src="../../js/app.js?v=20261201"></script>
+<script src="../../js/app.js?v=20261202"></script>
 </body>
 </html>

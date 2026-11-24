@@ -49,7 +49,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="../../css/style.css?v=20261201" />
+<link rel="stylesheet" href="../../css/style.css?v=20261202" />
 </head>
 <body>
 <header class="topbar">
@@ -3100,7 +3100,7 @@
           <div class="field-input-wrap"><textarea id="cron-result" rows="5" readonly></textarea></div>
         </div>
     </div>
-  <section class="tool-guide" aria-labelledby="guide-title-cron-generator"><h2 id="guide-title-cron-generator">사용 방법</h2><ol class="tool-guide-steps"><li>Cron 표현식을 입력합니다. 예: */5 * * * *</li><li>해석하기를 누릅니다.</li><li>다음 실행 시간 5회가 표시됩니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">서버에서 작업을 정해진 시각에 반복 실행하도록 설정하기 전에 표현식이 언제 실행되는지 확인할 때 씁니다.</p><h2>예시</h2><ul class="tool-guide-ex"><li>*/5 * * * *는 5분마다 실행되고, 0 9 * * 1은 매주 월요일 오전 9시에 실행됩니다.</li></ul><h2>알아 둘 용어</h2><dl class="tool-guide-terms"><dt>필드 순서</dt><dd>분, 시, 일, 월, 요일 순서의 다섯 칸입니다.</dd></dl><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> 5개 필드(분 시 일 월 요일) 형식을 지원합니다. */5는 5분마다, 0 9 * * 1은 매주 월요일 오전 9시입니다.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>Cron 표현식은 무엇인가요?</summary><p>서버에서 작업을 정해진 시각에 반복 실행하려고 쓰는 일정 표현식입니다.</p></details><details><summary>초 단위도 지원하나요?</summary><p>아니요. 분, 시, 일, 월, 요일의 5개 필드만 지원합니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../curl-converter/" data-related="curl-converter"><b>cURL 변환기</b><span>curl 명령어를 fetch, axios 등 코드로 변환합니다.</span></a></li><li><a href="../http-status/" data-related="http-status"><b>HTTP 상태코드 조회</b><span>HTTP 상태 코드의 의미를 검색하고 쉽게 확인합니다.</span></a></li><li><a href="../jwt-decoder/" data-related="jwt-decoder"><b>JWT 디코더</b><span>JSON Web Token을 헤더와 페이로드로 풀어 봅니다. 서명 검증은 하지 않습니다.</span></a></li><li><a href="../unix-timestamp/" data-related="unix-timestamp"><b>Unix 타임스탬프 변환기</b><span>Unix 타임스탬프와 날짜·시간을 서로 변환합니다.</span></a></li></ul></section>
+  <section class="tool-guide" aria-labelledby="guide-title-cron-generator"><h2 id="guide-title-cron-generator">사용 방법</h2><ol class="tool-guide-steps"><li>Cron 표현식을 입력합니다. 예: */5 * * * *</li><li>해석하기를 누릅니다.</li><li>다음 실행 시간 5회가 표시됩니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">서버에서 작업을 정해진 시각에 반복 실행하도록 설정하기 전에 표현식이 언제 실행되는지 확인할 때 씁니다.</p><h2>예시</h2><ul class="tool-guide-ex"><li>*/5 * * * *는 5분마다 실행되고, 0 9 * * 1은 매주 월요일 오전 9시에 실행됩니다.</li></ul><h2>자세히 알아보기</h2><div class="tool-guide-detail"><h3>다섯 개 필드</h3><p>왼쪽부터 분(0~59), 시(0~23), 일(1~31), 월(1~12), 요일(0~6, 일요일이 0이며 환경에 따라 7도 일요일)입니다. *는 모든 값, 쉼표는 여러 값, 하이픈은 범위, 슬래시는 간격을 뜻합니다. 예를 들어 0 9 * * 1-5는 평일 오전 9시입니다.</p><h3>시간대와 실행 환경</h3><p>서버가 쓰는 시간대(보통 UTC)를 기준으로 실행됩니다. 한국 시간 오전 9시에 실행하려면 UTC로는 전날 0시여야 하는 점을 확인하세요. 서비스마다 지원하는 문법이 조금씩 다르니 실제 환경의 문서도 확인하세요.</p><h3>일과 요일을 함께 쓰면</h3><p>일과 요일을 모두 지정하면 환경에 따라 해석이 다를 수 있습니다. 불확실하면 하나만 지정하고 나머지는 *로 두세요. 자주 쓰는 표현은 매 5분 */5 * * * *, 매일 새벽 3시 0 3 * * *, 매월 1일 0 0 1 * *입니다.</p></div><h2>알아 둘 용어</h2><dl class="tool-guide-terms"><dt>필드 순서</dt><dd>분, 시, 일, 월, 요일 순서의 다섯 칸입니다.</dd></dl><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> 5개 필드(분 시 일 월 요일) 형식을 지원합니다. */5는 5분마다, 0 9 * * 1은 매주 월요일 오전 9시입니다.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>Cron 표현식은 무엇인가요?</summary><p>서버에서 작업을 정해진 시각에 반복 실행하려고 쓰는 일정 표현식입니다.</p></details><details><summary>초 단위도 지원하나요?</summary><p>아니요. 분, 시, 일, 월, 요일의 5개 필드만 지원합니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../curl-converter/" data-related="curl-converter"><b>cURL 변환기</b><span>curl 명령어를 fetch, axios 등 코드로 변환합니다.</span></a></li><li><a href="../http-status/" data-related="http-status"><b>HTTP 상태코드 조회</b><span>HTTP 상태 코드의 의미를 검색하고 쉽게 확인합니다.</span></a></li><li><a href="../jwt-decoder/" data-related="jwt-decoder"><b>JWT 디코더</b><span>JSON Web Token을 헤더와 페이로드로 풀어 봅니다. 서명 검증은 하지 않습니다.</span></a></li><li><a href="../unix-timestamp/" data-related="unix-timestamp"><b>Unix 타임스탬프 변환기</b><span>Unix 타임스탬프와 날짜·시간을 서로 변환합니다.</span></a></li></ul></section>
   </section>
 
   <section class="tab-panel" data-tab-panel="http-status" hidden>
@@ -3393,6 +3393,6 @@
 
 <footer class="site-footer">© toolbox — <a href="https://zorlain.github.io/">zorlain</a> · <a href="https://zorlain.github.io/about/">소개</a> · <a href="https://zorlain.github.io/privacy/">개인정보처리방침</a> · <a href="https://zorlain.github.io/contact/">문의</a></footer>
 
-<script src="../../js/app.js?v=20261201"></script>
+<script src="../../js/app.js?v=20261202"></script>
 </body>
 </html>

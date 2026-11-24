@@ -49,7 +49,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="../../css/style.css?v=20261201" />
+<link rel="stylesheet" href="../../css/style.css?v=20261202" />
 </head>
 <body>
 <header class="topbar">
@@ -3164,7 +3164,7 @@
           <div class="result-stat"><div class="result-stat-label">SHA-256</div><div class="result-stat-value" id="hg-sha256-value" style="font-size:14px; word-break:break-all;">-</div></div>
         </div>
     </div>
-  <section class="tool-guide" aria-labelledby="guide-title-hash-generator"><h2 id="guide-title-hash-generator">사용 방법</h2><ol class="tool-guide-steps"><li>해시로 바꿀 텍스트를 입력합니다.</li><li>해시 생성하기를 누릅니다.</li><li>MD5, SHA-1, SHA-256 값이 한꺼번에 나옵니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">파일이나 문자열이 바뀌지 않았는지 확인하려고 해시 값을 비교할 때, 개발 중 해시 값을 만들어 볼 때 씁니다.</p><h2>예시</h2><ul class="tool-guide-ex"><li>hello의 MD5는 5d41402abc4b2a76b9719d911017c592이고 SHA-1은 aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d입니다.</li></ul><h2>알아 둘 용어</h2><dl class="tool-guide-terms"><dt>해시</dt><dd>입력이 같으면 항상 같은 값이 나오고 한 글자만 달라도 완전히 다른 값이 되는 고정 길이 문자열입니다.</dd></dl><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> 같은 입력은 항상 같은 해시가 나오고, 한 글자만 달라도 완전히 다른 값이 됩니다. 파일 무결성을 확인할 때 해시 값을 비교합니다.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>비밀번호 저장에 MD5를 써도 되나요?</summary><p>권장하지 않습니다. MD5와 SHA-1은 보안용으로는 약해서 비밀번호 저장에는 전용 방식을 써야 합니다.</p></details><details><summary>해시에서 원래 텍스트를 되돌릴 수 있나요?</summary><p>아니요. 해시는 한 방향 변환이라 원래 글을 되돌릴 수 없습니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../jwt-decoder/" data-related="jwt-decoder"><b>JWT 디코더</b><span>JSON Web Token을 헤더와 페이로드로 풀어 봅니다. 서명 검증은 하지 않습니다.</span></a></li><li><a href="../qr-reader/" data-related="qr-reader"><b>QR 코드 읽기</b><span>QR 코드 이미지를 업로드하면 담긴 내용을 바로 읽어줍니다.</span></a></li><li><a href="../ascii-converter/" data-related="ascii-converter"><b>ASCII 변환기</b><span>텍스트를 ASCII 코드로, ASCII 코드를 다시 텍스트로 변환합니다.</span></a></li><li><a href="../barcode-generator/" data-related="barcode-generator"><b>바코드 생성기</b><span>숫자나 문자를 입력하면 바코드 이미지를 바로 생성합니다.</span></a></li></ul></section>
+  <section class="tool-guide" aria-labelledby="guide-title-hash-generator"><h2 id="guide-title-hash-generator">사용 방법</h2><ol class="tool-guide-steps"><li>해시로 바꿀 텍스트를 입력합니다.</li><li>해시 생성하기를 누릅니다.</li><li>MD5, SHA-1, SHA-256 값이 한꺼번에 나옵니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">파일이나 문자열이 바뀌지 않았는지 확인하려고 해시 값을 비교할 때, 개발 중 해시 값을 만들어 볼 때 씁니다.</p><h2>예시</h2><ul class="tool-guide-ex"><li>hello의 MD5는 5d41402abc4b2a76b9719d911017c592이고 SHA-1은 aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d입니다.</li><li>abc를 입력하면 MD5는 900150983cd24fb0d6963f7d28e17f72, SHA-256은 ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad가 나옵니다.</li></ul><h2>자세히 알아보기</h2><div class="tool-guide-detail"><h3>해시 값의 길이</h3><p>MD5는 128비트(16진수 32자), SHA-1은 160비트(40자), SHA-256은 256비트(64자)입니다. 입력이 아무리 길거나 짧아도 항상 정해진 길이의 값이 나옵니다.</p><h3>어디에 쓰나요</h3><p>내려받은 파일이 원본과 같은지 확인하는 무결성 검사나 중복 파일 찾기에 씁니다. 배포자가 알려 준 해시 값과 직접 계산한 값이 같으면 파일이 바뀌지 않은 것입니다.</p><h3>비밀번호 저장에 쓰면 안 됩니다</h3><p>해시는 빠르게 계산되도록 만들어져 있어서 비밀번호를 무차별 대입으로 알아내기 쉽습니다. 비밀번호 저장에는 bcrypt, scrypt, Argon2처럼 느리게 설계된 전용 방식을 쓰세요. MD5와 SHA-1은 충돌 공격이 알려져 있어 보안 용도로는 권장되지 않습니다.</p></div><h2>알아 둘 용어</h2><dl class="tool-guide-terms"><dt>해시</dt><dd>입력이 같으면 항상 같은 값이 나오고 한 글자만 달라도 완전히 다른 값이 되는 고정 길이 문자열입니다.</dd></dl><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> 같은 입력은 항상 같은 해시가 나오고, 한 글자만 달라도 완전히 다른 값이 됩니다. 파일 무결성을 확인할 때 해시 값을 비교합니다.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>비밀번호 저장에 MD5를 써도 되나요?</summary><p>권장하지 않습니다. MD5와 SHA-1은 보안용으로는 약해서 비밀번호 저장에는 전용 방식을 써야 합니다.</p></details><details><summary>해시에서 원래 텍스트를 되돌릴 수 있나요?</summary><p>아니요. 해시는 한 방향 변환이라 원래 글을 되돌릴 수 없습니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../jwt-decoder/" data-related="jwt-decoder"><b>JWT 디코더</b><span>JSON Web Token을 헤더와 페이로드로 풀어 봅니다. 서명 검증은 하지 않습니다.</span></a></li><li><a href="../qr-reader/" data-related="qr-reader"><b>QR 코드 읽기</b><span>QR 코드 이미지를 업로드하면 담긴 내용을 바로 읽어줍니다.</span></a></li><li><a href="../ascii-converter/" data-related="ascii-converter"><b>ASCII 변환기</b><span>텍스트를 ASCII 코드로, ASCII 코드를 다시 텍스트로 변환합니다.</span></a></li><li><a href="../barcode-generator/" data-related="barcode-generator"><b>바코드 생성기</b><span>숫자나 문자를 입력하면 바코드 이미지를 바로 생성합니다.</span></a></li></ul></section>
   </section>
 
   <section class="tab-panel" data-tab-panel="uuid-generator" hidden>
@@ -3393,6 +3393,6 @@
 
 <footer class="site-footer">© toolbox — <a href="https://zorlain.github.io/">zorlain</a> · <a href="https://zorlain.github.io/about/">소개</a> · <a href="https://zorlain.github.io/privacy/">개인정보처리방침</a> · <a href="https://zorlain.github.io/contact/">문의</a></footer>
 
-<script src="../../js/app.js?v=20261201"></script>
+<script src="../../js/app.js?v=20261202"></script>
 </body>
 </html>

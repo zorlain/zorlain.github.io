@@ -49,7 +49,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="../../css/style.css?v=20261201" />
+<link rel="stylesheet" href="../../css/style.css?v=20261202" />
 </head>
 <body>
 <header class="topbar">
@@ -2963,7 +2963,7 @@
           </div>
         </div>
     </div>
-  <section class="tool-guide" aria-labelledby="guide-title-unix-timestamp"><h2 id="guide-title-unix-timestamp">사용 방법</h2><ol class="tool-guide-steps"><li>타임스탬프나 날짜를 입력합니다. 예: 1700000000 또는 2023-11-15 06:13:20</li><li>현재 시각 넣기를 누르면 지금 시각이 들어갑니다.</li><li>변환하기를 누르면 Unix 타임스탬프(초), ISO 8601(UTC), 로컬 시간이 나옵니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">로그나 데이터베이스에 있는 숫자 시각을 사람이 읽는 날짜로 바꾸거나, 날짜를 타임스탬프로 바꿔야 할 때 씁니다.</p><h2>예시</h2><ul class="tool-guide-ex"><li>1700000000을 넣으면 UTC로 2023-11-14 22:13:20이고 한국 시간으로는 2023년 11월 15일 오전 7시 13분 20초로 나옵니다.</li></ul><h2>알아 둘 용어</h2><dl class="tool-guide-terms"><dt>Unix 타임스탬프</dt><dd>1970년 1월 1일 0시(UTC)부터 지난 초 수입니다.</dd><dt>UTC와 로컬 시간</dt><dd>UTC는 세계 표준시이고 로컬 시간은 내 기기의 지역 시간입니다. 한국은 UTC보다 9시간 빠릅니다.</dd></dl><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> 초 단위(10자리)와 밀리초 단위(13자리)를 모두 입력할 수 있습니다. UTC와 내 지역 시간은 시차만큼 다릅니다.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>Unix 타임스탬프는 무엇인가요?</summary><p>1970년 1월 1일 0시(UTC)부터 지난 초 수입니다. 시스템과 로그에서 시각을 표현할 때 많이 씁니다.</p></details><details><summary>밀리초도 되나요?</summary><p>네. 13자리 값을 넣으면 밀리초로 보고 변환합니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../habit-tracker/" data-related="habit-tracker"><b>습관 만들기</b><span>매일의 습관을 기록하고 체크하는 습관 트래커입니다.</span></a></li><li><a href="../gitignore-generator/" data-related="gitignore-generator"><b>.gitignore 생성기</b><span>언어·프레임워크를 입력하면 알맞은 .gitignore 파일을 만들어줍니다.</span></a></li><li><a href="../age/" data-related="age"><b>만나이 계산기</b><span>생년월일을 입력하면 만 나이·연 나이를 바로 계산합니다.</span></a></li><li><a href="../keycode-checker/" data-related="keycode-checker"><b>키보드 키코드 확인기</b><span>키보드를 누르면 keyCode와 key 값을 바로 보여줍니다.</span></a></li></ul></section>
+  <section class="tool-guide" aria-labelledby="guide-title-unix-timestamp"><h2 id="guide-title-unix-timestamp">사용 방법</h2><ol class="tool-guide-steps"><li>타임스탬프나 날짜를 입력합니다. 예: 1700000000 또는 2023-11-15 06:13:20</li><li>현재 시각 넣기를 누르면 지금 시각이 들어갑니다.</li><li>변환하기를 누르면 Unix 타임스탬프(초), ISO 8601(UTC), 로컬 시간이 나옵니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">로그나 데이터베이스에 있는 숫자 시각을 사람이 읽는 날짜로 바꾸거나, 날짜를 타임스탬프로 바꿔야 할 때 씁니다.</p><h2>예시</h2><ul class="tool-guide-ex"><li>1700000000을 넣으면 UTC로 2023-11-14 22:13:20이고 한국 시간으로는 2023년 11월 15일 오전 7시 13분 20초로 나옵니다.</li><li>1700000000을 변환하면 UTC로 2023-11-14T22:13:20.000Z이고, 한국 시간(GMT+9)으로는 2023년 11월 15일 오전 7시 13분 20초입니다.</li></ul><h2>자세히 알아보기</h2><div class="tool-guide-detail"><h3>초와 밀리초</h3><p>Unix 타임스탬프는 1970년 1월 1일 0시(UTC)부터 지난 초 수입니다. 자바스크립트의 Date.now()처럼 밀리초 단위로 쓰는 곳도 많아서, 10자리면 초, 13자리면 밀리초로 구분합니다. 이 도구는 자릿수로 알아서 판단합니다.</p><h3>시간대를 주의하세요</h3><p>타임스탬프 자체에는 시간대가 없고, 같은 값을 UTC와 한국 시간으로 보면 9시간 차이가 납니다. 서버 로그는 UTC로 남기는 경우가 많으니 한국 시간과 비교할 때 9시간을 더해서 보세요.</p><h3>2038년 문제</h3><p>타임스탬프를 32비트 정수로 저장하는 오래된 시스템은 2038년 1월 19일 03:14:07(UTC)을 넘기면 값이 넘쳐 오류가 날 수 있습니다. 새로운 시스템은 대부분 64비트를 써서 문제가 없습니다.</p></div><h2>알아 둘 용어</h2><dl class="tool-guide-terms"><dt>Unix 타임스탬프</dt><dd>1970년 1월 1일 0시(UTC)부터 지난 초 수입니다.</dd><dt>UTC와 로컬 시간</dt><dd>UTC는 세계 표준시이고 로컬 시간은 내 기기의 지역 시간입니다. 한국은 UTC보다 9시간 빠릅니다.</dd></dl><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> 초 단위(10자리)와 밀리초 단위(13자리)를 모두 입력할 수 있습니다. UTC와 내 지역 시간은 시차만큼 다릅니다.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>Unix 타임스탬프는 무엇인가요?</summary><p>1970년 1월 1일 0시(UTC)부터 지난 초 수입니다. 시스템과 로그에서 시각을 표현할 때 많이 씁니다.</p></details><details><summary>밀리초도 되나요?</summary><p>네. 13자리 값을 넣으면 밀리초로 보고 변환합니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../habit-tracker/" data-related="habit-tracker"><b>습관 만들기</b><span>매일의 습관을 기록하고 체크하는 습관 트래커입니다.</span></a></li><li><a href="../gitignore-generator/" data-related="gitignore-generator"><b>.gitignore 생성기</b><span>언어·프레임워크를 입력하면 알맞은 .gitignore 파일을 만들어줍니다.</span></a></li><li><a href="../age/" data-related="age"><b>만나이 계산기</b><span>생년월일을 입력하면 만 나이·연 나이를 바로 계산합니다.</span></a></li><li><a href="../keycode-checker/" data-related="keycode-checker"><b>키보드 키코드 확인기</b><span>키보드를 누르면 keyCode와 key 값을 바로 보여줍니다.</span></a></li></ul></section>
   </section>
 
   <section class="tab-panel" data-tab-panel="base-converter" hidden>
@@ -3393,6 +3393,6 @@
 
 <footer class="site-footer">© toolbox — <a href="https://zorlain.github.io/">zorlain</a> · <a href="https://zorlain.github.io/about/">소개</a> · <a href="https://zorlain.github.io/privacy/">개인정보처리방침</a> · <a href="https://zorlain.github.io/contact/">문의</a></footer>
 
-<script src="../../js/app.js?v=20261201"></script>
+<script src="../../js/app.js?v=20261202"></script>
 </body>
 </html>
