@@ -4951,6 +4951,25 @@ function ensureToolGuide(panel) {
   const ol = el("ol", "tool-guide-steps");
   g.use.forEach((s) => ol.appendChild(el("li", "", s)));
   section.appendChild(ol);
+  if (g.when) {
+    section.appendChild(el("h2", "", "이럴 때 쓰세요"));
+    section.appendChild(el("p", "tool-guide-when", g.when));
+  }
+  if (g.ex && g.ex.length) {
+    section.appendChild(el("h2", "", "예시"));
+    const ul = el("ul", "tool-guide-ex");
+    g.ex.forEach((s) => ul.appendChild(el("li", "", s)));
+    section.appendChild(ul);
+  }
+  if (g.t && g.t.length) {
+    section.appendChild(el("h2", "", "알아 둘 용어"));
+    const dl = el("dl", "tool-guide-terms");
+    g.t.forEach(([w, d]) => {
+      dl.appendChild(el("dt", "", w));
+      dl.appendChild(el("dd", "", d));
+    });
+    section.appendChild(dl);
+  }
   if (g.tip) {
     const p = el("p", "tool-guide-tip");
     p.appendChild(el("b", "", "알아 두면 좋은 점"));

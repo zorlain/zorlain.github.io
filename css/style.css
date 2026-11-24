@@ -1100,3 +1100,32 @@ body {
   border-top: 1px solid var(--border);
   padding: 14px 0;
 }
+.tool-guide-when {
+  margin: 0;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.75;
+}
+.tool-guide-ex {
+  margin: 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+  font-size: 15px;
+  line-height: 1.7;
+}
+.tool-guide-terms {
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+.tool-guide-terms dt {
+  font-weight: 700;
+  font-size: 15px;
+}
+.tool-guide-terms dd {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: 14.5px;
+  line-height: 1.7;
+}
