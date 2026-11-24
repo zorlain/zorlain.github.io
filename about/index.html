@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  (function () {
+    var theme = "dark";
+    try { var saved = localStorage.getItem("theme"); if (saved === "light" || saved === "dark") theme = saved; } catch (e) {}
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<title>사이트 소개 | toolbox</title>
+<meta name="description" content="toolbox는 설치와 가입 없이 쓰는 무료 온라인 도구 모음입니다. 운영 목적과 광고, 데이터 처리 방식을 안내합니다." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://zorlain.github.io/about/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="toolbox" />
+<meta property="og:title" content="사이트 소개 | toolbox" />
+<meta property="og:description" content="toolbox는 설치와 가입 없이 쓰는 무료 온라인 도구 모음입니다. 운영 목적과 광고, 데이터 처리 방식을 안내합니다." />
+<meta property="og:url" content="https://zorlain.github.io/about/" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:image" content="https://zorlain.github.io/og/toolbox.png" />
+<meta name="theme-color" content="#14110e" />
+<link rel="icon" type="image/png" sizes="48x48" href="https://zorlain.github.io/favicon-48.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="https://zorlain.github.io/icon-192.png" />
+<link rel="apple-touch-icon" href="https://zorlain.github.io/apple-touch-icon.png" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="../css/style.css?v=20261130" />
+<style>
+.legal-wrap{max-width:760px;margin:0 auto;padding:28px 16px 56px;line-height:1.85;font-size:15.5px}
+.legal-wrap h1{font-size:26px;margin:0 0 14px}
+.legal-wrap h2{font-size:18px;margin:30px 0 8px}
+.legal-wrap p,.legal-wrap li{color:var(--text)}
+.legal-wrap ul{padding-left:22px;display:grid;gap:6px}
+.legal-wrap a{color:var(--accent)}
+.legal-date{color:var(--text-muted)}
+.legal-btn{display:inline-block;padding:11px 18px;border-radius:12px;background:var(--btn-primary-bg);color:var(--btn-primary-text)!important;text-decoration:none;font-weight:700}
+.legal-nav{display:flex;gap:14px;flex-wrap:wrap;margin-top:36px;padding-top:16px;border-top:1px solid var(--border);font-size:14px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-left"><div class="brand"><a href="https://zorlain.github.io/" style="color:inherit;text-decoration:none"><span>toolbox</span></a></div></div>
+</header>
+<main class="legal-wrap">
+
+<h1>사이트 소개</h1>
+<p>toolbox는 QR코드 생성, 이미지 압축, PDF 편집, 계산기, 개발자 도구처럼 일상에서 자주 필요한 작은 도구를 설치와 회원가입 없이 바로 쓸 수 있게 모아 둔 무료 사이트입니다. 현재 90여 개 도구와 로또·비밀번호 생성기 같은 별도 사이트를 운영하고 있습니다.</p>
+
+<h2>만든 이유</h2>
+<p>간단한 작업을 하려는데 프로그램을 설치하거나 가입을 요구받는 일이 많습니다. 필요한 기능만 빠르게 쓰고 닫을 수 있는 도구를 한곳에 모으려는 목적으로 시작했습니다.</p>
+
+<h2>데이터는 어떻게 처리되나요</h2>
+<p>대부분의 도구는 입력한 파일과 글을 사용자의 브라우저 안에서만 처리하며 서버로 보내지 않습니다. 일부 도구는 외부 서비스를 이용하는데, 자세한 내용은 <a href="https://zorlain.github.io/privacy/">개인정보처리방침</a>에 적어 두었습니다.</p>
+
+<h2>계산 결과를 볼 때</h2>
+<p>계산기의 결과는 참고용입니다. 퇴직금, 실업급여, 세금처럼 법과 제도에 따라 달라지는 항목은 실제 금액이 다를 수 있으므로 신청이나 계약 전에 관련 기관의 안내를 확인하세요. 해마다 바뀌는 기준값은 연초에 점검해 갱신합니다.</p>
+
+<h2>광고</h2>
+<p>사이트 운영비를 충당하기 위해 일부 페이지에 Google AdSense 광고를 표시합니다. 광고가 도구의 결과에 영향을 주지는 않습니다.</p>
+
+<h2>의견과 오류 제보</h2>
+<p>도구가 제대로 작동하지 않거나 추가했으면 하는 기능이 있으면 <a href="https://zorlain.github.io/contact/">문의 페이지</a>를 통해 알려 주세요.</p>
+
+<nav class="legal-nav" aria-label="사이트 안내">
+<a href="https://zorlain.github.io/">전체 도구</a>
+<a href="https://zorlain.github.io/about/">소개</a>
+<a href="https://zorlain.github.io/privacy/">개인정보처리방침</a>
+<a href="https://zorlain.github.io/contact/">문의</a>
+</nav>
+</main>
+</body>
+</html>

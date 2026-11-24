@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+  (function () {
+    var theme = "dark";
+    try { var saved = localStorage.getItem("theme"); if (saved === "light" || saved === "dark") theme = saved; } catch (e) {}
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+<title>개인정보처리방침 | toolbox</title>
+<meta name="description" content="toolbox가 어떤 정보를 수집하는지, 광고(쿠키)와 외부 서비스는 어떻게 쓰이는지, 문의 방법을 안내합니다." />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://zorlain.github.io/privacy/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="toolbox" />
+<meta property="og:title" content="개인정보처리방침 | toolbox" />
+<meta property="og:description" content="toolbox가 어떤 정보를 수집하는지, 광고(쿠키)와 외부 서비스는 어떻게 쓰이는지, 문의 방법을 안내합니다." />
+<meta property="og:url" content="https://zorlain.github.io/privacy/" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:image" content="https://zorlain.github.io/og/toolbox.png" />
+<meta name="theme-color" content="#14110e" />
+<link rel="icon" type="image/png" sizes="48x48" href="https://zorlain.github.io/favicon-48.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="https://zorlain.github.io/icon-192.png" />
+<link rel="apple-touch-icon" href="https://zorlain.github.io/apple-touch-icon.png" />
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+<link rel="stylesheet" href="../css/style.css?v=20261130" />
+<style>
+.legal-wrap{max-width:760px;margin:0 auto;padding:28px 16px 56px;line-height:1.85;font-size:15.5px}
+.legal-wrap h1{font-size:26px;margin:0 0 14px}
+.legal-wrap h2{font-size:18px;margin:30px 0 8px}
+.legal-wrap p,.legal-wrap li{color:var(--text)}
+.legal-wrap ul{padding-left:22px;display:grid;gap:6px}
+.legal-wrap a{color:var(--accent)}
+.legal-date{color:var(--text-muted)}
+.legal-btn{display:inline-block;padding:11px 18px;border-radius:12px;background:var(--btn-primary-bg);color:var(--btn-primary-text)!important;text-decoration:none;font-weight:700}
+.legal-nav{display:flex;gap:14px;flex-wrap:wrap;margin-top:36px;padding-top:16px;border-top:1px solid var(--border);font-size:14px}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-left"><div class="brand"><a href="https://zorlain.github.io/" style="color:inherit;text-decoration:none"><span>toolbox</span></a></div></div>
+</header>
+<main class="legal-wrap">
+
+<h1>개인정보처리방침</h1>
+<p class="legal-date">시행일: 2026년 11월 24일</p>
+<p>toolbox(https://zorlain.github.io, 이하 '사이트')는 이용자의 개인정보를 소중하게 다루며, 아래와 같이 어떤 정보가 어떻게 쓰이는지 안내합니다.</p>
+
+<h2>1. 수집하는 개인정보</h2>
+<p>사이트에는 회원가입과 로그인이 없으며, 이름·연락처·이메일 주소 같은 개인정보를 직접 수집하지 않습니다. 사이트 운영자는 별도의 방문 분석 도구(예: Google Analytics)를 사용하지 않습니다.</p>
+
+<h2>2. 도구에 입력한 파일과 글</h2>
+<p>대부분의 도구는 입력한 파일과 글을 이용자의 브라우저 안에서만 처리하며 사이트 서버로 보내지 않습니다. 다만 아래 경우에는 외부 서비스와 통신합니다.</p>
+<ul>
+<li>유튜브 수익 계산기: 영상 주소를 입력하면 YouTube(googleapis.com, youtube.com)와 returnyoutubedislikeapi.com에서 해당 영상의 공개 정보를 불러옵니다.</li>
+<li>애드센스 계산기(블로그): 블로그 주소를 입력하면 해당 블로그의 공개 글 목록을 가져오기 위해 r.jina.ai 서비스를 거쳐 가져옵니다.</li>
+<li>아이피 조회: 이용자의 공인 IP 주소를 확인하기 위해 api.ipify.org에 요청합니다.</li>
+<li>모든 페이지에서 사이트 글꼴(Pretendard)을 cdn.jsdelivr.net에서 내려받습니다.</li>
+<li>일부 도구(HEIC 뷰어, PDF·ZIP·엑셀 처리, GIF 변환, QR 코드 읽기 등)는 필요한 라이브러리와 글꼴을 cdn.jsdelivr.net에서 내려받습니다. 이때 이용자의 IP 주소와 브라우저 정보가 해당 서비스에 전달될 수 있습니다.</li>
+</ul>
+
+<h2>3. 브라우저 저장소</h2>
+<p>화면 테마(다크·라이트) 설정과 '습관 만들기' 도구의 기록은 이용자 기기의 브라우저 저장소(localStorage)에만 저장되며 서버로 전송되지 않습니다. 브라우저의 사이트 데이터를 지우면 함께 삭제됩니다.</p>
+
+<h2>4. 광고와 쿠키</h2>
+<p>사이트는 Google AdSense를 통해 광고를 표시합니다. Google을 포함한 제3자 광고 공급업체는 쿠키를 사용해 이용자가 이 사이트나 다른 사이트를 이전에 방문한 기록을 바탕으로 광고를 게재할 수 있습니다.</p>
+<ul>
+<li>Google의 광고 쿠키 사용으로 Google과 파트너는 이 사이트와 인터넷상의 다른 사이트 방문 기록을 바탕으로 이용자에게 광고를 게재할 수 있습니다.</li>
+<li>이용자는 <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google 광고 설정</a>에서 맞춤 광고를 해제할 수 있습니다.</li>
+<li>제3자 공급업체의 맞춤 광고 쿠키는 <a href="https://www.aboutads.info" rel="noopener" target="_blank">www.aboutads.info</a>에서도 해제할 수 있습니다.</li>
+<li>Google이 광고에 쿠키를 사용하는 방식은 <a href="https://policies.google.com/technologies/ads?hl=ko" rel="noopener" target="_blank">Google 광고 정책</a>에서 확인할 수 있습니다.</li>
+</ul>
+<p>브라우저 설정에서 쿠키를 차단하거나 삭제할 수도 있으며, 이 경우에도 도구는 정상적으로 사용할 수 있습니다.</p>
+
+<h2>5. 호스팅과 접속 기록</h2>
+<p>사이트는 GitHub Pages에서 제공됩니다. GitHub는 서비스 운영을 위해 접속 IP 등 일반적인 접속 기록을 자체 정책에 따라 처리할 수 있습니다. 자세한 내용은 <a href="https://docs.github.com/ko/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener" target="_blank">GitHub 개인정보 처리방침</a>을 참고하세요.</p>
+
+<h2>6. 아동의 개인정보</h2>
+<p>사이트는 만 14세 미만 아동의 개인정보를 의도적으로 수집하지 않습니다.</p>
+
+<h2>7. 방침의 변경</h2>
+<p>이 방침은 법령이나 사이트 운영 방식이 바뀌면 수정될 수 있으며, 변경 시 이 페이지의 시행일을 함께 고칩니다.</p>
+
+<h2>8. 문의</h2>
+<p>개인정보와 관련한 문의나 요청은 <a href="https://zorlain.github.io/contact/">문의 페이지</a>를 통해 남겨 주세요.</p>
+
+<nav class="legal-nav" aria-label="사이트 안내">
+<a href="https://zorlain.github.io/">전체 도구</a>
+<a href="https://zorlain.github.io/about/">소개</a>
+<a href="https://zorlain.github.io/privacy/">개인정보처리방침</a>
+<a href="https://zorlain.github.io/contact/">문의</a>
+</nav>
+</main>
+</body>
+</html>
