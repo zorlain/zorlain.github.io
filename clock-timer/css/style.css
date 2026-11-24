@@ -934,3 +934,27 @@ body {
 @media (max-width: 640px) {
   .seo-faq { padding: 0 16px; margin-bottom: 56px; }
 }
+
+/* 자세히 알아보기 (scripts/seo/subsites.pl 이 만든 섹션) */
+.seo-detail {
+  max-width: 760px;
+  margin: 8px auto 24px;
+  padding: 0 24px;
+}
+.seo-detail h2 {
+  font-size: 18px;
+  margin: 0 0 6px;
+}
+.seo-detail h3 {
+  font-size: 15.5px;
+  margin: 20px 0 4px;
+}
+.seo-detail p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14.5px;
+  line-height: 1.8;
+}
+@media (max-width: 640px) {
+  .seo-detail { padding: 0 16px; }
+}
