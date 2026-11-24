@@ -4994,8 +4994,34 @@ function ensureToolGuide(panel) {
     list.appendChild(d);
   });
   section.appendChild(list);
+  if (g.rel && g.rel.length) {
+    section.appendChild(el("h2", "", "관련 도구"));
+    const ul = el("ul", "tool-related-list");
+    g.rel.forEach(([rid, title, desc]) => {
+      const li = document.createElement("li");
+      const a = el("a");
+      a.href = toolUrl(rid);
+      a.dataset.related = rid;
+      a.appendChild(el("b", "", title));
+      a.appendChild(el("span", "", desc));
+      li.appendChild(a);
+      ul.appendChild(li);
+    });
+    section.appendChild(ul);
+  }
   panel.appendChild(section);
 }
+
+// 관련 도구 링크: 허브에서 연 화면이면 새로 불러오지 않고 바로 전환한다 (주소로 바로 들어온 정적 페이지는 일반 이동)
+document.addEventListener("click", (e) => {
+  const a = e.target.closest("a[data-related]");
+  if (!a || typeof TOOL_GUIDES === "undefined") return;
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const id = a.dataset.related;
+  if (!document.querySelector(`[data-tab-panel="${id}"]`)) return;
+  e.preventDefault();
+  showTool(id);
+});
 
 function initDropzones() {
   document.querySelectorAll(".wip-dropzone").forEach((zone) => {

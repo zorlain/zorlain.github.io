@@ -1114,6 +1114,43 @@ body {
   font-size: 15px;
   line-height: 1.7;
 }
+.tool-related-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.tool-related-list a {
+  display: block;
+  height: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: inherit;
+  text-decoration: none;
+}
+.tool-related-list a:hover,
+.tool-related-list a:focus-visible {
+  border-color: var(--accent);
+}
+.tool-related-list b {
+  display: block;
+  font-size: 15px;
+}
+.tool-related-list span {
+  display: block;
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+@media (max-width: 560px) {
+  .tool-related-list {
+    grid-template-columns: 1fr;
+  }
+}
 .tool-guide-detail {
   display: grid;
   gap: 4px;
