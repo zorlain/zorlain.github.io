@@ -1181,3 +1181,17 @@ body {
   font-size: 14.5px;
   line-height: 1.7;
 }
+
+/* 모바일 보정 (scripts/seo/mobilecss.pl 이 붙인 부분)
+   입력칸 글자가 16px보다 작으면 아이폰이 입력칸을 누를 때 화면을 확대해서 어긋나 보이므로, 폰 너비에서는 16px 이상으로 맞춘다. */
+@media (max-width: 768px) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+.tool-guide { overflow-wrap: anywhere; }
+@media (max-width: 768px) {
+  .info-btn { min-width: 36px; min-height: 36px; display: inline-flex; align-items: center; justify-content: center; }
+}
