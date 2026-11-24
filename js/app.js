@@ -693,8 +693,8 @@ function initUnemployment() {
     }
 
     const dailyWage = wage / 30;
-    const UPPER = 66000;
-    const LOWER = 63104;
+    const UPPER = 68100; // 2026년 구직급여 상한액
+    const LOWER = 66048; // 2026년 하한액 = 최저임금 10,320원 x 80% x 8시간
     let dailyBenefit = Math.min(Math.max(dailyWage * 0.6, LOWER), UPPER);
 
     let days;
@@ -4960,6 +4960,15 @@ function ensureToolGuide(panel) {
     const ul = el("ul", "tool-guide-ex");
     g.ex.forEach((s) => ul.appendChild(el("li", "", s)));
     section.appendChild(ul);
+  }
+  if (g.d && g.d.length) {
+    section.appendChild(el("h2", "", "자세히 알아보기"));
+    const box = el("div", "tool-guide-detail");
+    g.d.forEach(([h, p]) => {
+      box.appendChild(el("h3", "", h));
+      box.appendChild(el("p", "", p));
+    });
+    section.appendChild(box);
   }
   if (g.t && g.t.length) {
     section.appendChild(el("h2", "", "알아 둘 용어"));
