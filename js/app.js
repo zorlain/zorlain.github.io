@@ -1089,7 +1089,7 @@ function initSavings() {
 
 /* ---------- 유튜브 수익 계산기 (영상 링크 / 채널 링크 → 예상 수익) ---------- */
 // 채널 조회에는 YouTube Data API v3 키가 필요합니다 (HTTP 리퍼러 제한을 건 키를 넣으세요).
-const YT_API_KEY = "";
+const YT_API_KEY = "AIzaSyA9JnoBLJW-9BsmEpISdPmhFBJdu7FBaVs"; // 웹사이트(zorlain.github.io)·YouTube Data API v3로 제한된 공개용 키
 
 function extractYoutubeId(text) {
   const m = text.trim().match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/|v\/))([\w-]{11})/);
