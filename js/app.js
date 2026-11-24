@@ -528,6 +528,278 @@ function initAge() {
   });
 }
 
+/* ---------- 결과 칸 만들기 (D-day · BMI · 연봉 실수령액 공용) ---------- */
+function renderStats(container, stats) {
+  container.textContent = "";
+  stats.forEach((s) => {
+    const box = document.createElement("div");
+    box.className = "result-stat" + (s.highlight ? " highlight" : "");
+    const label = document.createElement("div");
+    label.className = "result-stat-label";
+    label.textContent = s.label;
+    const value = document.createElement("div");
+    value.className = "result-stat-value";
+    value.textContent = s.value;
+    box.appendChild(label);
+    box.appendChild(value);
+    if (s.note) {
+      const note = document.createElement("div");
+      note.className = "result-stat-label";
+      note.textContent = s.note;
+      box.appendChild(note);
+    }
+    container.appendChild(box);
+  });
+  container.hidden = false;
+}
+
+// 쉼표가 섞여 있어도 숫자로 읽는다
+function readNum(id) {
+  const raw = String(document.getElementById(id).value).replace(/,/g, "").trim();
+  return raw === "" ? NaN : Number(raw);
+}
+
+/* ---------- D-day 계산기 ---------- */
+function initDday() {
+  initSegmented("dd-mode");
+  const DAY = 86400000;
+  const WEEK = ["일", "월", "화", "수", "목", "금", "토"];
+  const utc = (y, m, d) => Date.UTC(y, m, d);
+  const parse = (s) => {
+    const [y, m, d] = s.split("-").map(Number);
+    return utc(y, m - 1, d);
+  };
+  const today = () => {
+    const n = new Date();
+    return utc(n.getFullYear(), n.getMonth(), n.getDate());
+  };
+  const fmt = (t) => {
+    const d = new Date(t);
+    return `${d.getUTCFullYear()}.${String(d.getUTCMonth() + 1).padStart(2, "0")}.${String(d.getUTCDate()).padStart(2, "0")} (${WEEK[d.getUTCDay()]})`;
+  };
+  const daysInMonth = (y, m) => new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+  // 앞선 날짜 a에서 뒤의 날짜 b까지를 년·월·일로 나타낸다
+  // a에 n개월을 더한 날짜 (말일이 없으면 그 달의 마지막 날)
+  const addMonths = (t, n) => {
+    const d = new Date(t);
+    const idx = d.getUTCFullYear() * 12 + d.getUTCMonth() + n;
+    const y = Math.floor(idx / 12), m = idx % 12;
+    return utc(y, m, Math.min(d.getUTCDate(), daysInMonth(y, m)));
+  };
+  const ymd = (a, b) => {
+    const A = new Date(a), B = new Date(b);
+    let total = (B.getUTCFullYear() - A.getUTCFullYear()) * 12 + (B.getUTCMonth() - A.getUTCMonth());
+    if (addMonths(a, total) > b) total -= 1;
+    const days = Math.round((b - addMonths(a, total)) / DAY);
+    return [Math.floor(total / 12), total % 12, days];
+  };
+  // a 다음 날부터 b까지 중 월~금인 날 수 (a < b)
+  const weekdays = (a, b) => {
+    let n = 0;
+    for (let t = a + DAY; t <= b; t += DAY) {
+      const w = new Date(t).getUTCDay();
+      if (w !== 0 && w !== 6) n++;
+    }
+    return n;
+  };
+  // 시작일이 월말이면 다음 달에 같은 날이 없을 수 있어 그 달의 마지막 날로 맞춘다
+  const addYears = (t, n) => {
+    const d = new Date(t);
+    const y = d.getUTCFullYear() + n, m = d.getUTCMonth();
+    return utc(y, m, Math.min(d.getUTCDate(), daysInMonth(y, m)));
+  };
+
+  const modeWrap = document.getElementById("dd-mode");
+  modeWrap.addEventListener("click", () => {
+    const after = getSegmentedValue("dd-mode") === "after";
+    document.getElementById("dd-target-field").hidden = after;
+    document.getElementById("dd-after-field").hidden = !after;
+    document.getElementById("dd-result").hidden = true;
+  });
+
+  document.getElementById("dd-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("dd-error");
+    const resultEl = document.getElementById("dd-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+    const fail = (msg) => { errorEl.hidden = false; errorEl.textContent = msg; };
+
+    const startStr = document.getElementById("dd-start").value;
+    const start = startStr ? parse(startStr) : today();
+    const mode = getSegmentedValue("dd-mode");
+
+    if (mode === "between") {
+      const targetStr = document.getElementById("dd-target").value;
+      if (!targetStr) return fail("목표일을 입력해주세요.");
+      const target = parse(targetStr);
+      const diff = Math.round((target - start) / DAY);
+      const label = diff > 0 ? `D-${diff}` : diff === 0 ? "D-Day" : `D+${-diff}`;
+      const [a, b] = diff >= 0 ? [start, target] : [target, start];
+      const [y, m, d] = ymd(a, b);
+      const abs = Math.abs(diff);
+      const ymdText = [y ? `${y}년` : "", m ? `${m}개월` : "", d ? `${d}일` : ""].filter(Boolean).join(" ") || "0일";
+      const stats = [
+        { label: "D-day", value: label, highlight: true, note: diff > 0 ? "목표일까지 남은 날" : diff < 0 ? "목표일로부터 지난 날" : "오늘이 목표일입니다" },
+        { label: "일수 차이", value: `${abs.toLocaleString()}일` },
+        diff >= 0
+          ? { label: "기준일을 1일째로 셀 때", value: `${(diff + 1).toLocaleString()}일째`, note: "목표일이 몇 일째인지" }
+          : { label: "목표일을 1일째로 셀 때", value: `${(abs + 1).toLocaleString()}일째`, note: "기준일이 몇 일째인지" },
+        { label: "년·월·일", value: ymdText },
+        { label: "주 단위", value: `${Math.floor(abs / 7)}주 ${abs % 7}일` },
+        { label: diff >= 0 ? "남은 평일 수" : "지난 평일 수", value: `${weekdays(a, b).toLocaleString()}일`, note: "토·일 제외, 공휴일은 포함" },
+        { label: "목표일 요일", value: `${WEEK[new Date(target).getUTCDay()]}요일`, note: fmt(target) },
+      ];
+      renderStats(resultEl, stats);
+      return;
+    }
+
+    const n = readNum("dd-days");
+    if (!Number.isFinite(n) || !Number.isInteger(n)) return fail("일수를 정수로 입력해주세요.");
+    if (Math.abs(n) > 100000) return fail("일수는 ±100,000일 이내로 입력해주세요.");
+    const first = document.getElementById("dd-first").checked;
+    const offset = (days) => (first && days > 0 ? days - 1 : days);
+    const result = start + offset(n) * DAY;
+    const stats = [
+      { label: `기준일 ${n >= 0 ? "+" : ""}${n.toLocaleString()}일`, value: fmt(result), highlight: true, note: first && n > 0 ? "기준일을 1일째로 센 날짜" : "기준일에서 그대로 더한 날짜" },
+    ];
+    [100, 200, 300, 500, 1000].forEach((k) => stats.push({ label: `${k.toLocaleString()}일`, value: fmt(start + offset(k) * DAY) }));
+    [1, 2, 3].forEach((k) => stats.push({ label: `${k}주년`, value: fmt(addYears(start, k)) }));
+    renderStats(resultEl, stats);
+  });
+}
+
+/* ---------- BMI·기초대사량 계산기 ---------- */
+function initBmi() {
+  initSegmented("bmi-sex");
+  document.getElementById("bmi-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("bmi-error");
+    const resultEl = document.getElementById("bmi-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+    const fail = (msg) => { errorEl.hidden = false; errorEl.textContent = msg; };
+
+    const age = readNum("bmi-age");
+    const h = readNum("bmi-height");
+    const w = readNum("bmi-weight");
+    if (![age, h, w].every(Number.isFinite)) return fail("나이, 키, 몸무게를 모두 입력해주세요.");
+    if (age < 19 || age > 100) return fail("만 19세 이상 성인만 계산합니다. 어린이·청소년은 성장도표를 확인하세요.");
+    if (h < 100 || h > 250) return fail("키는 100~250cm 사이로 입력해주세요.");
+    if (w < 20 || w > 300) return fail("몸무게는 20~300kg 사이로 입력해주세요.");
+
+    const meter = h / 100;
+    const bmi = w / (meter * meter);
+    // 대한비만학회 기준 (아시아-태평양 기준)
+    let grade;
+    if (bmi < 18.5) grade = "저체중";
+    else if (bmi < 23) grade = "정상";
+    else if (bmi < 25) grade = "비만 전 단계 (과체중)";
+    else if (bmi < 30) grade = "1단계 비만";
+    else if (bmi < 35) grade = "2단계 비만";
+    else grade = "3단계 비만 (고도비만)";
+
+    const male = getSegmentedValue("bmi-sex") === "m";
+    const bmr = 10 * w + 6.25 * h - 5 * age + (male ? 5 : -161);
+    const factor = Number(document.getElementById("bmi-activity").value);
+    const tdee = bmr * factor;
+    const lose = Math.max(tdee - 500, bmr);
+    const lo = 18.5 * meter * meter;
+    const hi = 22.9 * meter * meter;
+    const kcal = (v) => `${Math.round(v).toLocaleString()}kcal`;
+
+    renderStats(resultEl, [
+      { label: "BMI (체질량지수)", value: bmi.toFixed(1), highlight: true, note: grade },
+      { label: "정상 체중 범위", value: `${lo.toFixed(1)} ~ ${hi.toFixed(1)}kg`, note: "BMI 18.5~22.9 기준" },
+      { label: "기초대사량", value: kcal(bmr), note: "가만히 있어도 쓰는 에너지" },
+      { label: "하루 권장 칼로리 (체중 유지)", value: kcal(tdee), note: "기초대사량 × 활동계수" },
+      { label: "체중 감량 시 하루 섭취", value: kcal(lose), note: "유지량보다 약 500kcal 적게, 기초대사량 아래로는 내리지 않음" },
+    ]);
+  });
+}
+
+/* ---------- 연봉 실수령액 계산기 ---------- */
+function initSalaryNet() {
+  document.getElementById("sn-calc-btn").addEventListener("click", () => {
+    const errorEl = document.getElementById("sn-error");
+    const resultEl = document.getElementById("sn-result");
+    errorEl.hidden = true;
+    resultEl.hidden = true;
+    const fail = (msg) => { errorEl.hidden = false; errorEl.textContent = msg; };
+
+    const salary = readNum("sn-salary");
+    const nontaxIn = readNum("sn-nontax");
+    const family = readNum("sn-family");
+    const children = readNum("sn-children");
+    if (!Number.isFinite(salary) || salary <= 0) return fail("연봉을 만원 단위로 입력해주세요. (예: 5000)");
+    if (!Number.isFinite(nontaxIn) || nontaxIn < 0) return fail("월 비과세액은 0 이상으로 입력해주세요.");
+    if (!Number.isInteger(family) || family < 1 || family > 20) return fail("부양가족 수는 본인을 포함해 1명 이상으로 입력해주세요.");
+    if (!Number.isInteger(children) || children < 0 || children > family - 1) return fail("자녀 수는 0명 이상이고 부양가족(본인 포함)보다 적어야 합니다.");
+
+    // 2026년 기준 요율 (해마다 바뀜: scripts/year-check.sh 참고)
+    const NP_RATE = 0.0475;          // 국민연금 근로자 부담 (전체 9.5%)
+    const NP_MIN = 410000;           // 기준소득월액 하한 (2026.7~2027.6)
+    const NP_MAX = 6590000;          // 기준소득월액 상한 (2026.7~2027.6)
+    const HI_RATE = 0.03595;         // 건강보험 근로자 부담 (전체 7.19%)
+    const LTC_RATE = 0.1314;         // 장기요양 = 건강보험료의 13.14%
+    const EI_RATE = 0.009;           // 고용보험 근로자 부담
+    const cut10 = (v) => Math.floor(v / 10) * 10;
+
+    const gross = salary * 10000;
+    const monthlyGross = gross / 12;
+    const nontax = Math.min(nontaxIn, monthlyGross);
+    const taxableMonthly = monthlyGross - nontax;
+
+    const np = cut10(Math.min(Math.max(taxableMonthly, NP_MIN), NP_MAX) * NP_RATE);
+    const hi = cut10(taxableMonthly * HI_RATE);
+    const ltc = cut10(hi * LTC_RATE);
+    const ei = cut10(taxableMonthly * EI_RATE);
+
+    // 소득세 추정 (근로소득공제 → 소득공제 → 세율 → 세액공제)
+    const pay = taxableMonthly * 12; // 과세 대상 총급여
+    let earnedDeduction;
+    if (pay <= 5000000) earnedDeduction = pay * 0.7;
+    else if (pay <= 15000000) earnedDeduction = 3500000 + (pay - 5000000) * 0.4;
+    else if (pay <= 45000000) earnedDeduction = 7500000 + (pay - 15000000) * 0.15;
+    else if (pay <= 100000000) earnedDeduction = 12000000 + (pay - 45000000) * 0.05;
+    else earnedDeduction = 14750000 + (pay - 100000000) * 0.02;
+    earnedDeduction = Math.min(earnedDeduction, 20000000);
+
+    const base = Math.max(0, pay - earnedDeduction - 1500000 * family - np * 12 - (hi + ltc + ei) * 12);
+    const brackets = [[14000000, 0.06], [50000000, 0.15], [88000000, 0.24], [150000000, 0.35], [300000000, 0.38], [500000000, 0.4], [1000000000, 0.42], [Infinity, 0.45]];
+    let calc = 0, prev = 0;
+    for (const [limit, rate] of brackets) {
+      if (base > prev) calc += (Math.min(base, limit) - prev) * rate;
+      prev = limit;
+    }
+    let credit = calc <= 1300000 ? calc * 0.55 : 715000 + (calc - 1300000) * 0.3;
+    let creditCap;
+    if (pay <= 33000000) creditCap = 740000;
+    else if (pay <= 70000000) creditCap = Math.max(660000, 740000 - (pay - 33000000) * 0.008);
+    else if (pay <= 120000000) creditCap = Math.max(500000, 660000 - (pay - 70000000) * 0.5);
+    else creditCap = Math.max(200000, 500000 - (pay - 120000000) * 0.5);
+    credit = Math.min(credit, creditCap);
+    const childCredit = children === 0 ? 0 : children === 1 ? 250000 : 550000 + (children - 2) * 400000;
+    const incomeTaxYear = Math.max(0, calc - credit - 130000 - childCredit);
+    const incomeTax = cut10(incomeTaxYear / 12);
+    const localTax = cut10(incomeTax * 0.1);
+
+    const deduction = np + hi + ltc + ei + incomeTax + localTax;
+    const net = monthlyGross - deduction;
+    const won = (v) => `${Math.round(v).toLocaleString()}원`;
+
+    renderStats(resultEl, [
+      { label: "월 실수령액 (추정)", value: won(net), highlight: true, note: `연 실수령액 약 ${won(net * 12)}` },
+      { label: "월 세전 급여", value: won(monthlyGross), note: `비과세 ${won(nontax)} 포함` },
+      { label: "월 공제 합계", value: won(deduction), note: `급여의 ${((deduction / monthlyGross) * 100).toFixed(1)}%` },
+      { label: "국민연금", value: won(np) },
+      { label: "건강보험", value: won(hi) },
+      { label: "장기요양보험", value: won(ltc) },
+      { label: "고용보험", value: won(ei) },
+      { label: "소득세", value: won(incomeTax) },
+      { label: "지방소득세", value: won(localTax), note: "소득세의 10%" },
+    ]);
+  });
+}
+
 /* ---------- 부가세 계산기 ---------- */
 function initVat() {
   initSegmented("vat-mode");
@@ -4884,7 +5156,7 @@ function initCatNav() {
 
 /* ---------- 도구 화면 유형 (calc / file / text / gen / play) ---------- */
 const TOOL_KINDS = {
-  calc: ["percent", "loan", "age", "vat", "weekly-pay", "freelance-tax", "severance-pay", "unemployment-benefit", "jeonse-conversion", "savings-calc", "adsense-reality", "blog-adsense", "unix-timestamp", "base-converter", "regex-tester", "http-status", "wcag-contrast", "ip-lookup", "code-finder", "color-converter"],
+  calc: ["percent", "loan", "age", "dday", "bmi", "salary-net", "vat", "weekly-pay", "freelance-tax", "severance-pay", "unemployment-benefit", "jeonse-conversion", "savings-calc", "adsense-reality", "blog-adsense", "unix-timestamp", "base-converter", "regex-tester", "http-status", "wcag-contrast", "ip-lookup", "code-finder", "color-converter"],
   text: ["json", "base64", "yaml-json-toml", "xml-parser", "json-xml", "text-compare", "hangul-typo-fix", "json-to-csv", "sql-formatter", "ascii-converter", "code-minifier", "curl-converter", "jwt-decoder", "tts", "hash-generator", "addr-translate"],
   gen: ["lorem", "cron-generator", "gitignore-generator", "css-gradient", "css-box-shadow", "cubic-bezier", "favicon-generator", "calendar-print", "chord-sheet", "uuid-generator", "corp-stamp", "device-size-compare", "cinema-size-compare", "square-stamp", "stamp-image", "biz-nameplate", "barcode-generator"],
   play: ["emoji-symbols", "guitar-tuner", "reaction-speed-test", "cps-test", "typing-speed-test", "metronome", "habit-tracker", "keycode-checker"],
@@ -5074,6 +5346,9 @@ function init() {
   initPercent();
   initLoan();
   initAge();
+  initDday();
+  initBmi();
+  initSalaryNet();
   initVat();
   initWeeklyPay();
   initFreelanceTax();

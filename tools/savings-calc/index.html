@@ -49,7 +49,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-<link rel="stylesheet" href="../../css/style.css?v=20261130" />
+<link rel="stylesheet" href="../../css/style.css?v=20261201" />
 </head>
 <body>
 <header class="topbar">
@@ -225,6 +225,36 @@
         <span class="tool-card-title">만나이 계산기</span>
         <span class="tool-card-desc">생년월일을 입력하면 만 나이·연 나이를 바로 계산합니다.</span>
         <span class="tool-card-tags"><span class="tool-tag">만나이</span><span class="tool-tag">생년월일</span></span>
+      </a>
+      <a class="tool-card" href="../../tools/dday/" data-tab="dday" data-tags="디데이 d-day 기념일 날짜 계산 100일 며칠 남았나 일수">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="5" width="18" height="16" rx="2" /><path d="M3 10 h18" /><path d="M8 3 v4 M16 3 v4" /><path d="M8 15 h8" />
+          </svg>
+        </span>
+        <span class="tool-card-title">D-day 계산기</span>
+        <span class="tool-card-desc">기준일까지 남은 날과 지난 날, N일 후 날짜, 100일·1주년 기념일을 계산합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">D-day</span><span class="tool-tag">기념일</span></span>
+      </a>
+      <a class="tool-card" href="../../tools/bmi/" data-tab="bmi" data-tags="bmi 체질량지수 비만도 기초대사량 칼로리 적정체중 다이어트">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3 v3" /><rect x="4" y="6" width="16" height="15" rx="3" /><path d="M8 11 a4 4 0 0 1 8 0" /><path d="M12 11 l2 -2" />
+          </svg>
+        </span>
+        <span class="tool-card-title">BMI·기초대사량 계산기</span>
+        <span class="tool-card-desc">키와 몸무게로 BMI와 비만도, 기초대사량, 하루 권장 칼로리를 계산합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">BMI</span><span class="tool-tag">기초대사량</span></span>
+      </a>
+      <a class="tool-card" href="../../tools/salary-net/" data-tab="salary-net" data-tags="연봉 실수령액 월급 세후 4대보험 소득세 월급 계산기">
+        <span class="tool-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="18" height="12" rx="2" /><circle cx="12" cy="12" r="2.6" /><path d="M6.5 9.5 v5 M17.5 9.5 v5" />
+          </svg>
+        </span>
+        <span class="tool-card-title">연봉 실수령액 계산기</span>
+        <span class="tool-card-desc">연봉에서 4대보험과 소득세를 뺀 월 실수령액을 2026년 기준으로 추정합니다.</span>
+        <span class="tool-card-tags"><span class="tool-tag">연봉</span><span class="tool-tag">실수령액</span></span>
       </a>
       <a class="tool-card" href="../../tools/vat/" data-tab="vat" data-tags="부가세 계산기 공급가액 합계금액">
         <span class="tool-card-icon">
@@ -1317,6 +1347,111 @@
     </div>
   </section>
 
+  <!-- D-day 계산기 -->
+  <section class="tab-panel" data-tab-panel="dday" hidden>
+    <div class="card">
+        <p class="card-desc-short">두 날짜 사이의 일수를 구하거나, 기준일에서 N일 뒤(앞) 날짜와 100일·1주년 같은 기념일을 계산합니다. 토·일을 뺀 평일 수는 공휴일을 반영하지 않습니다.</p>
+        <div class="field-group">
+          <label>계산 방식</label>
+          <div class="segmented" id="dd-mode">
+            <button type="button" class="active" data-value="between">두 날짜 사이</button>
+            <button type="button" data-value="after">N일 후 날짜</button>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="dd-start">기준일 (비워두면 오늘)</label>
+          <div class="field-input-wrap"><input type="date" id="dd-start" /></div>
+        </div>
+        <div class="field-group" id="dd-target-field">
+          <label for="dd-target">목표일</label>
+          <div class="field-input-wrap"><input type="date" id="dd-target" /></div>
+        </div>
+        <div id="dd-after-field" hidden>
+          <div class="field-group">
+            <label for="dd-days">며칠 후인가요? (이전 날짜는 음수)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="numeric" id="dd-days" placeholder="예: 100" /></div>
+          </div>
+          <div class="field-group">
+            <label class="checkbox-label"><input type="checkbox" id="dd-first" checked /> 기준일을 1일째로 셉니다 (연인 기념일 방식)</label>
+          </div>
+        </div>
+        <button class="calc-btn" id="dd-calc-btn">계산하기</button>
+        <p class="calc-error-msg" id="dd-error" hidden></p>
+        <div class="tool-btn-grid" id="dd-result" hidden></div>
+    </div>
+  </section>
+
+  <!-- BMI·기초대사량 계산기 -->
+  <section class="tab-panel" data-tab-panel="bmi" hidden>
+    <div class="card">
+        <p class="card-desc-short">만 19세 이상 성인을 기준으로 합니다. 비만도는 대한비만학회 분류, 기초대사량은 미플린-세인트조 공식을 씁니다. 결과는 참고용이며 진단이 아닙니다.</p>
+        <div class="field-group">
+          <label>성별</label>
+          <div class="segmented" id="bmi-sex">
+            <button type="button" class="active" data-value="m">남성</button>
+            <button type="button" data-value="f">여성</button>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="bmi-age">만 나이</label>
+            <div class="field-input-wrap"><input type="text" inputmode="numeric" id="bmi-age" placeholder="예: 30" /></div>
+          </div>
+          <div class="field-group">
+            <label for="bmi-height">키 (cm)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="bmi-height" placeholder="예: 170" /></div>
+          </div>
+          <div class="field-group">
+            <label for="bmi-weight">몸무게 (kg)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="decimal" id="bmi-weight" placeholder="예: 65" /></div>
+          </div>
+        </div>
+        <div class="field-group">
+          <label for="bmi-activity">활동량</label>
+          <div class="field-input-wrap"><select id="bmi-activity" style="width:100%; background:transparent; border:none; color:inherit; font:inherit;">
+            <option value="1.2">거의 움직이지 않음 (앉아서 생활)</option>
+            <option value="1.375" selected>가벼운 활동 (주 1~3회 운동)</option>
+            <option value="1.55">보통 활동 (주 3~5회 운동)</option>
+            <option value="1.725">활발한 활동 (주 6~7회 운동)</option>
+            <option value="1.9">매우 활발 (육체노동·하루 두 번 운동)</option>
+          </select></div>
+        </div>
+        <button class="calc-btn" id="bmi-calc-btn">계산하기</button>
+        <p class="calc-error-msg" id="bmi-error" hidden></p>
+        <div class="tool-btn-grid" id="bmi-result" hidden></div>
+    </div>
+  </section>
+
+  <!-- 연봉 실수령액 계산기 -->
+  <section class="tab-panel" data-tab-panel="salary-net" hidden>
+    <div class="card">
+        <p class="card-desc-short">2026년 4대보험 요율(국민연금 4.75%, 건강보험 3.595%, 장기요양 건강보험료의 13.14%, 고용보험 0.9%)과 소득세 공식으로 추정합니다. 회사의 간이세액표와 몇만 원 차이가 날 수 있습니다.</p>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="sn-salary">연봉 (만원, 세전)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="numeric" id="sn-salary" placeholder="예: 5000" /></div>
+          </div>
+          <div class="field-group">
+            <label for="sn-nontax">월 비과세액 (원, 식대 등)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="numeric" id="sn-nontax" value="200000" placeholder="예: 200000" /></div>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <label for="sn-family">부양가족 수 (본인 포함)</label>
+            <div class="field-input-wrap"><input type="text" inputmode="numeric" id="sn-family" value="1" /></div>
+          </div>
+          <div class="field-group">
+            <label for="sn-children">8~20세 자녀 수</label>
+            <div class="field-input-wrap"><input type="text" inputmode="numeric" id="sn-children" value="0" /></div>
+          </div>
+        </div>
+        <button class="calc-btn" id="sn-calc-btn">계산하기</button>
+        <p class="calc-error-msg" id="sn-error" hidden></p>
+        <div class="tool-btn-grid" id="sn-result" hidden></div>
+    </div>
+  </section>
+
   <!-- 부가세 계산기 -->
   <section class="tab-panel" data-tab-panel="vat" hidden>
     <div class="card">
@@ -1553,7 +1688,7 @@
           </div>
         </div>
     </div>
-  <section class="tool-guide" aria-labelledby="guide-title-savings-calc"><h2 id="guide-title-savings-calc">사용 방법</h2><ol class="tool-guide-steps"><li>상품 종류를 적금(매달 납입) 또는 예금(목돈 거치) 중에서 고릅니다.</li><li>월 납입액 또는 예치금, 연 이자율(%), 기간(개월)을 입력합니다.</li><li>계산하기를 누르면 원금 합계, 세후 이자, 만기 수령액이 나옵니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">적금이나 예금에 가입하기 전에 만기에 받을 금액을 가늠할 때, 이율과 기간을 바꿔 가며 상품을 비교할 때 씁니다.</p><h2>예시</h2><ul class="tool-guide-ex"><li>월 50만원씩 12개월 적금을 연 3.5%로 넣으면 원금 합계는 600만원, 세후 이자는 약 96,233원, 만기 수령액은 약 6,096,233원입니다.</li><li>1,000만원을 연 3.5%로 12개월 예금하면 세후 이자는 약 296,100원, 만기 수령액은 약 10,296,100원입니다.</li></ul><h2>자세히 알아보기</h2><div class="tool-guide-detail"><h3>적금과 예금은 이자가 어떻게 다른가요</h3><p>예금은 처음에 맡긴 목돈 전체에 기간 내내 이자가 붙습니다. 적금은 매달 금액이 쌓이는 구조라 평균적으로 맡겨 둔 기간이 절반 정도입니다. 그래서 같은 금리라면 12개월 적금의 이자는 같은 원금을 예금했을 때의 절반을 조금 넘는 수준입니다.</p><h3>이자 계산식</h3><p>이 계산기는 단리로 계산합니다. 적금은 월 납입액 × 기간(개월) × (기간+1) ÷ 2 × 연 이율 ÷ 12로 이자를 구하고, 예금은 예치금 × 연 이율 × 기간 ÷ 12입니다. 여기서 이자소득세 15.4%를 뗀 금액이 세후 이자입니다.</p><h3>세금과 우대금리</h3><p>일반 과세 상품은 이자소득세 14%와 지방소득세 1.4%를 합친 15.4%를 뗍니다. 비과세나 세금우대 상품은 세후 이자가 더 많을 수 있습니다. 은행의 우대금리, 자유적립식의 납입 시점, 중도해지 이율은 반영되지 않으므로 실제 수령액은 가입 상품의 안내를 확인하세요.</p></div><h2>알아 둘 용어</h2><dl class="tool-guide-terms"><dt>단리</dt><dd>원금에만 이자가 붙는 방식입니다. 이 계산기는 단리로 계산합니다.</dd><dt>이자소득세 15.4%</dt><dd>이자에서 떼는 세금으로 소득세 14%와 지방소득세 1.4%를 합친 값입니다.</dd></dl><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> 단리 기준이고 이자소득세 15.4%를 뗀 금액입니다. 복리 상품이나 우대금리가 붙는 상품은 실제와 차이가 날 수 있습니다.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>적금 이자는 어떻게 계산하나요?</summary><p>매달 넣는 금액이 남은 개월 수만큼 이자를 받는 방식으로 합산한 단리 이자에 이자소득세 15.4%를 뺍니다.</p></details><details><summary>세금이 없는 상품도 계산할 수 있나요?</summary><p>이 계산기는 이자소득세 15.4%를 일괄 적용합니다. 비과세 상품은 세후 이자가 더 많을 수 있습니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../jeonse-conversion/" data-related="jeonse-conversion"><b>전월세 전환 계산기</b><span>전세보증금과 월세를 서로 전환해 계산합니다.</span></a></li><li><a href="../percent/" data-related="percent"><b>퍼센트 계산기</b><span>A는 B의 몇 %인지, B의 몇 %는 얼마인지, 증감률까지 바로 계산합니다.</span></a></li><li><a href="../loan/" data-related="loan"><b>대출이자 계산기</b><span>원리금균등·원금균등·만기일시 상환방식별 월 상환액과 총이자를 계산합니다.</span></a></li><li><a href="../vat/" data-related="vat"><b>부가세 계산기</b><span>공급가액·부가세·합계금액을 서로 바로 계산하고 변환합니다.</span></a></li></ul></section>
+  <section class="tool-guide" aria-labelledby="guide-title-savings-calc"><h2 id="guide-title-savings-calc">사용 방법</h2><ol class="tool-guide-steps"><li>상품 종류를 적금(매달 납입) 또는 예금(목돈 거치) 중에서 고릅니다.</li><li>월 납입액 또는 예치금, 연 이자율(%), 기간(개월)을 입력합니다.</li><li>계산하기를 누르면 원금 합계, 세후 이자, 만기 수령액이 나옵니다.</li></ol><h2>이럴 때 쓰세요</h2><p class="tool-guide-when">적금이나 예금에 가입하기 전에 만기에 받을 금액을 가늠할 때, 이율과 기간을 바꿔 가며 상품을 비교할 때 씁니다.</p><h2>예시</h2><ul class="tool-guide-ex"><li>월 50만원씩 12개월 적금을 연 3.5%로 넣으면 원금 합계는 600만원, 세후 이자는 약 96,233원, 만기 수령액은 약 6,096,233원입니다.</li><li>1,000만원을 연 3.5%로 12개월 예금하면 세후 이자는 약 296,100원, 만기 수령액은 약 10,296,100원입니다.</li></ul><h2>자세히 알아보기</h2><div class="tool-guide-detail"><h3>적금과 예금은 이자가 어떻게 다른가요</h3><p>예금은 처음에 맡긴 목돈 전체에 기간 내내 이자가 붙습니다. 적금은 매달 금액이 쌓이는 구조라 평균적으로 맡겨 둔 기간이 절반 정도입니다. 그래서 같은 금리라면 12개월 적금의 이자는 같은 원금을 예금했을 때의 절반을 조금 넘는 수준입니다.</p><h3>이자 계산식</h3><p>이 계산기는 단리로 계산합니다. 적금은 월 납입액 × 기간(개월) × (기간+1) ÷ 2 × 연 이율 ÷ 12로 이자를 구하고, 예금은 예치금 × 연 이율 × 기간 ÷ 12입니다. 여기서 이자소득세 15.4%를 뗀 금액이 세후 이자입니다.</p><h3>세금과 우대금리</h3><p>일반 과세 상품은 이자소득세 14%와 지방소득세 1.4%를 합친 15.4%를 뗍니다. 비과세나 세금우대 상품은 세후 이자가 더 많을 수 있습니다. 은행의 우대금리, 자유적립식의 납입 시점, 중도해지 이율은 반영되지 않으므로 실제 수령액은 가입 상품의 안내를 확인하세요.</p></div><h2>알아 둘 용어</h2><dl class="tool-guide-terms"><dt>단리</dt><dd>원금에만 이자가 붙는 방식입니다. 이 계산기는 단리로 계산합니다.</dd><dt>이자소득세 15.4%</dt><dd>이자에서 떼는 세금으로 소득세 14%와 지방소득세 1.4%를 합친 값입니다.</dd></dl><p class="tool-guide-tip"><b>알아 두면 좋은 점</b> 단리 기준이고 이자소득세 15.4%를 뗀 금액입니다. 복리 상품이나 우대금리가 붙는 상품은 실제와 차이가 날 수 있습니다.</p><h2>자주 묻는 질문</h2><div class="seo-faq-list"><details><summary>적금 이자는 어떻게 계산하나요?</summary><p>매달 넣는 금액이 남은 개월 수만큼 이자를 받는 방식으로 합산한 단리 이자에 이자소득세 15.4%를 뺍니다.</p></details><details><summary>세금이 없는 상품도 계산할 수 있나요?</summary><p>이 계산기는 이자소득세 15.4%를 일괄 적용합니다. 비과세 상품은 세후 이자가 더 많을 수 있습니다.</p></details></div><h2>관련 도구</h2><ul class="tool-related-list"><li><a href="../jeonse-conversion/" data-related="jeonse-conversion"><b>전월세 전환 계산기</b><span>전세보증금과 월세를 서로 전환해 계산합니다.</span></a></li><li><a href="../percent/" data-related="percent"><b>퍼센트 계산기</b><span>A는 B의 몇 %인지, B의 몇 %는 얼마인지, 증감률까지 바로 계산합니다.</span></a></li><li><a href="../loan/" data-related="loan"><b>대출이자 계산기</b><span>원리금균등·원금균등·만기일시 상환방식별 월 상환액과 총이자를 계산합니다.</span></a></li><li><a href="../salary-net/" data-related="salary-net"><b>연봉 실수령액 계산기</b><span>연봉에서 4대보험과 소득세를 뺀 월 실수령액을 2026년 기준으로 추정합니다.</span></a></li></ul></section>
   </section>
 
   <section class="tab-panel" data-tab-panel="adsense-reality" hidden>
@@ -3258,6 +3393,6 @@
 
 <footer class="site-footer">© toolbox — <a href="https://zorlain.github.io/">zorlain</a> · <a href="https://zorlain.github.io/about/">소개</a> · <a href="https://zorlain.github.io/privacy/">개인정보처리방침</a> · <a href="https://zorlain.github.io/contact/">문의</a></footer>
 
-<script src="../../js/app.js?v=20261130"></script>
+<script src="../../js/app.js?v=20261201"></script>
 </body>
 </html>
